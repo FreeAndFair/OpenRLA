@@ -1,0 +1,156 @@
+{
+    "version": "0.2.0-alpha",
+    "tests": [
+        {
+            "data": {
+                "count": 3,
+                "seed": "1",
+                "total": 1000
+            },
+            "expected": [
+                97,
+                89,
+                163
+            ]
+        },
+        {
+            "notes": [
+                "Test an example yielding a duplicate selection."
+            ],
+            "data": {
+                "count": 3,
+                "seed": "0",
+                "total": 2
+            },
+            "expected": [
+                1,
+                1,
+                2
+            ]
+        },
+        {
+            "data": {
+                "count": 3,
+                "seed": "0",
+                "total": 1000
+            },
+            "expected": [
+                905,
+                573,
+                160
+            ]
+        },
+        {
+            "notes": [
+                "Check that the seed '00' yields a result different ",
+                "from '0'.  In particular, a numeric string is not first ",
+                "parsed to an integer."
+            ],
+            "data": {
+                "count": 3,
+                "seed": "0000000000",
+                "total": 1000
+            },
+            "expected": [
+                978,
+                359,
+                132
+            ]
+        },
+        {
+            "data": {
+                "count": 3,
+                "seed": "999999999999999999999999",
+                "total": 1000
+            },
+            "expected": [
+                544,
+                800,
+                654
+            ]
+        },
+        {
+            "notes": [
+                "This is the example given in Ronald L. Rivest's reference ",
+                "implementation dated November 14, 2011."
+            ],
+            "data": {
+                "count": 5,
+                "seed": "3546311556112163624615351222",
+                "total": 876
+            },
+            "expected": [
+                740,
+                180,
+                264,
+                789,
+                238
+            ]
+        },
+        {
+            "notes": [
+                "Test a seed with letters."
+            ],
+            "data": {
+                "count": 3,
+                "seed": "abcde",
+                "total": 1000
+            },
+            "expected": [
+                247,
+                427,
+                157
+            ]
+        },
+        {
+            "data": {
+                "count": 3,
+                "seed": "abc123",
+                "total": 1000
+            },
+            "expected": [
+                455,
+                764,
+                629
+            ]
+        },
+        {
+            "notes": [
+                "Test a seed containing a non-ASCII character."
+            ],
+            "data": {
+                "count": 3,
+                "seed": "snowman: \u2603",
+                "total": 1000
+            },
+            "expected": [
+                634,
+                56,
+                46
+            ]
+        },
+        {
+            "notes": [
+                "This test case tests having a non-BMP Unicode character ",
+                "in the seed, which is a character with a code point ",
+                "greater than 65,536.  This case is special because ",
+                "such characters are represented in Javascript strings ",
+                "by two characters.  Such a pair of characters is known ",
+                "as a surrogate pair.  In this case the seed is the ",
+                "emoticon Unicode character GRINNING FACE (U+1F600)."
+            ],
+            "data": {
+                "count": 5,
+                "seed": "\ud83d\ude00",
+                "total": 1000
+            },
+            "expected": [
+                596,
+                415,
+                303,
+                11,
+                141
+            ]
+        }
+    ]
+}

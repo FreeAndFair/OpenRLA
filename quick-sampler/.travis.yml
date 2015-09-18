@@ -1,0 +1,31 @@
+language: node_js
+node_js:
+  - '0.10'
+env:
+  - PROTRACTOR_PROFILE=travis-sauce
+before_script:
+  - 'npm install -g bower grunt-cli'
+  - 'bower install'
+  - npm run update-webdriver
+  # Start xvfb (needed for Firefox but not PhantomJS).
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  # give xvfb some time to start
+  - sleep 3
+  # Run in the background since the command waits at the end and
+  # does not terminate.
+  - 'grunt serve &'
+  # Allow enough time for the server to start.
+  - sleep 6
+script:
+  # For information on configuring Travis for browser testing, see--
+  # http://docs.travis-ci.com/user/gui-and-headless-browsers/
+  - 'npm run test'
+addons:
+  # Provide Sauce Labs connection info for browser testing.
+  # For more information, see--
+  # http://docs.travis-ci.com/user/gui-and-headless-browsers/
+  sauce_connect:
+    username: "cjerdonek"
+    access_key:
+      secure: "QtiB3HUxsS3DsT1pVKUQx0Exb7w3jjiHojgw6FL7xQACCDS8q42PGVlzj5iBlHdSZrt2eHPydHY91pYBYZnYrrlLZTX4ZV8d2TGvmc/acbCmbKfp4cwqZkwbghV3fc8QyoxFixb780YGOKK6JI2u+nubpHKWwZA57In6z3A4KPI="

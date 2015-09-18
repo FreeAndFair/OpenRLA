@@ -1,0 +1,12 @@
+<div class="form-group" ng-class="{ 'has-error': form.errors[key] }">
+  <label for="{{ inputId }}" class="control-label col-sm-3">{{ label }}</label>
+  <div class="col-sm-9">
+    <!-- TODO: include "min" only when type is "number". -->
+    <input id="{{ inputId }}" class="form-control" type="{{ inputType }}"
+           ng-model="form.input[key]" ng-change="form.onInputChange(key)"
+           placeholder="{{ placeholder }}" min="{{ inputMin }}"/>
+  </div>
+  <div id="{{ inputId }}_error" class="help-block col-sm-offset-3 col-sm-9" ng-hide="!form.errors[key]">
+    {{ form.errors[key] }}
+  </div>
+</div>

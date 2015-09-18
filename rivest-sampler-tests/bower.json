@@ -1,0 +1,32 @@
+{
+  "name": "rivest-sampler-tests",
+  "description": "Test cases for Ronald L. Rivest's pseudo-random sampling algorithm",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cjerdonek/rivest-sampler-tests.git"
+  },
+  "homepage": "https://github.com/cjerdonek/rivest-sampler-tests",
+  "authors": [
+    "Chris Jerdonek <chris.jerdonek@gmail.com>"
+  ],
+  "main": "tests.json",
+  "keywords": [
+    "rivest",
+    "pseudo-random",
+    "sampler",
+    "election",
+    "audit",
+    "precincts",
+    "random",
+    "tests",
+    "test-cases"
+  ],
+  "license": "BSD-3-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

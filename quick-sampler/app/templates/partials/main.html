@@ -1,0 +1,92 @@
+<!--
+Using .form-horizontal makes .form-group behave as a row, so
+there is no need to use .row.
+
+We suppress HTML5 client-side input validation using "novalidate."
+This lets us include our own error messages for visual consistency, etc.
+-->
+Fill in the below to generate your sample.
+<form class="form-horizontal" role="form" novalidate>
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+    </div>
+  </div>
+
+  <fieldset>
+
+    <smp-form-input form-model="form" input-id="id_seed"
+                input-min="" input-type="text" key="seed"
+                label="Random Seed" placeholder="Any numbers or characters">
+    </smp-form-input>
+
+    <smp-form-input form-model="form" input-id="id_total_count"
+                input-min="1" input-type="number" key="totalCount"
+                label="Total Items" placeholder="Total number of items">
+    </smp-form-input>
+
+    <smp-form-input form-model="form" input-id="id_smallest_item"
+                input-min="" input-type="number" key="smallestItem"
+                label="Lowest Item" placeholder="Smallest item number">
+    </smp-form-input>
+
+    <div class="form-group">
+      <label for="id_highest_item" class="control-label col-sm-3">Highest Item</label>
+      <div class="col-sm-9">
+        <input class="form-control" id="id_highest_item" type="number"
+               disabled="true" ng-value="highestItem()"
+               placeholder="Highest item number (computed)"/>
+      </div>
+    </div>
+
+    <smp-form-input form-model="form" input-id="id_sample_count"
+                input-min="1" input-type="number" key="sampleCount"
+                label="Sample Count" placeholder="Number of unique items to select">
+    </smp-form-input>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-3">
+        <button id="submit" type="submit" class="btn"
+                ng-class="form.showing ? 'btn-success' : 'btn-primary'"
+                ng-disabled="form.showing"
+                ng-click="form.submit()">{{ form.showing ? 'Done!' : 'Show Sample' }}</button>
+      </div>
+      <div class="checkbox col-sm-3">
+        <label>
+          <input type="checkbox" ng-model="form.input.debug"/>Debug
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<div ng-hide="!form.showing">
+
+  <div class="row">
+    <div class="col-sm-offset-3 col-sm-3">
+      <h2>Raw</h2>
+      <ol>
+        <li ng-repeat="item in output.allItems track by $index">{{ item }}</li>
+      </ol>
+    </div>
+    <div class="col-sm-3">
+      <h2>Unique</h2>
+        <ol>
+          <li ng-repeat="item in output.uniqueItems">{{ item }}</li>
+        </ol>
+    </div>
+    <div class="col-sm-3">
+      <h2>Sorted</h2>
+        <ol>
+          <li ng-repeat="item in output.sortedItems">{{ item }}</li>
+        </ol>
+    </div>
+  </div>
+
+  <div class="row" ng-hide="!form.input.debug">
+    <hr>
+    <h2>Debug</h2>
+    <pre>{{ output.debug }}</pre>
+  </div>
+
+</div>
