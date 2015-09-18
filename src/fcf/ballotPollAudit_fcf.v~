@@ -1,0 +1,9 @@
+Require Import ballotPollAudit.
+Require Import FCF.
+
+Fixpoint sampleBallots (contestants : nat) (votes : list nat) : Comp (list nat) :=
+match contestants with
+| O => ret (nil)
+| S x' => n <- (RndNat contestants); ret ((nth n votes 0) :: (sampleBallots x' votes))
+end.
+
