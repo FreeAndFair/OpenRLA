@@ -1,0 +1,35 @@
+-- This RLA system specification is written in the EBON
+-- specification language, based upon the BON specification language
+-- from Walden and Nerson.  See http://bon-method.com/ for more
+-- information about BON and http://kindsoftware.com/ for more
+-- information about EBON.  Tool support for EBON is provided by the
+-- BON compiler, bonc, and several other tools.  See
+-- https://github.com/kiniry/BON for more information.
+
+-- Informal Charts
+
+-- BON Domain Model
+
+system_chart RLA_SYSTEM
+indexing
+  authors: "Joseph Kiniry <kiniry@freeandfair.us>";
+  organization: "Free & Fair";
+  keywords: "high-assurance", "risk-limiting audit", "election audit";
+  created: "Fri Oct 28 15:53:00 PDT 2016";
+  github: "https://github.com/FreeAndFair/RLA";
+explanation
+  "The RLA product is a simple, beautiful application that facilitates \
+ \ election officials running risk-limiting audits."
+cluster RLA_BACKEND
+description
+  "The Coq-based high assurance RLA backend."
+cluster RLA_WORKFLOW
+description
+  "The workflow."
+cluster RLA_FOUNDATIONS
+description
+  "Foundational concepts that extend throughout the RLA project."
+end
+
+-- @todo kiniry 28 October 2016
+-- 

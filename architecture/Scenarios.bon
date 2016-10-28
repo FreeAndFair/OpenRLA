@@ -1,0 +1,71 @@
+scenario_chart RLA_WORKFLOW
+explanation
+  "The top-level scenarios of the RLA facilitation product."
+scenario
+  "Restart"
+description
+  "Restart the entire audit."
+scenario
+  "Start"
+description
+  "Start a new audit of an election."
+scenario
+  "Election Identification"
+description
+  "Permit the elections auditor provide metadata relevant to the current audit."
+scenario
+  "Election Data Files"
+   -- election data, ballot manifest, cast vote records, ballot images
+description
+  "Permit the elections auditor to identify a single election's data files."
+scenario
+  "Election RLA Inputs"
+  -- total number of ballots, number of votes for each candidate
+description
+  "Permit the elections auditor to provide manual input of the RLA input \
+ \ values for the current audit."
+scenario
+  "Election Risk-Limit"
+description
+  "Permit the elections auditor to provide manual input of the risk-limit \
+ \ for the current audit."
+scenario
+  "Define Audit"
+description
+  "Permit the elections auditor to provide all data relevant to a specific \
+ \ audit for a specific election."
+scenario
+  "Compute Initial Sample Size"
+description
+  "Using the current audit definition, compute the initial sample size."
+scenario
+  "Compute Batch"
+description
+  "Given the current state of the audit, compute the next random ballot \
+ \ batch."
+scenario
+  "Display the ballot metadata, CVR, and ballot image for a specific ballot."
+description
+  "Permit the election auditor to indicate that the ballot currently under \
+ \ audit is a valid vote or not."
+scenario
+  "Compute Updated Sample Size"
+description
+  "Compute an updated sample size based upon the current state of the audit."
+scenario
+  "Restart Audit"
+description
+  "Restart an audit from a previously archived audit session."
+scenario
+  "Quit"
+description
+  "Quit the current audit session, permitting the user to archive its state."
+scenario
+  "Finish"
+description
+  "Close and archive the current audit session."
+scenario
+  "Archive"
+description
+  "Archive all information relevant to the current audit."
+end
