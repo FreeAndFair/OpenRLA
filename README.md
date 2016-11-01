@@ -1,2 +1,2 @@
-# RLA
-Artifacts Relating to Risk Limiting Audits
+# OpenRLA
+Free & Fair's open source RLA support software.
