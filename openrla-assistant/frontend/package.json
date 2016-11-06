@@ -1,0 +1,25 @@
+{
+  "name": "openrla-assistant",
+  "version": "0.1.0",
+  "description": "Free & Fair's OpenRLA Assistant",
+  "scripts": {
+    "build": "webpack",
+    "start": "electron main.js"
+  },
+  "author": "Joe Ranweiler <josephkennethranweiler@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "electron": "^1.4.4",
+    "webpack": "^1.13.3"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "redux": "^3.6.0"
+  }
+}
