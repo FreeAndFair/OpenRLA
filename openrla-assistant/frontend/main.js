@@ -2,7 +2,7 @@ const { app, BrowserWindow } = require('electron');
 
 let win;
 
-const devTools = false;
+const debug = false;
 
 function createSplashWindow() {
   const splashWin = new BrowserWindow({
@@ -21,7 +21,7 @@ function createWindow () {
   win = new BrowserWindow({width: 800, height: 600});
   win.loadURL(`file://${__dirname}/view/index.html`);
 
-  if (devTools) {
+  if (debug) {
     win.webContents.openDevTools();
   }
 
