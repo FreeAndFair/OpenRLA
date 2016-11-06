@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Component from '../component';
 
-export default class Main extends React.Component {
+
+export default class Main extends Component {
   constructor() {
     super();
-    this.increment = this.increment.bind(this);
-    this.reset = this.reset.bind(this);
+    this._bind('increment', 'reset');
   }
 
   render() {
