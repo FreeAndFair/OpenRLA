@@ -1,35 +1,31 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
-import Component from '../component';
 
+const Main = ({count, increment, reset}) => (
+  <div>
+    <h1>OpenRLA Assistant</h1>
+    <h2>Free & Fair</h2>
+    <div>Count: {count}</div>
+    <div>
+      <button onClick={increment}>Add</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  </div>
+);
 
-export default class Main extends Component {
-  constructor() {
-    super();
-    this._bind('increment', 'reset');
-  }
+Main.propTypes = {
+  count: PropTypes.number.isRequired,
+  increment: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+};
 
-  render() {
-    const state = this.props.store.getState();
-    return (
-      <div>
-        <h1>OpenRLA Assistant</h1>
-        <h2>Free & Fair</h2>
-        <div>Count: {state.count}</div>
-        <div>
-          <button onClick={this.increment}>Add</button>
-          <button onClick={this.reset}>Reset</button>
-        </div>
-      </div>
-    );
-  }
+const mapStateToProps = ({ count }) => ({ count });
 
-  increment() {
-    this.props.store.dispatch({ type: 'INCREMENT' });
-  }
+const mapDispatchToProps = dispatch => ({
+  increment: () => dispatch({ type: 'INCREMENT' }),
+  reset: () => dispatch({ type: 'RESET' }),
+});
 
-  reset() {
-    this.props.store.dispatch({ type: 'RESET' });
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

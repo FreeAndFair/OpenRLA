@@ -1,13 +1,12 @@
 const defaultState = { count: 0 };
 
-export default (state=defaultState, action) => {
+export default (state = defaultState, action) => {
   switch (action.type) {
   case 'INCREMENT':
-    state.count += 1;
-    break;
+    return Object.assign({}, state, { count: state.count + 1 });
   case 'RESET':
-    state.count = 0;
-    break;
+    return Object.assign({}, state, { count: 0 });
+  default:
+    return state;
   }
-  return state;
 };
