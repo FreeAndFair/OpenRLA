@@ -6,7 +6,7 @@ import ArchiveInfoCard from './archive-info-card';
 import AuditInfoCard from './audit-info-card';
 
 
-const Start = () => (
+const Home = () => (
   <div id="start">
     <ElectionInfoCard />
     <AuditInfoCard />
@@ -14,4 +14,4 @@ const Start = () => (
   </div>
 );
 
-export default Start;
+export default Home;
