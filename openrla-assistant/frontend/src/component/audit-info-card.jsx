@@ -18,7 +18,7 @@ AuditInfoCard.propTypes = {
   active: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ audit, election }) => ({
+const mapStateToProps = ({ audit }) => ({
   audit,
   active: isAuditActive(audit),
 });
