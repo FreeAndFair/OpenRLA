@@ -2,17 +2,21 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import ElectionInfoCard from './election-info-card';
-import AuditInfoCard from './audit-info-card';
+import Start from './start';
 
 
-const Main = () => (
-  <div>
-    <h1>OpenRLA Assistant</h1>
-    <h2>Free & Fair</h2>
-    <ElectionInfoCard />
-    <AuditInfoCard />
-  </div>
-);
+const Main = ({ page }) => {
+  const Page = {
+    start: Start,
+  }[page];
 
-export default Main;
+  return <Page />;
+};
+
+Main.PropTypes = {
+  page: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ({ page }) => ({ page });
+
+export default connect(mapStateToProps)(Main);

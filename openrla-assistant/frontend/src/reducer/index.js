@@ -1,4 +1,5 @@
 const defaultState = {
+  page: 'start',
   election: {},
   audit: {},
   archive: {},
