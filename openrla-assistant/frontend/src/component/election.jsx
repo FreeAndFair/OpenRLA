@@ -5,10 +5,15 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import isElectionDefined from '../selector/is-election-defined';
+import HomeButton from './home-button';
 
 
 const Election = ({ election }) => {
-  return <div>Election page.</div>;
+  return (
+    <div>
+      <div>Election page.</div>
+      <HomeButton />
+  </div>);
 };
 
 Election.propTypes = {
