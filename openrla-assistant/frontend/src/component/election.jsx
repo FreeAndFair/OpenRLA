@@ -11,7 +11,12 @@ import HomeButton from './home-button';
 const Election = ({ election }) => {
   return (
     <div>
-      <div>Election page.</div>
+      <h1>Election page</h1>
+      <div>Election data</div>
+      <div>Ballot Manifest</div>
+      <div>Cast Vote Records</div>
+      <div>Ballot Images</div>
+      <div>RLA Inputs</div>
       <HomeButton />
   </div>);
 };
