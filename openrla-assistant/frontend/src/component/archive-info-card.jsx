@@ -9,7 +9,7 @@ import isElectionDefined from '../selector/is-election-defined';
 
 const ArchiveInfoCard = ({ archive }) => {
   if (_.isEmpty(archive)) {
-    return <div>No archive audits.</div>;
+    return <div>No archived audits.</div>;
   }
 
   return <div>Archive audits exist.</div>;
