@@ -18,7 +18,8 @@ const Election = ({ election }) => {
       <div>Ballot Images</div>
       <div>RLA Inputs</div>
       <HomeButton />
-  </div>);
+    </div>
+  );
 };
 
 Election.propTypes = {
