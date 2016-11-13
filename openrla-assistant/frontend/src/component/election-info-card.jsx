@@ -2,16 +2,20 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
+import {
+  Card,
+  CardActions,
+  CardTitle,
+  CardText
+} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import _ from 'lodash';
 
 import isElectionDefined from '../selector/is-election-defined';
 
 
 const ElectionInfoCard = ({election, electionDefined, navigateElection}) => {
-  const navigateButton = (
-    <button onClick={navigateElection}>Configure election</button>
-  );
-
   let status;
 
   if (_.isEmpty(election)) {
@@ -23,10 +27,23 @@ const ElectionInfoCard = ({election, electionDefined, navigateElection}) => {
   }
 
   return (
-    <div>
-      {status}
-      {navigateButton}
-    </div>
+    <Card>
+      <CardTitle
+         title="Election"
+         subtitle="Define or edit the current election" />
+      <CardText>
+        Identify a single election's data files, including:
+        <ul>
+          <li>Election metadata</li>
+          <li>Ballot manifest</li>
+          <li>Cast vote records</li>
+          <li>Ballot images</li>
+        </ul>
+      </CardText>
+      <CardActions>
+        <RaisedButton label="Edit Election" onClick={navigateElection} />
+      </CardActions>
+    </Card>
   );
 };
 
