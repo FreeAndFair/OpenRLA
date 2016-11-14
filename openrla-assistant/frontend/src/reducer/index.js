@@ -8,6 +8,9 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+  case 'SET_PAGE':
+    const { page } = action;
+    return Object.assign({}, state, { page });
   case 'NAVIGATE_ARCHIVE':
     return Object.assign({}, state, { page: 'archive' });
   case 'NAVIGATE_AUDIT':
