@@ -5,11 +5,11 @@ import { Provider } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import main from './reducer';
+import mainReducer from './reducer';
 import Main from './component/main';
 
 
-const store = createStore(main);
+const store = createStore(mainReducer);
 
 const tree = (
   <MuiThemeProvider>
