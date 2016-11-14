@@ -9,6 +9,8 @@ import Archive from './archive';
 import Home from './home';
 import Election from './election';
 
+import setPage from '../action/setPage';
+
 
 const Main = ({ page, changeTab }) => {
   return (
@@ -37,7 +39,7 @@ Main.PropTypes = {
 const mapStateToProps = ({ page }) => ({ page });
 
 const mapDispatchToProps = dispatch => ({
-  changeTab: page => dispatch({ type: 'SET_PAGE', page, }),
+  changeTab: page => dispatch(setPage(page)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
