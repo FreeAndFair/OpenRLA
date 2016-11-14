@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import isElectionDefined from '../selector/is-election-defined';
-import HomeButton from './home-button';
 
 
 const Election = ({ election }) => {
@@ -17,7 +16,6 @@ const Election = ({ election }) => {
       <div>Cast Vote Records</div>
       <div>Ballot Images</div>
       <div>RLA Inputs</div>
-      <HomeButton />
     </div>
   );
 };
