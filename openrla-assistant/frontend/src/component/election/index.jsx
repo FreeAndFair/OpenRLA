@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
-import isElectionDefined from '../selector/is-election-defined';
+import isElectionDefined from '../../selector/is-election-defined';
 
 
 const Election = ({ election }) => {
