@@ -15,7 +15,7 @@ import _ from 'lodash';
 import isElectionDefined from '../selector/is-election-defined';
 
 
-const ElectionInfoCard = ({election, electionDefined, navigateElection}) => {
+const ElectionInfoCard = ({ election, electionDefined, navigateElection }) => {
   let status;
 
   if (_.isEmpty(election)) {
