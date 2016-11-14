@@ -20,11 +20,11 @@ const ElectionInfoCard = ({ election, electionDefined, navigateElection }) => {
   let status;
 
   if (_.isEmpty(election)) {
-    status = <div>Election is not defined.</div>;
+    status = 'Election is not defined.';
   } else if (!electionDefined) {
-    status = <div>Election definition is incomplete.</div>;
+    status = 'Election definition is incomplete.';
   } else {
-    status = <div>Election is defined.</div>
+    status = 'Election is defined.';
   }
 
   return (
@@ -33,13 +33,7 @@ const ElectionInfoCard = ({ election, electionDefined, navigateElection }) => {
          title="Election"
          subtitle="Define or edit the current election" />
       <CardText>
-        Identify a single election's data files, including:
-        <ul>
-          <li>Election metadata</li>
-          <li>Ballot manifest</li>
-          <li>Cast vote records</li>
-          <li>Ballot images</li>
-        </ul>
+        <p>{status}</p>
       </CardText>
       <CardActions>
         <RaisedButton label="Edit Election" onClick={navigateElection} />
