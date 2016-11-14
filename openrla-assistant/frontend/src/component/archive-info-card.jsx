@@ -2,16 +2,19 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
+import {
+  Card,
+  CardActions,
+  CardTitle,
+} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import _ from 'lodash';
 
 import isElectionDefined from '../selector/is-election-defined';
 
 
 const ArchiveInfoCard = ({ archive, navigateArchive }) => {
-  const navigateButton = (
-    <button onClick={navigateArchive}>View archived audits</button>
-  );
-
   let status;
 
   if (_.isEmpty(archive)) {
@@ -21,10 +24,14 @@ const ArchiveInfoCard = ({ archive, navigateArchive }) => {
   }
 
   return (
-    <div>
-      {status}
-      {navigateButton}
-    </div>
+    <Card>
+      <CardTitle
+         title="Archive"
+         subtitle="View or restart archived audits" />
+      <CardActions>
+        <RaisedButton label="View" onClick={navigateArchive} />
+      </CardActions>
+    </Card>
   );
 };
 
