@@ -11,6 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import _ from 'lodash';
 
+import setPage from '../action/setPage';
 import isElectionDefined from '../selector/is-election-defined';
 
 
@@ -45,7 +46,7 @@ const mapStateToProps = ({ archive }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  navigateArchive: () => dispatch({ type: 'NAVIGATE_ARCHIVE' }),
+  navigateArchive: () => dispatch(setPage('archive')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveInfoCard);

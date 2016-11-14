@@ -12,6 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import _ from 'lodash';
 
+import setPage from '../action/setPage';
 import isElectionDefined from '../selector/is-election-defined';
 
 
@@ -59,7 +60,7 @@ const mapStateToProps = ({ election, }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  navigateElection: () => dispatch({ type: 'NAVIGATE_ELECTION' }),
+  navigateElection: () => dispatch(setPage('election')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ElectionInfoCard);

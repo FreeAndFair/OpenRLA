@@ -10,6 +10,7 @@ import {
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import setPage from '../action/setPage';
 import isAuditActive from '../selector/is-audit-active';
 
 
@@ -50,7 +51,7 @@ const mapStateToProps = ({ audit }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  navigateAudit: () => dispatch({ type: 'NAVIGATE_AUDIT' }),
+  navigateAudit: () => dispatch(setPage('audit')),
 });
 
 
