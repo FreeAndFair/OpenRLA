@@ -1,15 +1,14 @@
-const defaultState = {
-  page: 'home',
-  election: {},
-  audit: {},
-  archive: {},
-};
+import defaultState from './default-state';
+
+
+const merge = (...objects) => Object.assign({}, ...objects);
+
 
 export default (state = defaultState, action) => {
   switch (action.type) {
   case 'SET_PAGE':
     const { page } = action;
-    return Object.assign({}, state, { page });
+    return merge(state, { page });
   default:
     return state;
   }
