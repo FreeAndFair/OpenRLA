@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import BallotImagesCard from './ballot-images-card';
 import BallotManifestCard from './ballot-manifest-card';
+import CandidateManifestCard from './candidate-manifest-card';
 import CastVoteRecordsCard from './cast-vote-records-card';
 import ContestManifestCard from './contest-manifest-card';
 import ElectionSummary from './election-summary';
@@ -14,6 +15,7 @@ const Election = ({ election }) => {
     <div>
       <ElectionSummary election={election} />
       <ContestManifestCard contests={election.contests} />
+      <CandidateManifestCard candidates={election.candidates} />
       <BallotManifestCard election={election} />
       <CastVoteRecordsCard election={election} />
       <BallotImagesCard />
