@@ -94,12 +94,20 @@ const coloradoElection = {
 
 const noElection = {};
 
-const makeArchivedAudit = () => ({
+const makeArchivedAudit = (riskLimit = 0.01, stages = 3) => ({
   election: coloradoElection,
   date: (new Date()).toISOString(),
+  riskLimit,
+  stages,
 });
 
-const testArchive = [];
+const testArchive = [
+  makeArchivedAudit(),
+  makeArchivedAudit(0.02, 2),
+  makeArchivedAudit(0.001, 5),
+  makeArchivedAudit(),
+  makeArchivedAudit(),
+];
 
 
 export default {
