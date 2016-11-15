@@ -12,7 +12,7 @@ import Election from './election';
 import setPage from '../action/setPage';
 
 
-const Main = ({ page, changeTab }) => {
+const Main = ({ page, archive, changeTab }) => {
   return (
     <Tabs value={page} onChange={changeTab}>
       <Tab label='Home' value='home'>
@@ -25,18 +25,19 @@ const Main = ({ page, changeTab }) => {
         <Audit />
       </Tab>
       <Tab label='Archive' value='archive'>
-        <Archive />
+        <Archive archive={archive} />
       </Tab>
     </Tabs>
   );
 };
 
 Main.PropTypes = {
+  archive: PropTypes.array.isRequired,
   page: PropTypes.string.isRequired,
   changeTab: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ page }) => ({ page });
+const mapStateToProps = ({ page, archive }) => ({ page, archive });
 
 const mapDispatchToProps = dispatch => ({
   changeTab: page => dispatch(setPage(page)),
