@@ -37,7 +37,7 @@ const ArchiveInfoCard = ({ archive, navigateArchive }) => {
 };
 
 ArchiveInfoCard.propTypes = {
-  archive: PropTypes.object.isRequired,
+  archive: PropTypes.array.isRequired,
   navigateArchive: PropTypes.func.isRequired,
 };
 
