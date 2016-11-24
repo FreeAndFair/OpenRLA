@@ -2,6 +2,31 @@
 
 ## API
 
+### POST /manifest
+
+Accepts an object of shape:
+
+```json
+{
+  "vendor": <String>
+  "type": <String>
+  "filePath": <String>
+}
+```
+
+Returns an object of shape:
+
+```json
+{
+  "filePath": <String>
+  "type": <String>
+  "data": <Object>
+}
+```
+
+Where "data" is new state that should be merged over the client app
+state to represent what has been updated.
+
 ### GET /election
 Fetch a list of defined elections.
 

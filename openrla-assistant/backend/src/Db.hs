@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 module Db (
     Db.init
@@ -7,7 +6,6 @@ module Db (
 import qualified Data.Text as T
 import           Data.String.Here
 import           Database.SQLite.Simple (Connection (..))
-import qualified Database.SQLite.Simple as Sql
 import qualified Database.SQLite3 as DSql
 
 

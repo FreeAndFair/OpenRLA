@@ -1,5 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
-module Action.Ballot where
+module Controller.Ballot where
 
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson ((.:))
@@ -7,6 +6,7 @@ import           Web.Scotty (file, setHeader)
 
 import           Controller
 import qualified Query as Q
+import           Types (State(..))
 
 
 index :: Controller
@@ -16,7 +16,7 @@ create :: Controller
 create = undefined
 
 getById :: Controller
-getById conn = parseThen (.: "ballotId") cb
+getById State { conn } = parseThen (.: "ballotId") cb
   where
     cb ballotId = liftIO (Q.getBallotPathById conn ballotId) >>= trySend
 

@@ -1,44 +1,62 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 module Types where
 
 import qualified Data.Aeson as A
-import           Data.Aeson ((.=), ToJSON)
-import qualified Data.Text as T
+import           Data.Aeson ((.=), (.:), FromJSON, ToJSON, Value(..))
+import           Data.Aeson.Types (typeMismatch)
+import           Data.Text (Text)
 import           Database.SQLite.Simple (
-    FromRow
-  -- , ResultError (..)
+    Connection
+  , FromRow
   , SQLData(..)
   , field
   , fromRow
   )
-import           Database.SQLite.Simple.FromField (FromField, fieldData, fromField)
-import           Database.SQLite.Simple.Ok
+import           Database.SQLite.Simple.FromField (
+    FromField
+  , fieldData
+  , fromField
+  )
+import           Database.SQLite.Simple.Ok (Ok(..))
 
+
+data State
+  = State
+  { conn    :: Connection
+  , dataDir :: FilePath
+  , dataRel :: FilePath -> FilePath
+  }
 
 data Election
   = Election
-  { elecTitle :: T.Text
-  , elecCandidates :: [Candidate]
-  , elecContests :: [Contest]
-  , elecDate :: T.Text
+  { elId     :: Integer
+  , elTitle  :: Text
+  , elDate   :: Text
+  , elActive :: Bool
   }
   deriving (Show, Eq)
+
+instance FromRow Election where
+  fromRow = do
+    elId     <- field
+    elTitle  <- field
+    elDate   <- field
+    elActive <- field
+
+    return $ Election { .. }
 
 instance ToJSON Election where
   toJSON Election { .. } =
     A.object
-    [ "title"      .= elecTitle
-    , "date"       .= elecDate
-    , "candidates" .= elecCandidates
-    , "contests"   .= elecContests
+    [ "title"  .= elTitle
+    , "date"   .= elDate
+    , "active" .= elActive
     ]
 
 data Contest
   = Contest
   { contId :: Integer
-  , contExternalId :: T.Text
-  , contDescription :: T.Text
+  , contExternalId :: Text
+  , contDescription :: Text
   , contNumRanks :: Integer
   , contVoteFor :: Integer
   }
@@ -68,8 +86,8 @@ data Candidate
   = Candidate
   { candId :: Integer
   , candContestId :: Integer
-  , candExternalId :: T.Text
-  , candDescription :: T.Text
+  , candExternalId :: Text
+  , candDescription :: Text
   , candType :: CandidateType
   }
   deriving (Show, Eq)
@@ -112,3 +130,24 @@ data Audit
 
 instance ToJSON Audit where
   toJSON _ = A.object []
+
+data Vendor
+  = Dominion
+  | FreeAndFair
+  deriving (Show, Eq)
+
+instance FromField Vendor where
+  fromField f = Ok $ case fieldData f of
+    SQLText "dominion"    -> Dominion
+    SQLText "freeandfair" -> FreeAndFair
+    _ -> error "Bad conversion"
+
+instance ToJSON Vendor where
+  toJSON vendor = A.String $ case vendor of
+    Dominion    -> "dominion"
+    FreeAndFair -> "freeandfair"
+
+instance FromJSON Vendor where
+  parseJSON v = case v of
+    Object o -> o .: "vendor"
+    _        -> typeMismatch "Vendor" v

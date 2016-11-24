@@ -1,55 +1,63 @@
-{-# LANGUAGE OverloadedStrings #-}
 module OpenRLA (runApp, app) where
 
 import           Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import qualified Web.Scotty as S
 import qualified Database.SQLite.Simple as Sql
+import qualified System.Directory as D
 import           System.Environment (getExecutablePath)
-import           System.FilePath (joinPath, takeDirectory)
+import           System.FilePath ((</>), takeDirectory)
 
-import qualified Action.Audit
-import qualified Action.Ballot
-import qualified Action.Election
+import qualified Controller.Audit as Audit
+import qualified Controller.Ballot as Ballot
+import qualified Controller.Election as Election
+import qualified Controller.Manifest as Manifest
 import qualified Db
+import           Types (State(..))
 
 
-noop :: S.ActionM ()
-noop = S.json ([] :: [Integer])
-
-app :: Sql.Connection -> S.ScottyM ()
-app conn = do
+app :: State -> S.ScottyM ()
+app state = do
   S.middleware logStdoutDev
 
-  S.get  "/election" $ Action.Election.index conn
-  S.post "/election" $ Action.Election.create conn
+  S.post "/manifest" $ Manifest.create state
 
-  S.get "/election/:id" $ Action.Election.getById conn
-  S.put "/election/:id" $ Action.Election.setById conn
+  S.get  "/election" $ Election.index state
+  S.post "/election" $ Election.create state
 
-  S.get "/election/active" $ Action.Election.getActive conn
-  S.put "/election/active" $ Action.Election.setActive conn
+  S.get "/election/:id" $ Election.getById state
+  S.put "/election/:id" $ Election.setById state
 
-  S.get  "/ballot" $ Action.Ballot.index conn
-  S.post "/ballot" $ Action.Ballot.create conn
+  S.get "/election/active" $ Election.getActive state
+  S.put "/election/active" $ Election.setActive state
 
-  S.get "/ballot/:id" $ Action.Ballot.getById conn
-  S.put "/ballot/:id" $ Action.Ballot.setById conn
+  S.get  "/ballot" $ Ballot.index state
+  S.post "/ballot" $ Ballot.create state
 
-  S.get  "/audit" $ Action.Audit.index conn
-  S.post "/audit" $ Action.Audit.create conn
+  S.get "/ballot/:id" $ Ballot.getById state
+  S.put "/ballot/:id" $ Ballot.setById state
 
-  S.get "/audit/:id" $ Action.Audit.getById conn
-  S.put "/audit/:id" $ Action.Audit.setById conn
+  S.get  "/audit" $ Audit.index state
+  S.post "/audit" $ Audit.create state
 
-  S.get "/audit/active" $ Action.Audit.getActive conn
-  S.put "/audit/active" $ Action.Audit.setActive conn
+  S.get "/audit/:id" $ Audit.getById state
+  S.put "/audit/:id" $ Audit.setById state
+
+  S.get "/audit/active" $ Audit.getActive state
+  S.put "/audit/active" $ Audit.setActive state
 
 
 runApp :: IO ()
 runApp = do
   exePath <- getExecutablePath
-  let exeDir = takeDirectory exePath
-      dbPath = joinPath [exeDir, "openrla.db"]
+  let exeDir  = takeDirectory exePath
+      dataDir = exeDir </> "data"
+      dataRel = (dataDir </>)
+      dbPath  = dataRel "openrla.db"
+
+  D.createDirectoryIfMissing True dataDir
+
   conn <- Sql.open dbPath
   Db.init conn
-  S.scotty 8080 (app conn)
+
+  let state = State { .. }
+  S.scotty 8080 (app state)

@@ -4,9 +4,11 @@ local_install_bin = ${local_install_root}/bin
 db_path = ${local_install_bin}/openrla.db
 
 
+all: build
+
 .PHONY: clean
 clean:
-	rm -f {$db_path}
+	rm -f ${db_path}
 
 .PHONY: build
 build:
