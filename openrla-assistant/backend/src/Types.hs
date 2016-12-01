@@ -124,7 +124,8 @@ instance FromField CandidateType where
     _ -> error "Bad conversion"
 
 instance ToJSON CandidateType where
-  toJSON Regular = A.String "regular"
+  toJSON Regular = A.String "Regular"
+  toJSON WriteIn = A.String "WriteIn"
 
 data Ballot
 
