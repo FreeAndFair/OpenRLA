@@ -114,11 +114,13 @@ instance ToJSON Candidate where
 
 data CandidateType
   = Regular
+  | WriteIn
   deriving (Show, Eq)
 
 instance FromField CandidateType where
   fromField f = case fieldData f of
-    SQLText "regular" -> Ok Regular
+    SQLText "Regular" -> Ok Regular
+    SQLText "WriteIn" -> Ok WriteIn
     _ -> error "Bad conversion"
 
 instance ToJSON CandidateType where

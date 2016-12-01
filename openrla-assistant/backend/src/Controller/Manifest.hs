@@ -16,8 +16,16 @@ import           Types (State(..))
 import qualified Vendor.Dominion
 
 
+nameForManifest :: Text -> Text -> Integer -> FilePath
+nameForManifest vendor mType mId = concat [ unpack vendor
+                                          , "-"
+                                          , unpack mType
+                                          , "-"
+                                          , show mId
+                                          ]
+
 create :: Controller
-create State { .. } = parseThen p cb
+create state@State { .. } = parseThen p cb
   where
     p o = do
       vendor   <- o .: "vendor"
@@ -27,21 +35,21 @@ create State { .. } = parseThen p cb
 
     cb index = do
       let (vendor, fileType, srcPath) = index
-      newPath <- liftIO $ do
+      (newPath, newData) <- liftIO $ do
         Q.createManifest conn index
         rowId <- lastInsertRowId conn
         let manifestId = fromIntegral rowId
-        let filePath = dataRel (show manifestId)
-        copyFile (unpack srcPath) filePath
-        Q.setManifestPathForId conn manifestId filePath
-        fileData <- BSL.readFile filePath
+        let newPath = dataRel $ nameForManifest vendor fileType manifestId
+        copyFile (unpack srcPath) newPath
+        Q.setManifestPathForId conn manifestId newPath
+        fileData <- BSL.readFile newPath
         let mObj = fromJust (decode fileData)
-        case vendor of
-          "dominion"    -> Vendor.Dominion.processManifest fileType mObj
+        newData <- case vendor of
+          "dominion"    -> Vendor.Dominion.processManifest state fileType mObj
           "freeandfair" -> undefined
           _             -> error "Invalid vendor"
-        return filePath
+        return (newPath, newData)
       json $ object [ "filePath" .= newPath
                     , "type"     .= fileType
-                    , "data"     .= object []
+                    , "data"     .= newData
                     ]

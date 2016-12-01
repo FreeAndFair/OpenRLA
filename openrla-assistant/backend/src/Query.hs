@@ -97,10 +97,10 @@ setManifestPathForId conn mId filePath
   where
     s = "update manifest set file_path = ? where id = ?"
 
-type CandidateRow = (Integer, Text, Text, Text, Text)
+type CandidateRow = (Integer, Text, Text, Integer, Text)
 
 upsertCandidate :: Connection -> CandidateRow -> IO ()
 upsertCandidate conn row
   = Sql.execute conn s row
   where
-    s = "insert or replace into candidate (id, external_id, candidate_type, contest_id, description) values (?, ?, ?, ?, ?)"
+    s = "insert or replace into candidate (id, external_id, type, contest_id, description) values (?, ?, ?, ?, ?)"

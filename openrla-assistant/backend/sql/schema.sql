@@ -32,7 +32,7 @@ create table if not exists candidate (
   created     datetime not null
                        default current_timestamp,
   external_id text     not null,
-  contest_id  text     not null
+  contest_id  integer  not null
                        references contest (id),
   description text     not null,
   type        text     not null

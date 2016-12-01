@@ -1,14 +1,17 @@
 module Vendor.Dominion where
 
-import           Control.Monad (forM)
-import           Data.Aeson (Object, (.:))
+import           Control.Monad (forM, forM_)
+import           Data.Aeson (Object, Value, (.:), (.=), object, toJSON)
 import           Data.Aeson.Types (Parser, parseMaybe)
 import           Data.Maybe (fromJust)
 import           Data.Text (Text)
 
+import qualified Query as Q
+import           Types (State(..))
 
-processManifest :: Text -> Object -> IO ()
-processManifest mType mObj = process mObj
+
+processManifest :: State -> Text -> Object -> IO Value
+processManifest state mType mObj = process state mObj
   where
     process = case mType of
       "ballot"    -> processBallotManifest
@@ -16,18 +19,28 @@ processManifest mType mObj = process mObj
       "contest"   -> processContestManifest
       _           -> error "Invalid manifest type"
 
-processBallotManifest :: Object -> IO ()
+processBallotManifest :: State -> Object -> IO Value
 processBallotManifest = undefined
 
-parseBallotManifest :: Object -> Parser ()
+parseBallotManifest :: Object -> Parser Value
 parseBallotManifest = undefined
 
-processCandidateManifest :: Object -> IO ()
-processCandidateManifest o = do
+processCandidateManifest :: State -> Object -> IO Value
+processCandidateManifest (State { .. }) o = do
   let candidates = fromJust $ parseMaybe candidateManifestP o
-  return ()
+  forM_ candidates (Q.upsertCandidate conn)
+  return $ toJSON (map toVal candidates)
+    where
+      toVal (cId, extId, cType, contId, desc)
+        = object [ "id"          .= cId
+                 , "externalId"  .= extId
+                 , "type"        .= cType
+                 , "contestId"   .= contId
+                 , "description" .= desc
+                 ]
 
-candidateManifestP :: Object -> Parser [(Integer, Text, Text, Text, Text)]
+
+candidateManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Text)]
 candidateManifestP o = do
   candidates <- o .: "List" :: Parser [Object]
   forM candidates parse
@@ -45,10 +58,10 @@ candidateManifestP o = do
                , description
                )
 
-processContestManifest :: Object -> IO ()
-processContestManifest o = do
+processContestManifest :: State -> Object -> IO Value
+processContestManifest st o = do
   let contests = fromJust $ parseMaybe candidateManifestP o
-  return ()
+  return $ object []
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]
 contestManifestP o = do
