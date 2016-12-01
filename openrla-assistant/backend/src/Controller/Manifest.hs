@@ -2,7 +2,7 @@ module Controller.Manifest (create) where
 
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson ((.:), (.=), decode, object)
-import           Data.Aeson.Types (Parser)
+import           Data.Aeson.Types (Object, Parser)
 import qualified Data.ByteString.Lazy as BSL
 import           Data.Maybe (fromJust)
 import           Data.Text (Text, unpack)
@@ -27,16 +27,17 @@ nameForManifest vendor mType mId = concat [ unpack vendor
 create :: Controller
 create state@State { .. } = parseThen p cb
   where
+    p :: Object -> Parser (Integer, Text, Text, Text)
     p o = do
-      vendor   <- o .: "vendor"
-      fileType <- o .: "type"
-      srcPath  <- o .: "filePath"
-      return (vendor, fileType, srcPath) :: Parser (Text, Text, Text)
+      electionId <- o .: "electionId"
+      vendor     <- o .: "vendor"
+      fileType   <- o .: "type"
+      srcPath    <- o .: "filePath"
+      return (electionId, vendor, fileType, srcPath)
 
-    cb index = do
-      let (vendor, fileType, srcPath) = index
+    cb (electionId, vendor, fileType, srcPath) = do
       (newPath, newData) <- liftIO $ do
-        Q.createManifest conn index
+        Q.createManifest conn (vendor, fileType, srcPath)
         rowId <- lastInsertRowId conn
         let manifestId = fromIntegral rowId
         let newPath = dataRel $ nameForManifest vendor fileType manifestId
