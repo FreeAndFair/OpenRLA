@@ -10,8 +10,8 @@ import qualified Query as Q
 import           Types (State(..))
 
 
-processManifest :: State -> Text -> Object -> IO Value
-processManifest state mType mObj = process state mObj
+processManifest :: State -> Integer -> Text -> Object -> IO Value
+processManifest state eId mType mObj = process state eId mObj
   where
     process = case mType of
       "ballot"    -> processBallotManifest
@@ -19,14 +19,14 @@ processManifest state mType mObj = process state mObj
       "contest"   -> processContestManifest
       _           -> error "Invalid manifest type"
 
-processBallotManifest :: State -> Object -> IO Value
+processBallotManifest :: State -> Integer -> Object -> IO Value
 processBallotManifest = undefined
 
 parseBallotManifest :: Object -> Parser Value
 parseBallotManifest = undefined
 
-processCandidateManifest :: State -> Object -> IO Value
-processCandidateManifest (State { .. }) o = do
+processCandidateManifest :: State -> Integer -> Object -> IO Value
+processCandidateManifest (State { .. }) _eId o = do
   let candidates = fromJust $ parseMaybe candidateManifestP o
   forM_ candidates (Q.upsertCandidate conn)
   return $ toJSON (map toVal candidates)
@@ -58,8 +58,8 @@ candidateManifestP o = do
                , description
                )
 
-processContestManifest :: State -> Object -> IO Value
-processContestManifest st o = do
+processContestManifest :: State -> Integer -> Object -> IO Value
+processContestManifest st eId o = do
   let contests = fromJust $ parseMaybe candidateManifestP o
   return $ object []
 

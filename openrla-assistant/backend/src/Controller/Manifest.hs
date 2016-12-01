@@ -46,7 +46,7 @@ create state@State { .. } = parseThen p cb
         fileData <- BSL.readFile newPath
         let mObj = fromJust (decode fileData)
         newData <- case vendor of
-          "dominion"    -> Vendor.Dominion.processManifest state fileType mObj
+          "dominion"    -> Vendor.Dominion.processManifest state electionId fileType mObj
           "freeandfair" -> undefined
           _             -> error "Invalid vendor"
         return (newPath, newData)
