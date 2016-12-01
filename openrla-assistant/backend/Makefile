@@ -1,14 +1,14 @@
 local_install_root = $(shell stack path --local-install-root)
 local_install_bin = ${local_install_root}/bin
 
-db_path = ${local_install_bin}/openrla.db
+data_dir = ${local_install_bin}/data
 
 
 all: build
 
 .PHONY: clean
 clean:
-	rm -f ${db_path}
+	rm -f ${data_dir}
 
 .PHONY: build
 build:
