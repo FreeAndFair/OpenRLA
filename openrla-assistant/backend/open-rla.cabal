@@ -22,7 +22,7 @@ library
                      , Controller.Manifest
                      , Controller
                      , Db
-                     , Query
+                     , Statement
                      , Types
                      , Vendor.Dominion
   build-depends:       base >= 4.7 && < 5

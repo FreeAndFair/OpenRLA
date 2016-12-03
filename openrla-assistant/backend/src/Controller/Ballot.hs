@@ -5,7 +5,7 @@ import           Data.Aeson ((.:))
 import           Web.Scotty (file, setHeader)
 
 import           Controller
-import qualified Query as Q
+import qualified Statement as St
 import           Types (State(..))
 
 
@@ -18,7 +18,7 @@ create = undefined
 getById :: Controller
 getById State { conn } = parseThen (.: "ballotId") cb
   where
-    cb ballotId = liftIO (Q.getBallotPathById conn ballotId) >>= trySend
+    cb ballotId = liftIO (St.getBallotPathById conn ballotId) >>= trySend
 
     trySend Nothing     = return ()
     trySend (Just path) = do

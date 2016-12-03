@@ -1,5 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-}
-module Query (
+module Statement (
     createManifest
   , setManifestPathForId
   , getElectionIndex

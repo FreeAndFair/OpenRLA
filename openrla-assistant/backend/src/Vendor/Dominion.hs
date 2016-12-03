@@ -6,7 +6,7 @@ import           Data.Aeson.Types (Parser, parseMaybe)
 import           Data.Maybe (fromJust)
 import           Data.Text (Text)
 
-import qualified Query as Q
+import qualified Statement as St
 import           Types (State(..))
 
 
@@ -28,7 +28,7 @@ parseBallotManifest = undefined
 processCandidateManifest :: State -> Integer -> Object -> IO Value
 processCandidateManifest (State { .. }) _eId o = do
   let candidates = fromJust $ parseMaybe candidateManifestP o
-  forM_ candidates (Q.upsertCandidate conn)
+  forM_ candidates (St.upsertCandidate conn)
   return $ toJSON (map toVal candidates)
     where
       toVal (cId, extId, cType, contId, desc)
@@ -61,7 +61,7 @@ candidateManifestP o = do
 processContestManifest :: State -> Integer -> Object -> IO Value
 processContestManifest (State {..}) eId o = do
   let contests = fromJust $ parseMaybe contestManifestP o
-  forM_ contests $ (Q.upsertContest conn eId)
+  forM_ contests $ (St.upsertContest conn eId)
   return $ object []
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]

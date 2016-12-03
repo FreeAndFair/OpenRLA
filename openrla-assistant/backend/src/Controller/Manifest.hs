@@ -11,7 +11,7 @@ import           System.Directory (copyFile)
 import           Web.Scotty (json)
 
 import           Controller
-import qualified Query as Q
+import qualified Statement as St
 import           Types (State(..))
 import qualified Vendor.Dominion
 
@@ -45,12 +45,12 @@ createP o = do
 
 createIO :: State -> (Integer, Text, Text, Text) -> IO (FilePath, Value)
 createIO state@State {..} (elId, vendor, fileType, srcPath) = do
-  Q.createManifest conn (vendor, fileType, srcPath)
+  St.createManifest conn (vendor, fileType, srcPath)
   rowId <- lastInsertRowId conn
   let manifestId = fromIntegral rowId
   let newPath = dataRel $ nameForManifest vendor fileType manifestId
   copyFile (unpack srcPath) newPath
-  Q.setManifestPathForId conn manifestId newPath
+  St.setManifestPathForId conn manifestId newPath
   fileData <- BSL.readFile newPath
   let mObj = fromJust (decode fileData)
   newData <- case vendor of

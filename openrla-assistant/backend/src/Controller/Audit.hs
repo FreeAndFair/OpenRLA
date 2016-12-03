@@ -5,7 +5,7 @@ import           Data.Aeson ((.:))
 import           Web.Scotty (json)
 
 import           Controller
-import qualified Query as Q
+import qualified Statement as St
 import           Types (State(..))
 
 
@@ -18,15 +18,15 @@ create = undefined
 getById :: Controller
 getById State { conn } = parseThen (.: "auditId") cb
   where
-    cb auditId = liftIO (Q.getAuditById conn auditId) >>= json
+    cb auditId = liftIO (St.getAuditById conn auditId) >>= json
 
 setById :: Controller
 setById = undefined
 
 getActive :: Controller
-getActive State { conn } = liftIO (Q.getActiveAudit conn) >>= json
+getActive State { conn } = liftIO (St.getActiveAudit conn) >>= json
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") cb
   where
-    cb auditId = liftIO (Q.setActiveAudit conn auditId) >>= json
+    cb auditId = liftIO (St.setActiveAudit conn auditId) >>= json
