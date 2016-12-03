@@ -12,6 +12,7 @@ module Query (
   , getActiveAudit
   , setActiveAudit
   , upsertCandidate
+  , upsertContest
   ) where
 
 import           Control.Monad (forM)
@@ -104,3 +105,16 @@ upsertCandidate conn row
   = Sql.execute conn s row
   where
     s = "insert or replace into candidate (id, external_id, type, contest_id, description) values (?, ?, ?, ?, ?)"
+
+
+type ContestRow = (Integer, Text, Text, Integer, Integer)
+
+upsertContest :: Connection -> Integer -> ContestRow -> IO ()
+upsertContest conn eId row
+  = Sql.withTransaction conn $ do
+      Sql.execute conn sUpsert row
+      Sql.execute conn sLinkToElection (eId, cId)
+        where
+          (cId, _, _, _, _) = row
+          sUpsert = "insert or replace into contest (id, external_id, description, num_ranks, vote_for) values (?, ?, ?, ?, ?)"
+          sLinkToElection = "insert or replace into election_contests (election_id, contest_id) values (?, ?)"

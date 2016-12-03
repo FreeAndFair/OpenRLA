@@ -59,8 +59,9 @@ candidateManifestP o = do
                )
 
 processContestManifest :: State -> Integer -> Object -> IO Value
-processContestManifest st eId o = do
-  let contests = fromJust $ parseMaybe candidateManifestP o
+processContestManifest (State {..}) eId o = do
+  let contests = fromJust $ parseMaybe contestManifestP o
+  forM_ contests $ (Q.upsertContest conn eId)
   return $ object []
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]
