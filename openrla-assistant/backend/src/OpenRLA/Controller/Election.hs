@@ -61,8 +61,7 @@ setById :: Controller
 setById = undefined
 
 getActive :: Controller
-getActive = undefined
--- getActive State { conn } = liftIO (St.getActiveElection conn) >>= json
+getActive State { conn } = liftIO (St.getActiveElection conn) >>= json
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "electionId") cb
