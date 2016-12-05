@@ -95,9 +95,12 @@ getActiveAudit = undefined
 setActiveAudit :: Connection -> Integer -> IO ()
 setActiveAudit = undefined
 
-createManifest :: Connection -> (Text, Text, Text) -> IO ()
+createManifest :: Connection -> (Text, Text, Text) -> IO (Integer)
 createManifest conn index
-  = Sql.execute conn s index
+  = Sql.withTransaction conn $ do
+      Sql.execute conn s index
+      rowId <- Sql.lastInsertRowId conn
+      return $ fromIntegral rowId
   where
     s = "insert into manifest (vendor, type, src_path) values (?, ?, ?)"
 

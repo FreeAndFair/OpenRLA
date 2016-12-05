@@ -2,7 +2,10 @@ module OpenRLA.Controller.Election where
 
 import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson ((.:), (.=), object, toJSON)
+import           Data.Aeson (Object, (.:), (.:?), (.=), object, toJSON)
+import           Data.Aeson.Types (Parser)
+import           Data.Maybe (maybe)
+import           Data.Text (Text)
 import           Web.Scotty (json)
 
 import           OpenRLA.Controller
@@ -11,19 +14,40 @@ import           OpenRLA.Types (State(..))
 
 
 index :: Controller
-index State { conn } = do
-  let offset = 0
-      limit  = 20
-  rows <- liftIO (St.getElectionIndex conn offset limit)
-  let cb (id_, title, date, _)
-        = return $ object [ "id"    .= id_
-                          , "title" .= title
-                          , "date"  .= date
-                          ]
-  forM rows cb >>= json
+index State { conn } = parseThen indexP indexCb
+  where
+    indexCb (offset, limit) = do
+      rows <- liftIO $ St.getElectionIndex conn offset limit
+      let rowCb (elId, title, date, _)
+            = return $ object [ "id"    .= elId
+                              , "title" .= title
+                              , "date"  .= date
+                              ]
+      forM rows rowCb >>= json
+
+indexP :: Object -> Parser (Integer, Integer)
+indexP o = do
+  offset' <- o .:? "offset"
+  limit'  <- o .:? "limit"
+  let offset = maybe 0  id       offset'
+      limit  = maybe 20 (min 20) limit'
+  return (offset, limit)
 
 create :: Controller
-create = undefined
+create State { conn } = parseThen createP createCb
+  where
+    createCb (elTitle, elDate) = do
+      elId <- liftIO $ St.createElection conn elTitle elDate
+      json $ object [ "id"    .= elId
+                    , "title" .= elTitle
+                    , "date"  .= elDate
+                    ]
+
+createP :: Object -> Parser (Text, Text)
+createP o = do
+  title <- o .: "title"
+  date  <- o .: "date"
+  return (title, date)
 
 getById :: Controller
 getById State { conn } = parseThen (.: "electionId") cb

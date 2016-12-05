@@ -45,9 +45,7 @@ createP o = do
 
 createIO :: State -> (Integer, Text, Text, Text) -> IO (FilePath, Value)
 createIO state@State {..} (elId, vendor, fileType, srcPath) = do
-  St.createManifest conn (vendor, fileType, srcPath)
-  rowId <- lastInsertRowId conn
-  let manifestId = fromIntegral rowId
+  manifestId <- St.createManifest conn (vendor, fileType, srcPath)
   let newPath = dataRel $ nameForManifest vendor fileType manifestId
   copyFile (unpack srcPath) newPath
   St.setManifestPathForId conn manifestId newPath
