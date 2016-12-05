@@ -1,4 +1,4 @@
-module Vendor.Dominion where
+module OpenRLA.Vendor.Dominion where
 
 import           Control.Monad (forM, forM_)
 import           Data.Aeson (Object, Value, (.:), (.=), object, toJSON)
@@ -6,8 +6,8 @@ import           Data.Aeson.Types (Parser, parseMaybe)
 import           Data.Maybe (fromJust)
 import           Data.Text (Text)
 
-import qualified Statement as St
-import           Types (State(..))
+import qualified OpenRLA.Statement as St
+import           OpenRLA.Types (State(..))
 
 
 processManifest :: State -> Integer -> Text -> Object -> IO Value

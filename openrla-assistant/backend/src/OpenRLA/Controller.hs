@@ -1,10 +1,10 @@
-module Controller where
+module OpenRLA.Controller where
 
 import           Data.Aeson (Object)
 import           Data.Aeson.Types (Parser, parseMaybe)
 import           Web.Scotty (ActionM, jsonData)
 
-import           Types (State)
+import           OpenRLA.Types (State)
 
 
 type Controller = State -> ActionM ()

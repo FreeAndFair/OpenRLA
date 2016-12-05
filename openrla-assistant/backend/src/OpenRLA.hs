@@ -7,12 +7,12 @@ import qualified System.Directory as D
 import           System.Environment (getExecutablePath)
 import           System.FilePath ((</>), takeDirectory)
 
-import qualified Controller.Audit as Audit
-import qualified Controller.Ballot as Ballot
-import qualified Controller.Election as Election
-import qualified Controller.Manifest as Manifest
-import qualified Db
-import           Types (State(..))
+import qualified OpenRLA.Controller.Audit as Audit
+import qualified OpenRLA.Controller.Ballot as Ballot
+import qualified OpenRLA.Controller.Election as Election
+import qualified OpenRLA.Controller.Manifest as Manifest
+import qualified OpenRLA.Db as Db
+import           OpenRLA.Types (State(..))
 
 
 app :: State -> S.ScottyM ()

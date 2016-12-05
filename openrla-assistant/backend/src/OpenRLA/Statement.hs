@@ -1,6 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
-module Statement (
-    createManifest
+module OpenRLA.Statement (
+    createElection
+  , createManifest
   , setManifestPathForId
   , getElectionIndex
   , getActiveElection
@@ -15,7 +16,6 @@ module Statement (
   , upsertContest
   ) where
 
-import           Control.Monad (forM)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (
@@ -23,7 +23,7 @@ import           Database.SQLite.Simple (
   , Only(..)
   )
 
-import Types
+import           OpenRLA.Types
 
 
 justOne :: [a] -> Maybe a
@@ -34,6 +34,15 @@ justOneIO :: [a] -> IO (Maybe a)
 justOneIO = return . justOne
 
 type ElectionRow = (Integer, Text, Text, Bool)
+
+createElection :: Connection -> Text -> Text -> IO Integer
+createElection conn elTitle elDate
+  = Sql.withTransaction conn $ do
+      Sql.execute conn s (elTitle, elDate)
+      rowId <- Sql.lastInsertRowId conn
+      return $ fromIntegral rowId
+        where
+          s = "insert or replace into election (title, date) values (?, ?)"
 
 getElectionIndex :: Connection -> Integer -> Integer -> IO [ElectionRow]
 getElectionIndex conn offset limit
@@ -72,7 +81,7 @@ setActiveElection conn elId
       Sql.execute  conn "update election set active = 1 where id = ?" (Only elId)
 
 getBallotPathById :: Connection -> Integer -> IO (Maybe FilePath)
-getBallotPathById conn ballotId = undefined
+getBallotPathById = undefined
 
 getAuditById :: Connection -> Integer -> IO (Maybe Audit)
 getAuditById = undefined

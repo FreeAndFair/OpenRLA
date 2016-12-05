@@ -1,12 +1,12 @@
-module Controller.Ballot where
+module OpenRLA.Controller.Ballot where
 
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson ((.:))
 import           Web.Scotty (file, setHeader)
 
-import           Controller
-import qualified Statement as St
-import           Types (State(..))
+import           OpenRLA.Controller
+import qualified OpenRLA.Statement as St
+import           OpenRLA.Types (State(..))
 
 
 index :: Controller

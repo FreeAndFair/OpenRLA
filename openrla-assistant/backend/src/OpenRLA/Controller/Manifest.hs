@@ -1,4 +1,4 @@
-module Controller.Manifest (create) where
+module OpenRLA.Controller.Manifest (create) where
 
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson (Object, Value, (.:), (.=), decode, object)
@@ -10,10 +10,10 @@ import           Database.SQLite.Simple (lastInsertRowId)
 import           System.Directory (copyFile)
 import           Web.Scotty (json)
 
-import           Controller
-import qualified Statement as St
-import           Types (State(..))
-import qualified Vendor.Dominion
+import           OpenRLA.Controller
+import qualified OpenRLA.Statement as St
+import           OpenRLA.Types (State(..))
+import qualified OpenRLA.Vendor.Dominion as Dominion
 
 
 nameForManifest :: Text -> Text -> Integer -> FilePath
@@ -54,7 +54,7 @@ createIO state@State {..} (elId, vendor, fileType, srcPath) = do
   fileData <- BSL.readFile newPath
   let mObj = fromJust (decode fileData)
   newData <- case vendor of
-    "dominion"    -> Vendor.Dominion.processManifest state elId fileType mObj
+    "dominion"    -> Dominion.processManifest state elId fileType mObj
     "freeandfair" -> undefined
     _             -> error "Invalid vendor"
   return (newPath, newData)

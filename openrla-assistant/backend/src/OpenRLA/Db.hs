@@ -1,6 +1,6 @@
 {-# LANGUAGE QuasiQuotes #-}
-module Db (
-    Db.init
+module OpenRLA.Db (
+    OpenRLA.Db.init
   ) where
 
 import qualified Data.Text as T

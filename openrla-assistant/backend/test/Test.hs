@@ -1,9 +1,10 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Main (main) where
 
+import           Data.Maybe (fromJust, isJust)
 import           Test.Tasty
 import           Test.Tasty.HUnit
 
+import           TestSupport
 -- import           OpenRLA (app)
 
 

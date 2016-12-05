@@ -1,12 +1,12 @@
-module Controller.Audit where
+module OpenRLA.Controller.Audit where
 
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson ((.:))
 import           Web.Scotty (json)
 
-import           Controller
-import qualified Statement as St
-import           Types (State(..))
+import           OpenRLA.Controller
+import qualified OpenRLA.Statement as St
+import           OpenRLA.Types (State(..))
 
 
 index :: Controller

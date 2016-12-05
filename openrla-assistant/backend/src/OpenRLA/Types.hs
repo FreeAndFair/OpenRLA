@@ -1,4 +1,4 @@
-module Types where
+module OpenRLA.Types where
 
 import qualified Data.Aeson as A
 import           Data.Aeson ((.=), (.:), FromJSON, ToJSON, Value(..))

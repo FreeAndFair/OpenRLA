@@ -17,3 +17,7 @@ build:
 .PHONY: run
 run:
 	stack exec open-rla-exe
+
+.PHONY: test
+test:
+	stack test

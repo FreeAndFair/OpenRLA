@@ -1,13 +1,13 @@
-module Controller.Election where
+module OpenRLA.Controller.Election where
 
 import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson ((.:), (.=), object, toJSON)
 import           Web.Scotty (json)
 
-import           Controller
-import qualified Statement as St
-import           Types (State(..))
+import           OpenRLA.Controller
+import qualified OpenRLA.Statement as St
+import           OpenRLA.Types (State(..))
 
 
 index :: Controller
