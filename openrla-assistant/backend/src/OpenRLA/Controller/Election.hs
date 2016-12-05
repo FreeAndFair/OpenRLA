@@ -67,4 +67,4 @@ getActive = undefined
 setActive :: Controller
 setActive State { conn } = parseThen (.: "electionId") cb
   where
-    cb electionId = liftIO (St.setActiveElection conn electionId) >>= json
+    cb eId = liftIO (St.setActiveElection conn eId) >>= json
