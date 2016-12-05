@@ -25,10 +25,10 @@ nameForManifest vendor mType mId = concat [ unpack vendor
                                           ]
 
 create :: Controller
-create state = parseThen createP cb
+create state = parseThen createP createCb
   where
-    cb reqData@(_, _, fileType, _) = do
-      (newPath, newData) <- liftIO (createIO state reqData)
+    createCb bodyData@(_, _, fileType, _) = do
+      (newPath, newData) <- liftIO (createIO state bodyData)
       json $ object [ "filePath" .= newPath
                     , "type"     .= fileType
                     , "data"     .= newData
