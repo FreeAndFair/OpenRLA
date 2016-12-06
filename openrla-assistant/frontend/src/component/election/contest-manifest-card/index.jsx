@@ -10,7 +10,7 @@ import {
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import ViewContestManifestButton from './view-contest-manifest-button';
+import ViewContestManifestButton from './view-button';
 
 
 const ContestManifestCard = ({
