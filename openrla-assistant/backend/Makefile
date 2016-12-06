@@ -8,7 +8,7 @@ all: build
 
 .PHONY: clean
 clean:
-	rm -f ${data_dir}
+	rm -rf ${data_dir}
 
 .PHONY: build
 build:
