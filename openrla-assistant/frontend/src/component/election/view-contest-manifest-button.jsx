@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import _ from 'lodash';
 
 import ContestManifest from './contest-manifest';
 
@@ -13,7 +14,7 @@ const styles = {
   },
 };
 
-export default class ContestManifestModal extends React.Component {
+export default class ViewContestManifestButton extends React.Component {
   constructor() {
     super();
     this.state = { open: false };
@@ -35,12 +36,13 @@ export default class ContestManifestModal extends React.Component {
          onTouchTap={this.handleClose.bind(this)} />
     );
     const actions = [closeButton];
+    const disabled = _.isEmpty(this.props.contests);
 
     return (
-      <div>
-        <RaisedButton
-           label="View Contest Manifest"
-           onTouchTap={this.handleOpen.bind(this)} />
+      <RaisedButton
+         disabled={disabled}
+         label="View"
+         onTouchTap={this.handleOpen.bind(this)} >
         <Dialog
            title="Contest Manifest"
            actions={actions}
@@ -50,7 +52,7 @@ export default class ContestManifestModal extends React.Component {
            autoScrollBodyContent={true} >
           <ContestManifest contests={this.props.contests} />
         </Dialog>
-      </div>
+      </RaisedButton>
     );
   }
 }

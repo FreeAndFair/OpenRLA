@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { remote } from 'electron';
 
 import {
   Card,
@@ -9,13 +10,12 @@ import {
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import ContestManifestModal from './contest-manifest-modal';
+import ViewContestManifestButton from './view-contest-manifest-button';
 
 
 const ContestManifestCard = ({
   contests,
   uploadContestManifest,
-  viewContestManifest,
 }) => {
   return (
     <Card>
@@ -24,8 +24,7 @@ const ContestManifestCard = ({
          subtitle='Upload or view the manifest for the contests in the election.' />
       <CardActions>
         <RaisedButton label="Upload" onClick={uploadContestManifest} />
-        <RaisedButton label="View" onClick={viewContestManifest} />
-        <ContestManifestModal contests={contests} />
+        <ViewContestManifestButton contests={contests} />
       </CardActions>
     </Card>
   );
@@ -34,12 +33,14 @@ const ContestManifestCard = ({
 ContestManifestCard.propTypes = {
   contests: PropTypes.object.isRequired,
   uploadContestManifest: PropTypes.func.isRequired,
-  viewContestManifest: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  uploadContestManifest: () => {},
-  viewContestManifest: () => {},
+  uploadContestManifest: () => {
+    const options = { properties: ['openFile'] };
+    const cb = console.log;
+    remote.dialog.showOpenDialog(options, cb);
+  },
 });
 
 export default connect(null, mapDispatchToProps)(ContestManifestCard);
