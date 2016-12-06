@@ -59,3 +59,38 @@ create table if not exists ballot_image (
   src_path  text     not null,
   file_path text  -- Allow null for two-step insert
 );
+
+create table if not exists audit (
+  id          integer  primary key,
+  created     datetime not null
+                       default current_timestamp,
+  election_id integer  not null
+                       references election (id),
+  date        datetime not null,
+  risk_limit  real     not null
+                       check (
+                             0.0 < risk_limit
+                         and risk_limit < 1.0
+                       )
+);
+
+create table if not exists audit_mark (
+  audit_id   integer not null references audit (id),
+  ballot_id  integer not null references ballot_image (id),
+  contest_id integer not null references contest (id),
+  candidate_id integer not null references candidate (id)
+);
+
+create table if not exists cvr (
+  id          integer  primary key,
+  created     datetime not null
+                       default current_timestamp,
+  election_id integer  not null
+                       references election (id)
+);
+
+create table if not exists cvr_mark (
+  cvr_id       integer not null references cvr (id),
+  contest_id   integer not null references contest (id),
+  candidate_id integer not null references candidate (id)
+);
