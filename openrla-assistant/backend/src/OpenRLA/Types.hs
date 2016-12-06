@@ -130,9 +130,20 @@ instance ToJSON CandidateType where
 data Ballot
 
 data Audit
+  = Audit
+  { auId         :: Integer
+  , auDate       :: Text
+  , auElectionId :: Integer
+  , auRiskLimit  :: Double
+  }
+  deriving (Show, Eq)
 
 instance ToJSON Audit where
-  toJSON _ = A.object []
+  toJSON Audit { .. } = A.object [ "id"         .= auId
+                                 , "date"       .= auDate
+                                 , "electionId" .= auElectionId
+                                 , "riskLimit"  .= auRiskLimit
+                                 ]
 
 data Vendor
   = Dominion
