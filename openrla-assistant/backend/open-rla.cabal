@@ -24,6 +24,7 @@ library
                      , OpenRLA.Db
                      , OpenRLA.Statement
                      , OpenRLA.Statement.Ballot
+                     , OpenRLA.Statement.Election
                      , OpenRLA.Types
                      , OpenRLA.Vendor.Dominion
   other-modules:       OpenRLA.Internal

@@ -9,7 +9,7 @@ import           Data.Text (Text)
 import           Web.Scotty (json)
 
 import           OpenRLA.Controller
-import qualified OpenRLA.Statement as St
+import qualified OpenRLA.Statement.Election as St
 import           OpenRLA.Types (State(..))
 
 
