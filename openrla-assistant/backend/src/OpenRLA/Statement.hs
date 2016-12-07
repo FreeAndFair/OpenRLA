@@ -36,21 +36,6 @@ getActiveAudit = undefined
 setActiveAudit :: Connection -> Integer -> IO ()
 setActiveAudit = undefined
 
-createManifest :: Connection -> (Text, Text, Text) -> IO (Integer)
-createManifest conn index
-  = Sql.withTransaction conn $ do
-      Sql.execute conn s index
-      rowId <- Sql.lastInsertRowId conn
-      return $ fromIntegral rowId
-  where
-    s = "insert into manifest (vendor, type, src_path) values (?, ?, ?)"
-
-setManifestPathForId :: Connection -> Integer -> FilePath -> IO ()
-setManifestPathForId conn mId filePath
-  = Sql.execute conn s (filePath, mId)
-  where
-    s = "update manifest set file_path = ? where id = ?"
-
 type CandidateRow = (Integer, Text, Text, Integer, Text)
 
 upsertCandidate :: Connection -> CandidateRow -> IO ()
@@ -58,7 +43,6 @@ upsertCandidate conn row
   = Sql.execute conn s row
   where
     s = "insert or replace into candidate (id, external_id, type, contest_id, description) values (?, ?, ?, ?, ?)"
-
 
 type ContestRow = (Integer, Text, Text, Integer, Integer)
 

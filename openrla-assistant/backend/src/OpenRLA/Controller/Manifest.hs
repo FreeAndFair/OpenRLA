@@ -11,7 +11,7 @@ import           System.Directory (copyFile)
 import           Web.Scotty (json)
 
 import           OpenRLA.Controller
-import qualified OpenRLA.Statement as St
+import qualified OpenRLA.Statement.Manifest as St
 import           OpenRLA.Types (State(..))
 import qualified OpenRLA.Vendor.Dominion as Dominion
 
@@ -44,7 +44,7 @@ createP o = do
   return (electionId, vendor, fileType, srcPath)
 
 createIO :: State -> (Integer, Text, Text, Text) -> IO (FilePath, Value)
-createIO state@State {..} (elId, vendor, fileType, srcPath) = do
+createIO state@State { .. } (elId, vendor, fileType, srcPath) = do
   manifestId <- St.createManifest conn (vendor, fileType, srcPath)
   let newPath = dataRel $ nameForManifest vendor fileType manifestId
   copyFile (unpack srcPath) newPath
