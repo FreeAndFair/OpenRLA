@@ -10,7 +10,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-const CastVoteRecordsCard = ({ uploadCastVoteRecords, viewCastVoteRecords }) => {
+const CVRManifestCard = ({ uploadCastVoteRecords, viewCastVoteRecords }) => {
   return (
     <Card>
       <CardTitle
@@ -24,7 +24,7 @@ const CastVoteRecordsCard = ({ uploadCastVoteRecords, viewCastVoteRecords }) => 
   );
 };
 
-CastVoteRecordsCard.propTypes = {
+CVRManifestCard.propTypes = {
   uploadCastVoteRecords: PropTypes.func.isRequired,
   viewCastVoteRecords: PropTypes.func.isRequired,
 };
@@ -34,4 +34,4 @@ const mapDispatchToProps = dispatch => ({
   viewCastVoteRecords: () => {},
 });
 
-export default connect(null, mapDispatchToProps)(CastVoteRecordsCard);
+export default connect(null, mapDispatchToProps)(CVRManifestCard);
