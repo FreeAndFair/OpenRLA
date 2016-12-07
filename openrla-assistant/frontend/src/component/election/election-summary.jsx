@@ -18,7 +18,7 @@ const ElectionSummary = ({ election }) => {
   let subtitle;
 
   if (_.isEmpty(election)) {
-    subtitle = 'No election defined'
+    subtitle = 'No election defined';
   } else {
     cardText = (
       <CardText>
