@@ -21,18 +21,6 @@ getContestCandidates conn contestId
   where
     s = "select id, external_id, contest_id, description, type from election_contests where contest_id = ?"
 
-getAuditById :: Connection -> Integer -> IO (Maybe Audit)
-getAuditById = undefined
-
-setAuditById  :: Connection -> Integer -> IO ()
-setAuditById = undefined
-
-getActiveAudit :: Connection -> IO (Maybe Audit)
-getActiveAudit = undefined
-
-setActiveAudit :: Connection -> Integer -> IO ()
-setActiveAudit = undefined
-
 type CandidateRow = (Integer, Text, Text, Integer, Text)
 
 upsertCandidate :: Connection -> CandidateRow -> IO ()

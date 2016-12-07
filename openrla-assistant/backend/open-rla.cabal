@@ -23,6 +23,7 @@ library
                      , OpenRLA.Controller.Manifest
                      , OpenRLA.Db
                      , OpenRLA.Statement
+                     , OpenRLA.Statement.Audit
                      , OpenRLA.Statement.Ballot
                      , OpenRLA.Statement.Election
                      , OpenRLA.Statement.Manifest
