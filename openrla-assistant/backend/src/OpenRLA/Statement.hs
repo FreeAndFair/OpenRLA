@@ -3,10 +3,7 @@ module OpenRLA.Statement where
 
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
-import           Database.SQLite.Simple (
-    Connection
-  , Only(..)
-  )
+import           Database.SQLite.Simple (Connection, Only(..))
 
 import           OpenRLA.Types
 
