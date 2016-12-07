@@ -6,7 +6,7 @@ import           Data.Maybe (maybe)
 import           Web.Scotty (json)
 
 import           OpenRLA.Controller
-import qualified OpenRLA.Statement as St
+import qualified OpenRLA.Statement.Ballot as St
 import           OpenRLA.Types (State(..))
 
 

@@ -1,20 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-}
-module OpenRLA.Statement (
-    createElection
-  , createManifest
-  , setManifestPathForId
-  , getElectionIndex
-  , getActiveElection
-  , setActiveElection
-  , getElectionById
-  , getBallotPathById
-  , getAuditById
-  , setAuditById
-  , getActiveAudit
-  , setActiveAudit
-  , upsertCandidate
-  , upsertContest
-  ) where
+module OpenRLA.Statement where
 
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
@@ -79,9 +64,6 @@ setActiveElection conn elId
   = Sql.withTransaction conn $ do
       Sql.execute_ conn "update election set active = null where active = 1"
       Sql.execute  conn "update election set active = 1 where id = ?" (Only elId)
-
-getBallotPathById :: Connection -> Integer -> IO (Maybe FilePath)
-getBallotPathById = undefined
 
 getAuditById :: Connection -> Integer -> IO (Maybe Audit)
 getAuditById = undefined

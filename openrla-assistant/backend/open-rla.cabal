@@ -23,6 +23,7 @@ library
                      , OpenRLA.Controller.Manifest
                      , OpenRLA.Db
                      , OpenRLA.Statement
+                     , OpenRLA.Statement.Ballot
                      , OpenRLA.Types
                      , OpenRLA.Vendor.Dominion
   other-modules:       OpenRLA.Internal
