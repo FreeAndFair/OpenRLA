@@ -130,6 +130,21 @@ instance ToJSON CandidateType where
   toJSON WriteIn = A.String "WriteIn"
 
 data Ballot
+  = Ballot
+  { balId       :: Integer
+  , balFilePath :: FilePath
+  } deriving (Show, Eq)
+
+instance FromRow Ballot where
+  fromRow = do
+    balId       <- field
+    balFilePath <- field
+    return $ Ballot { .. }
+
+instance ToJSON Ballot where
+  toJSON Ballot { .. } = A.object [ "id"       .= balId
+                                  , "filePath" .= balFilePath
+                                  ]
 
 data Audit
   = Audit
