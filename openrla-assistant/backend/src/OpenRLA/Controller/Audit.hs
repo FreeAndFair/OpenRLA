@@ -65,7 +65,9 @@ setByIdP o = do
   return (auDate, auElectionId, auRiskLimit)
 
 getActive :: Controller
-getActive State { conn } = liftIO (St.getActive conn) >>= json
+getActive State { conn } = do
+  res <- liftIO $ St.getActive conn
+  maybe (status notFound404) json res
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") cb

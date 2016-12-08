@@ -31,8 +31,10 @@ setById conn audit = Sql.execute conn s audit
   where
     s = "insert or update into audit (id, election_id, date, risk_limit) values (?, ?, ?, ?)"
 
-getActiveAudit :: Connection -> IO (Maybe Audit)
-getActiveAudit = undefined
+getActive :: Connection -> IO (Maybe Audit)
+getActive conn = Sql.query_ conn s >>= justOneIO
+  where
+    s = "select id, election_id, date, risk_limit from audit where active"
 
 setActiveAudit :: Connection -> Integer -> IO ()
 setActiveAudit = undefined
