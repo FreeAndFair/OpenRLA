@@ -1,9 +1,10 @@
 module OpenRLA.Statement.Audit where
 
 import           Data.Text (Text)
-import           Database.SQLite.Simple as Sql
-import           Database.SQLite.Simple (Connection)
+import qualified Database.SQLite.Simple as Sql
+import           Database.SQLite.Simple (Connection, Only(..))
 
+import           OpenRLA.Statement (oneRowIO)
 import           OpenRLA.Types
 
 
@@ -12,12 +13,14 @@ index conn args = Sql.query conn s args
   where
     s = "select id, election_id, date, risk_limit from audit order by date limit ? offset ?"
 
-create :: Connection -> (Integer, Text, Double) -> IO Integer
+create :: Connection -> (Integer, Text, Double) -> IO Audit
 create conn args = do
   let s = "insert into audit (election_id, date, risk_limit) values (?, ?, ?)"
   Sql.execute conn s args
   rowId <- Sql.lastInsertRowId conn
-  return $ fromIntegral rowId
+  let s' = "select id, election_id, date, risk_limit from audit where id = ?"
+  rows <- Sql.query conn s' (Only rowId)
+  oneRowIO rows
 
 getAuditById :: Connection -> Integer -> IO (Maybe Audit)
 getAuditById = undefined

@@ -30,13 +30,9 @@ type CreateData = (Integer, Text, Double)
 create :: Controller
 create State { conn } = parseThen createP createCb
   where
-    createCb args@(elId, date, riskLimit) = do
-      auditId <- liftIO $ St.create conn args
-      json $ object [ "id"         .= auditId
-                    , "date"       .= date
-                    , "electionId" .= elId
-                    , "riskLimit"  .= riskLimit
-                    ]
+    createCb args = do
+      audit <- liftIO $ St.create conn args
+      json audit
 
 createP :: Object -> Parser CreateData
 createP o = do

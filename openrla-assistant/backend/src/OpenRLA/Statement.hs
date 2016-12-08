@@ -8,6 +8,13 @@ import           Database.SQLite.Simple (Connection, Only(..))
 import           OpenRLA.Types
 
 
+oneRow :: [a] -> a
+oneRow [x] = x
+oneRow _   = error "Expected exactly one result"
+
+oneRowIO :: [a] -> IO a
+oneRowIO = return . oneRow
+
 justOne :: [a] -> Maybe a
 justOne [x] = Just x
 justOne _   = Nothing
