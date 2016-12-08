@@ -7,6 +7,11 @@ import           Database.SQLite.Simple (Connection)
 import           OpenRLA.Types
 
 
+index :: Connection -> (Integer, Integer) -> IO [Audit]
+index conn args = Sql.query conn s args
+  where
+    s = "select id, election_id, date, risk_limit from audit order by date limit ? offset ?"
+
 create :: Connection -> (Integer, Text, Double) -> IO Integer
 create conn args = do
   let s = "insert into audit (election_id, date, risk_limit) values (?, ?, ?)"

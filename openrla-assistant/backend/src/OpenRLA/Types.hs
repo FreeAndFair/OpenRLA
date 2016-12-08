@@ -138,6 +138,15 @@ data Audit
   }
   deriving (Show, Eq)
 
+instance FromRow Audit where
+  fromRow = do
+    auId         <- field
+    auDate       <- field
+    auElectionId <- field
+    auRiskLimit  <- field
+
+    return $ Audit { .. }
+
 instance ToJSON Audit where
   toJSON Audit { .. } = A.object [ "id"         .= auId
                                  , "date"       .= auDate
