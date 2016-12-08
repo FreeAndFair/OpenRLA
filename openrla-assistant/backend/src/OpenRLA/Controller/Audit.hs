@@ -1,11 +1,11 @@
 module OpenRLA.Controller.Audit where
 
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), (.:?), (.!=), (.=), object)
+import           Data.Aeson (Object, (.:), (.:?), (.!=))
 import           Data.Aeson.Types (Parser)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
-import           Web.Scotty (json, jsonData, param, status)
+import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Audit as St
