@@ -56,7 +56,6 @@ setById State { conn } = parseThen setByIdP setByIdCb
       auId <- param "id"
       let audit = Audit { .. }
       liftIO $ St.setById conn audit
-      return ()
 
 setByIdP :: Object -> Parser (Text, Integer, Double)
 setByIdP o = do
