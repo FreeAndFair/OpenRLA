@@ -5,11 +5,11 @@ import           Data.Aeson (Object, (.:), (.:?), (.!=), (.=), object)
 import           Data.Aeson.Types (Parser)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
-import           Web.Scotty (json, param, status)
+import           Web.Scotty (json, jsonData, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Audit as St
-import           OpenRLA.Types (Audit(..), State(..))
+import           OpenRLA.Types (Audit(..), AuditMark(..), State(..))
 
 
 index :: Controller
@@ -66,15 +66,30 @@ setByIdP o = do
   return (auDate, auElectionId, auRiskLimit)
 
 getActive :: Controller
-getActive State { conn } = liftIO (St.getActiveAudit conn) >>= json
+getActive State { conn } = liftIO (St.getActive conn) >>= json
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") cb
   where
-    cb auditId = liftIO (St.setActiveAudit conn auditId) >>= json
+    cb auditId = liftIO (St.setActive conn auditId) >>= json
 
 indexMarks :: Controller
-indexMarks = undefined
+indexMarks State { conn } = do
+  auId <- param "id"
+  marks <- liftIO $ St.indexMarks conn auId
+  json marks
 
 createMark :: Controller
-createMark = undefined
+createMark State { conn } = parseThen createMarkP createMarkCb
+  where
+    createMarkCb (amBallotId, amContestId, amCandidateId) = do
+      amAuditId <- param "auditId"
+      let auditMark = AuditMark { .. }
+      liftIO $ St.createMark conn auditMark
+
+createMarkP :: Object -> Parser (Integer, Integer, Integer)
+createMarkP o = do
+  ballotId    <- o .: "ballotId"
+  contestId   <- o .: "contestId"
+  candidateId <- o .: "candidateId"
+  return (ballotId, contestId, candidateId)

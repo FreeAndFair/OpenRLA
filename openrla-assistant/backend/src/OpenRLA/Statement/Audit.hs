@@ -36,3 +36,13 @@ getActiveAudit = undefined
 
 setActiveAudit :: Connection -> Integer -> IO ()
 setActiveAudit = undefined
+
+indexMarks :: Connection -> Integer -> IO [AuditMark]
+indexMarks conn auId = Sql.query conn s (Only auId)
+  where
+    s = "select audit_id, ballot_id, contest_id, candidate_id from audit_mark where audit_id = ?"
+
+createMark :: Connection -> AuditMark -> IO ()
+createMark conn auditMark = Sql.execute conn s auditMark
+  where
+    s = "insert or replace into audit_mark (audit_id, ballot_id, contest_id, candidate_id) values (?, ?, ?, ?)"

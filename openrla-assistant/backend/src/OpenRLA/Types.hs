@@ -174,6 +174,46 @@ instance FromJSON Audit where
       return $ Audit { .. }
     _        -> typeMismatch "Audit" v
 
+data AuditMark
+  = AuditMark
+  { amAuditId     :: Integer
+  , amBallotId    :: Integer
+  , amContestId   :: Integer
+  , amCandidateId :: Integer
+  } deriving (Show, Eq)
+
+instance FromRow AuditMark where
+  fromRow = do
+    amAuditId     <- field
+    amBallotId    <- field
+    amContestId   <- field
+    amCandidateId <- field
+    return $ AuditMark { .. }
+
+instance ToRow AuditMark where
+  toRow AuditMark { .. }
+    = [ SQLInteger $ fromInteger amAuditId
+      , SQLInteger $ fromInteger amBallotId
+      , SQLInteger $ fromInteger amContestId
+      , SQLInteger $ fromInteger amCandidateId
+      ]
+
+instance ToJSON AuditMark where
+  toJSON AuditMark { .. } = A.object [ "auditId"     .= amAuditId
+                                     , "ballotId"    .= amBallotId
+                                     , "contestId"   .= amContestId
+                                     , "candidateId" .= amCandidateId
+                                     ]
+
+instance FromJSON AuditMark where
+  parseJSON v = case v of
+    Object o -> do
+      amAuditId     <- o .: "auditId"
+      amBallotId    <- o .: "ballotId"
+      amContestId   <- o .: "contestId"
+      amCandidateId <- o .: "candidateId"
+      return $ AuditMark { .. }
+    _        -> typeMismatch "AuditMark" v
 
 data Vendor
   = Dominion
