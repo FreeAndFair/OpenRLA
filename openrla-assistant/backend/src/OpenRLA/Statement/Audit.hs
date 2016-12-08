@@ -36,8 +36,11 @@ getActive conn = Sql.query_ conn s >>= justOneIO
   where
     s = "select id, election_id, date, risk_limit from audit where active"
 
-setActiveAudit :: Connection -> Integer -> IO ()
-setActiveAudit = undefined
+setActive :: Connection -> Integer -> IO ()
+setActive conn auId
+  = Sql.withTransaction conn $ do
+      Sql.execute_ conn "update audit set active = null where active = 1"
+      Sql.execute  conn "update audit set active = 1 where id = ?" (Only auId)
 
 indexMarks :: Connection -> Integer -> IO [AuditMark]
 indexMarks conn auId = Sql.query conn s (Only auId)

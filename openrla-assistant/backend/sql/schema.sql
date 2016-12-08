@@ -71,7 +71,9 @@ create table if not exists audit (
                        check (
                              0.0 < risk_limit
                          and risk_limit < 1.0
-                       )
+                       ),
+  active      boolean  unique
+                       check (active = 1)
 );
 
 create table if not exists audit_mark (

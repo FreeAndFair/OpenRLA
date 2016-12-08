@@ -70,9 +70,9 @@ getActive State { conn } = do
   maybe (status notFound404) json res
 
 setActive :: Controller
-setActive State { conn } = parseThen (.: "auditId") cb
+setActive State { conn } = parseThen (.: "auditId") setActiveCb
   where
-    cb auditId = liftIO (St.setActive conn auditId) >>= json
+    setActiveCb auId = liftIO (St.setActive conn auId) >>= json
 
 indexMarks :: Controller
 indexMarks State { conn } = do
