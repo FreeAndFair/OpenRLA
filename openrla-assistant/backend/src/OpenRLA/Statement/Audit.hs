@@ -4,7 +4,7 @@ import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
 
-import           OpenRLA.Statement (oneRowIO)
+import           OpenRLA.Statement (justOneIO, oneRowIO)
 import           OpenRLA.Types
 
 
@@ -22,11 +22,14 @@ create conn args = do
   rows <- Sql.query conn s' (Only rowId)
   oneRowIO rows
 
-getAuditById :: Connection -> Integer -> IO (Maybe Audit)
-getAuditById = undefined
+getById :: Connection -> Integer -> IO (Maybe Audit)
+getById conn auId = Sql.query conn s (Only auId) >>= justOneIO
+  where s = "select id, election_id, date, risk_limit from audit where id = ?"
 
-setAuditById  :: Connection -> Integer -> IO ()
-setAuditById = undefined
+setById  :: Connection -> Audit -> IO ()
+setById conn audit = Sql.execute conn s audit
+  where
+    s = "insert or update into audit (id, election_id, date, risk_limit) values (?, ?, ?, ?)"
 
 getActiveAudit :: Connection -> IO (Maybe Audit)
 getActiveAudit = undefined

@@ -4,11 +4,12 @@ import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson (Object, (.:), (.:?), (.!=), (.=), object)
 import           Data.Aeson.Types (Parser)
 import           Data.Text (Text)
-import           Web.Scotty (json)
+import           Network.HTTP.Types.Status (notFound404)
+import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Audit as St
-import           OpenRLA.Types (State(..))
+import           OpenRLA.Types (Audit(..), State(..))
 
 
 index :: Controller
@@ -42,12 +43,27 @@ createP o = do
   return (elId, date, riskLimit)
 
 getById :: Controller
-getById State { conn } = parseThen (.: "auditId") cb
+getById State { conn } = parseThen (.: "auditId") getByIdCb
   where
-    cb auditId = liftIO (St.getAuditById conn auditId) >>= json
+    getByIdCb auditId = do
+      res <- liftIO $ St.getById conn auditId
+      maybe (status notFound404) json res
 
 setById :: Controller
-setById = undefined
+setById State { conn } = parseThen setByIdP setByIdCb
+  where
+    setByIdCb (auDate, auElectionId, auRiskLimit) = do
+      auId <- param "id"
+      let audit = Audit { .. }
+      liftIO $ St.setById conn audit
+      return ()
+
+setByIdP :: Object -> Parser (Text, Integer, Double)
+setByIdP o = do
+  auDate       <- o .: "date"
+  auElectionId <- o .: "electionId"
+  auRiskLimit  <- o .: "riskLimit"
+  return (auDate, auElectionId, auRiskLimit)
 
 getActive :: Controller
 getActive State { conn } = liftIO (St.getActiveAudit conn) >>= json

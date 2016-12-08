@@ -37,6 +37,7 @@ library
                      , directory
                      , filepath
                      , here
+                     , http-types
                      , scotty
                      , sqlite-simple
                      , text

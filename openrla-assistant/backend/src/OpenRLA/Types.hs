@@ -8,8 +8,10 @@ import           Database.SQLite.Simple (
     Connection
   , FromRow
   , SQLData(..)
+  , ToRow
   , field
   , fromRow
+  , toRow
   )
 import           Database.SQLite.Simple.FromField (
     FromField
@@ -138,6 +140,14 @@ data Audit
   }
   deriving (Show, Eq)
 
+instance ToRow Audit where
+  toRow Audit { .. }
+    = [ SQLInteger $ fromInteger auId
+      , SQLInteger $ fromInteger auElectionId
+      , SQLText    auDate
+      , SQLFloat   auRiskLimit
+      ]
+
 instance FromRow Audit where
   fromRow = do
     auId         <- field
@@ -153,6 +163,17 @@ instance ToJSON Audit where
                                  , "electionId" .= auElectionId
                                  , "riskLimit"  .= auRiskLimit
                                  ]
+
+instance FromJSON Audit where
+  parseJSON v = case v of
+    Object o -> do
+      auId         <- o .: "id"
+      auDate       <- o .: "date"
+      auElectionId <- o .: "electionId"
+      auRiskLimit  <- o .: "riskLimit"
+      return $ Audit { .. }
+    _        -> typeMismatch "Audit" v
+
 
 data Vendor
   = Dominion
