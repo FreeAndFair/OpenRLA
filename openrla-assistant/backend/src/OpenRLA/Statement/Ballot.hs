@@ -1,10 +1,9 @@
 module OpenRLA.Statement.Ballot where
 
--- import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
 
-import           OpenRLA.Statement (justOneIO, oneRowIO)
+import           OpenRLA.Statement (justOneIO)
 import           OpenRLA.Types
 
 
@@ -26,8 +25,7 @@ create conn srcPath mkPath
       return $ Ballot { .. }
 
 
-getById :: Connection -> Integer -> IO (Maybe FilePath)
-getById = undefined
-
-setById :: Connection -> Ballot -> IO ()
-setById = undefined
+getById :: Connection -> Integer -> IO (Maybe Ballot)
+getById conn balId = do
+  let s ="select id, file_path from ballot_image where id = ?"
+  Sql.query conn s (Only balId) >>= justOneIO

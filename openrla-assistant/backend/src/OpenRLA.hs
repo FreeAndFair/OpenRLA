@@ -34,7 +34,6 @@ app state = do
   S.post "/ballot" $ Ballot.create state
 
   S.get "/ballot/:id" $ Ballot.getById state
-  S.put "/ballot/:id" $ Ballot.setById state
 
   S.get  "/audit" $ Audit.index state
   S.post "/audit" $ Audit.create state

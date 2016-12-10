@@ -1,13 +1,14 @@
 module OpenRLA.Controller.Ballot where
 
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), (.:?), (.!=), (.=), object)
+import           Data.Aeson (Object, (.:), (.:?), (.!=), object)
 import           Data.Aeson.Types (Parser)
 import           Data.Maybe (maybe)
 import           Data.Text (unpack)
+import           Network.HTTP.Types.Status (notFound404)
 import           System.Directory (copyFile)
 import           System.FilePath ((</>))
-import           Web.Scotty (json)
+import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Ballot as St
@@ -45,12 +46,7 @@ createIO State { .. } srcPath = do
   return ballot
 
 getById :: Controller
-getById State { conn } = parseThen (.: "ballotId") cb
-  where
-    cb balId = do
-      res <- liftIO (St.getById conn balId)
-      let pairs = maybe [] (\p -> [ "filePath" .= p ]) res
-      json $ object pairs
-
-setById :: Controller
-setById = undefined
+getById State { conn } = do
+  balId <- param "id"
+  res <- liftIO $ St.getById conn balId
+  maybe (status notFound404) json res
