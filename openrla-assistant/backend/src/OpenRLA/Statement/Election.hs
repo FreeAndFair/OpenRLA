@@ -1,5 +1,6 @@
 module OpenRLA.Statement.Election where
 
+import           Control.Monad (when)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
@@ -34,7 +35,7 @@ getActive conn
 setActive :: Connection -> Integer -> IO ()
 setActive conn elId
   = Sql.withTransaction conn $ do
-      Sql.execute_ conn "update election set active = null where active = 1"
+      resetActive conn
       Sql.execute  conn "update election set active = 1 where id = ?" (Only elId)
 
 getById :: Connection -> Integer -> IO (Maybe Election)
@@ -44,6 +45,11 @@ getById conn elId
     s = "select id, title, date, active from election where active where id = ?"
 
 setById :: Connection -> Election -> IO ()
-setById conn election = Sql.execute conn s election
-  where
-    s = "insert or replace into election (id, title, date, active) values (?, ?, ?, ?)"
+setById conn election@Election { elId, elActive } = do
+  Sql.withTransaction conn $ do
+    let s = "insert or replace into election (id, title, date) values (?, ?, ?)"
+    Sql.execute conn s election
+    when elActive $ setActive conn elId
+
+resetActive :: Connection -> IO ()
+resetActive conn = Sql.execute_ conn "update election set active = null where active = 1"

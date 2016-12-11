@@ -51,7 +51,6 @@ instance ToRow Election where
     = [ SQLInteger $ fromInteger elId
       , SQLText    elTitle
       , SQLText    elDate
-      , SQLInteger $ if elActive then 1 else 0
       ]
 
 instance ToJSON Election where
