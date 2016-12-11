@@ -46,6 +46,14 @@ instance FromRow Election where
 
     return $ Election { .. }
 
+instance ToRow Election where
+  toRow Election { .. }
+    = [ SQLInteger $ fromInteger elId
+      , SQLText    elTitle
+      , SQLText    elDate
+      , SQLInteger $ if elActive then 1 else 0
+      ]
+
 instance ToJSON Election where
   toJSON Election { .. } =
     A.object

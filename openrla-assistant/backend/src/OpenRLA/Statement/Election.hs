@@ -48,3 +48,8 @@ getElectionContests conn elId
   = Sql.query conn s (Only elId)
   where
     s = "select contest_id from election_contests where election_id = ?"
+
+setById :: Connection -> Election -> IO ()
+setById conn election = Sql.execute conn s election
+  where
+    s = "insert or replace into election (id, title, date, active) values (?, ?, ?, ?)"

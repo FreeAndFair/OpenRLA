@@ -6,11 +6,12 @@ import           Data.Aeson (Object, (.:), (.:?), (.=), object, toJSON)
 import           Data.Aeson.Types (Parser)
 import           Data.Maybe (maybe)
 import           Data.Text (Text)
-import           Web.Scotty (json)
+import           Network.HTTP.Types.Status (notFound404)
+import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Election as St
-import           OpenRLA.Types (State(..))
+import           OpenRLA.Types (Election(..), State(..))
 
 
 index :: Controller
@@ -50,15 +51,25 @@ createP o = do
   return (title, date)
 
 getById :: Controller
-getById State { conn } = parseThen (.: "electionId") cb
-  where
-    cb elId = do
-      election <- liftIO (St.getElectionById conn elId)
-      let res = maybe (object []) toJSON election
-      json res
+getById State { conn } = do
+  elId <- param "id"
+  res <- liftIO (St.getElectionById conn elId)
+  maybe (status notFound404) json res
 
 setById :: Controller
-setById = undefined
+setById State { conn } = parseThen setByIdP setByIdCb
+  where
+    setByIdCb (elTitle, elDate, elActive) = do
+      elId <- param "id"
+      let election = Election { .. }
+      liftIO $ St.setById conn election
+
+setByIdP :: Object -> Parser (Text, Text, Bool)
+setByIdP o = do
+  title  <- o .: "title"
+  date   <- o .: "date"
+  active <- o .: "active"
+  return (title, date, active)
 
 getActive :: Controller
 getActive State { conn } = liftIO (St.getActiveElection conn) >>= json
