@@ -19,12 +19,7 @@ index State { conn } = parseThen indexP indexCb
   where
     indexCb (offset, limit) = do
       rows <- liftIO $ St.index conn offset limit
-      let rowCb (elId, title, date, _)
-            = return $ object [ "id"    .= elId
-                              , "title" .= title
-                              , "date"  .= date
-                              ]
-      forM rows rowCb >>= json
+      json rows
 
 indexP :: Object -> Parser (Integer, Integer)
 indexP o = do

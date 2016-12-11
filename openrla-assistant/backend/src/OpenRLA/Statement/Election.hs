@@ -9,8 +9,6 @@ import           OpenRLA.Statement
 import           OpenRLA.Types
 
 
-type ElectionRow = (Integer, Text, Text, Bool)
-
 create :: Connection -> Text -> Text -> IO Integer
 create conn elTitle elDate
   = Sql.withTransaction conn $ do
@@ -20,7 +18,7 @@ create conn elTitle elDate
         where
           s = "insert or replace into election (title, date) values (?, ?)"
 
-index :: Connection -> Integer -> Integer -> IO [ElectionRow]
+index :: Connection -> Integer -> Integer -> IO [Election]
 index conn offset limit
   = Sql.query conn s (offset, limit)
   where
