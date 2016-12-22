@@ -7,9 +7,11 @@ import           Data.Aeson.Types (Parser)
 import           Data.Maybe (maybe)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
+import           System.Random (randomRIO)
 import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
+import qualified OpenRLA.Statement.Ballot as BalSt
 import qualified OpenRLA.Statement.Election as St
 import           OpenRLA.Types (Election(..), State(..))
 
@@ -73,3 +75,12 @@ setActive :: Controller
 setActive State { conn } = parseThen (.: "electionId") cb
   where
     cb eId = liftIO (St.setActive conn eId) >>= json
+
+sampleBallot :: Controller
+sampleBallot State { conn } = do
+  elId  <- param "id"
+  ballot <- liftIO $ do
+    count <- St.ballotCountForId conn elId
+    offset <- randomRIO (0, count - 1)
+    BalSt.getByOffset conn offset
+  json ballot
