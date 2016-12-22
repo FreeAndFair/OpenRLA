@@ -60,6 +60,13 @@ create table if not exists ballot_image (
   file_path text  -- Allow null for two-step insert
 );
 
+create table if not exists election_ballot_image (
+  election_id  integer not null
+                       references election (id),
+  ballot_image integer not null
+                       references ballot_image (id)
+);
+
 create table if not exists audit (
   id          integer  primary key,
   created     datetime not null
