@@ -96,3 +96,16 @@ create table if not exists cvr_mark (
   contest_id   integer not null references contest (id),
   candidate_id integer not null references candidate (id)
 );
+
+create table if not exists audit_contest_state (
+  audit_id       integer not null references audit (id),
+  contest_id     integer not null references contest (id),
+  test_statistic real    not null
+);
+
+create table if not exists audit_sample (
+  id        integer not null,
+  audit_id  integer not null references audit (id),
+  ballot_id integer not null references ballot (id),
+  primary key (id, audit_id)
+);
