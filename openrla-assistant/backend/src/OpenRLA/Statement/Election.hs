@@ -51,3 +51,10 @@ setById conn election@Election { elId, elActive } = do
 
 resetActive :: Connection -> IO ()
 resetActive conn = Sql.execute_ conn "update election set active = null where active = 1"
+
+ballotCountForId :: Connection -> Integer -> IO Integer
+ballotCountForId conn elId = do
+  let s = "select count() from election_ballot_image where election_id = ?"
+  rows <- Sql.query conn s (Only elId)
+  let Only count = oneRow rows
+  return count
