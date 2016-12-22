@@ -14,16 +14,9 @@ processManifest :: State -> Integer -> Text -> Object -> IO Value
 processManifest state eId mType mObj = process state eId mObj
   where
     process = case mType of
-      "ballot"    -> processBallotManifest
       "candidate" -> processCandidateManifest
       "contest"   -> processContestManifest
       _           -> error "Invalid manifest type"
-
-processBallotManifest :: State -> Integer -> Object -> IO Value
-processBallotManifest = undefined
-
-parseBallotManifest :: Object -> Parser Value
-parseBallotManifest = undefined
 
 processCandidateManifest :: State -> Integer -> Object -> IO Value
 processCandidateManifest (State { .. }) _eId o = do
