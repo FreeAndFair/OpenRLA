@@ -94,3 +94,9 @@ createMarkP o = do
   contestId   <- o .: "contestId"
   candidateId <- o .: "candidateId"
   return (ballotId, contestId, candidateId)
+
+indexSample :: Controller
+indexSample = undefined
+
+createSample :: Controller
+createSample = undefined
