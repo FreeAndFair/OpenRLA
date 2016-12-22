@@ -24,8 +24,12 @@ create conn srcPath mkPath
       Sql.execute conn s' (balFilePath, balId)
       return $ Ballot { .. }
 
-
 getById :: Connection -> Integer -> IO (Maybe Ballot)
 getById conn balId = do
   let s ="select id, file_path from ballot_image where id = ?"
   Sql.query conn s (Only balId) >>= justOneIO
+
+getByOffset :: Connection -> Integer -> IO (Maybe Ballot)
+getByOffset conn offset = do
+  let s ="select id, file_path from ballot_image order by id limit 1 offset ?"
+  Sql.query conn s (Only offset) >>= justOneIO
