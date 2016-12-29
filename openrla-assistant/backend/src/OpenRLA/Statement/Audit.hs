@@ -51,3 +51,10 @@ createMark :: Connection -> AuditMark -> IO ()
 createMark conn auditMark = Sql.execute conn s auditMark
   where
     s = "insert or replace into audit_mark (audit_id, ballot_id, contest_id, candidate_id) values (?, ?, ?, ?)"
+
+currentSampleId :: Connection -> Integer -> IO Integer
+currentSampleId conn auId = do
+  let s = "select ballot_id from audit_current_sample where audit_id = ?"
+  rows <- Sql.query conn s (Only auId)
+  Only sampleId <- oneRowIO rows
+  return sampleId
