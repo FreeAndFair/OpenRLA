@@ -43,8 +43,7 @@ app state = do
   S.get "/audit/:id" $ Audit.getById state
   S.put "/audit/:id" $ Audit.setById state
 
-  S.get  "/audit/:id/sample" $ Audit.indexSample state
-  S.post "/audit/:id/sample" $ Audit.createSample state
+  S.get  "/audit/:id/sample" $ Audit.currentSample state
 
   S.get "/audit/active" $ Audit.getActive state
   S.put "/audit/active" $ Audit.setActive state

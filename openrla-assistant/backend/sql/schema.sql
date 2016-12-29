@@ -110,9 +110,14 @@ create table if not exists audit_contest_state (
   test_statistic real    not null
 );
 
+create table if not exists audit_current_sample (
+  audit_id  integer primary key
+                    references audit (id),
+  ballot_id integer not null references ballot (id)
+);
+
 create table if not exists audit_sample (
-  id        integer not null,
+  id        integer not null primary key,
   audit_id  integer not null references audit (id),
-  ballot_id integer not null references ballot (id),
-  primary key (id, audit_id)
+  ballot_id integer not null references ballot (id)
 );

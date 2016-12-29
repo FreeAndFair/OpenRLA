@@ -9,6 +9,7 @@ import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Audit as St
+import qualified OpenRLA.Statement.Ballot as BalSt
 import           OpenRLA.Types (Audit(..), AuditMark(..), State(..))
 
 
@@ -95,8 +96,10 @@ createMarkP o = do
   candidateId <- o .: "candidateId"
   return (ballotId, contestId, candidateId)
 
-indexSample :: Controller
-indexSample = undefined
-
-createSample :: Controller
-createSample = undefined
+currentSample :: Controller
+currentSample State { conn } = do
+  auId <- param "id"
+  sample <- liftIO $ do
+    sampleId <- St.currentSampleId conn auId
+    BalSt.getById conn sampleId
+  json sample
