@@ -81,16 +81,16 @@ indexMarks State { conn } = do
   marks <- liftIO $ St.indexMarks conn auId
   json marks
 
-createMark :: Controller
-createMark State { conn } = parseThen createMarkP createMarkCb
+createMarks :: Controller
+createMarks State { conn } = parseThen createMarksP createMarksCb
   where
-    createMarkCb (amBallotId, amContestId, amCandidateId) = do
-      amAuditId <- param "auditId"
+    createMarksCb (amBallotId, amContestId, amCandidateId) = do
+      amAuditId <- param "id"
       let auditMark = AuditMark { .. }
       liftIO $ St.createMark conn auditMark
 
-createMarkP :: Object -> Parser (Integer, Integer, Integer)
-createMarkP o = do
+createMarksP :: Object -> Parser (Integer, Integer, Integer)
+createMarksP o = do
   ballotId    <- o .: "ballotId"
   contestId   <- o .: "contestId"
   candidateId <- o .: "candidateId"
