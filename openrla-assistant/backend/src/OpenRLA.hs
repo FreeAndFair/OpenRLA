@@ -43,6 +43,8 @@ mkApp state = do
   S.get "/audit/:id" $ Audit.getById state
   S.put "/audit/:id" $ Audit.setById state
 
+  S.post "/audit/:id/marks" $ Audit.createMarks state
+
   S.get  "/audit/:id/sample" $ Audit.currentSample state
 
   S.get "/audit/active" $ Audit.getActive state
