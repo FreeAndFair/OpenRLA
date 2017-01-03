@@ -28,3 +28,6 @@ integrationSpec = with appIO $ do
 
     it "should have no ballots" $ do
       get "/ballot" `shouldRespondWith` "[]"
+
+    it "should have no audits" $ do
+      get "/audit" `shouldRespondWith` "[]"
