@@ -1,4 +1,4 @@
-module OpenRLA (runApp, app) where
+module OpenRLA (runApp, mkApp) where
 
 import           Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import qualified Web.Scotty as S
@@ -15,8 +15,8 @@ import qualified OpenRLA.Db as Db
 import           OpenRLA.Types (State(..))
 
 
-app :: State -> S.ScottyM ()
-app state = do
+mkApp :: State -> S.ScottyM ()
+mkApp state = do
   S.middleware logStdoutDev
 
   S.post "/manifest" $ Manifest.create state
@@ -63,4 +63,4 @@ runApp = do
   Db.init conn
 
   let state = State { .. }
-  S.scotty 8080 (app state)
+  S.scotty 8080 (mkApp state)

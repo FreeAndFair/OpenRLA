@@ -2,17 +2,18 @@ module Main (main) where
 
 import           Data.Maybe (fromJust, isJust)
 import           Test.Tasty
+import           Test.Tasty.Hspec (testSpec)
 import           Test.Tasty.HUnit
 
+import           IntegrationTests
 import           TestSupport
--- import           OpenRLA (app)
 
 
 main :: IO ()
-main = defaultMain tests
-
-tests :: TestTree
-tests = testGroup "Tests" [unitTests]
+main = do
+  integrationTests <- testSpec "Integration tests" integrationSpec
+  let tests = testGroup "Tests" [unitTests, integrationTests]
+  defaultMain tests
 
 unitTests :: TestTree
 unitTests = testGroup "Unit tests"
