@@ -16,16 +16,7 @@ import           OpenRLA.Types (Ballot(..), State(..))
 
 
 index :: Controller
-index State { conn } = parseThen indexP indexCb
-  where
-    indexCb args = liftIO (St.index conn args) >>= json
-
-indexP :: Object -> Parser (Integer, Integer)
-indexP o = do
-  offset <- o .:? "offset" .!= 0
-  limit  <- o .:? "limit"  .!= 20
-  let boundedLimit = min limit 20
-  return (boundedLimit, offset)
+index State { conn } = liftIO (St.index conn (0, 20)) >>= json
 
 create :: Controller
 create state = parseThen createP createCb
