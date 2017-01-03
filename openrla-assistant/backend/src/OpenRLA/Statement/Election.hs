@@ -18,11 +18,9 @@ create conn elTitle elDate
         where
           s = "insert or replace into election (title, date) values (?, ?)"
 
-index :: Connection -> Integer -> Integer -> IO [Election]
-index conn offset limit
-  = Sql.query conn s (offset, limit)
-  where
-    s = "select id, title, date, active from election order by date limit ? offset ?"
+index :: Connection -> IO [Election]
+index conn = Sql.query_ conn s
+  where s = "select id, title, date, active from election order by date"
 
 getActive :: Connection -> IO (Maybe Election)
 getActive conn

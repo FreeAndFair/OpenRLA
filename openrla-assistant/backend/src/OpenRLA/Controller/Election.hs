@@ -16,9 +16,7 @@ import           OpenRLA.Types (Election(..), State(..))
 
 
 index :: Controller
-index State { conn } = do
-  rows <- liftIO $ St.index conn 0 20
-  json rows
+index State { conn } = liftIO (St.index conn) >>= json
 
 create :: Controller
 create State { conn } = parseThen createP createCb
