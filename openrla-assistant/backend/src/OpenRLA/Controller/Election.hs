@@ -1,8 +1,7 @@
 module OpenRLA.Controller.Election where
 
-import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), (.:?), (.=), object)
+import           Data.Aeson (Object, (.:), (.=), object)
 import           Data.Aeson.Types (Parser)
 import           Data.Maybe (maybe)
 import           Data.Text (Text)
@@ -17,19 +16,9 @@ import           OpenRLA.Types (Election(..), State(..))
 
 
 index :: Controller
-index State { conn } = parseThen indexP indexCb
-  where
-    indexCb (offset, limit) = do
-      rows <- liftIO $ St.index conn offset limit
-      json rows
-
-indexP :: Object -> Parser (Integer, Integer)
-indexP o = do
-  offset' <- o .:? "offset"
-  limit'  <- o .:? "limit"
-  let offset = maybe 0  id       offset'
-      limit  = maybe 20 (min 20) limit'
-  return (offset, limit)
+index State { conn } = do
+  rows <- liftIO $ St.index conn 0 20
+  json rows
 
 create :: Controller
 create State { conn } = parseThen createP createCb
