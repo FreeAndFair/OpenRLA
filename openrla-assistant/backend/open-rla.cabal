@@ -38,6 +38,7 @@ library
                      , filepath
                      , here
                      , http-types
+                     , random
                      , scotty
                      , sqlite-simple
                      , text
