@@ -14,7 +14,7 @@ import           OpenRLA.Types (Audit(..), AuditMark(..), State(..))
 
 
 index :: Controller
-index State { conn } = liftIO (St.index conn (0, 20)) >>= json
+index State { conn } = liftIO (St.index conn) >>= json
 
 type CreateData = (Integer, Text, Double)
 

@@ -8,10 +8,9 @@ import           OpenRLA.Statement (justOneIO, oneRowIO)
 import           OpenRLA.Types
 
 
-index :: Connection -> (Integer, Integer) -> IO [Audit]
-index conn args = Sql.query conn s args
-  where
-    s = "select id, election_id, date, risk_limit from audit order by date limit ? offset ?"
+index :: Connection -> IO [Audit]
+index conn = Sql.query_ conn s
+  where s = "select id, election_id, date, risk_limit from audit order by date"
 
 create :: Connection -> (Integer, Text, Double) -> IO Audit
 create conn args = do
