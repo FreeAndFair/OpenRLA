@@ -19,6 +19,6 @@ appIO = do
 
 integrationSpec :: Spec
 integrationSpec = with appIO $ do
-  context "get /election" $ do
+  context "initial state" $ do
     it "should have no elections to start with" $ do
-      get "election" `shouldRespondWith` "[]"
+      get "/election" `shouldRespondWith` "[]"
