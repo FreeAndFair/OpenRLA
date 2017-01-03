@@ -58,7 +58,9 @@ setByIdP o = do
   return (title, date, active)
 
 getActive :: Controller
-getActive State { conn } = liftIO (St.getActive conn) >>= json
+getActive State { conn } = do
+  active <- liftIO $ St.getActive conn
+  maybe (status notFound404) json active
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "electionId") cb

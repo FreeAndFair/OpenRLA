@@ -22,3 +22,6 @@ integrationSpec = with appIO $ do
   context "initial state" $ do
     it "should have no elections to start with" $ do
       get "/election" `shouldRespondWith` "[]"
+
+    it "should have no active election" $ do
+      get "/election/active" `shouldRespondWith` 404
