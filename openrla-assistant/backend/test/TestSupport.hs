@@ -12,11 +12,13 @@ import           OpenRLA.Types (State(..))
 withDataDir :: (FilePath -> IO a) -> IO a
 withDataDir = Temp.withSystemTempDirectory "openrla_test_data"
 
-withState :: (State -> IO a) -> IO a
-withState cb = withDataDir $ \dataDir -> do
+testState :: IO State
+testState = withDataDir $ \dataDir -> do
   let dataRel = (dataDir </>)
       dbPath  = dataRel "openrla_test.db"
   conn <- Sql.open dbPath
   Db.init conn
-  let state = State { .. }
-  cb state
+  return $ State { .. }
+
+withState :: (State -> IO a) -> IO a
+withState cb = testState >>= cb
