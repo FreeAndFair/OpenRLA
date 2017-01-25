@@ -22,11 +22,8 @@ create :: Controller
 create State { conn } = parseThen createP createCb
   where
     createCb (elTitle, elDate) = do
-      elId <- liftIO $ St.create conn elTitle elDate
-      json $ object [ "id"    .= elId
-                    , "title" .= elTitle
-                    , "date"  .= elDate
-                    ]
+      election <- liftIO $ St.create conn elTitle elDate
+      json election
 
 createP :: Object -> Parser (Text, Text)
 createP o = do

@@ -67,7 +67,9 @@ test-suite open-rla-test
   build-depends:       base
                      , directory
                      , filepath
+                     , hspec
                      , hspec-wai
+                     , hspec-wai-json
                      , open-rla
                      , scotty
                      , sqlite-simple
@@ -75,6 +77,8 @@ test-suite open-rla-test
                      , tasty-hspec
                      , tasty-hunit
                      , temporary
+                     , text
+                     , time
                      , wai
                      , wai-extra
   ghc-options:         -threaded -O2 -rtsopts -with-rtsopts=-N
@@ -82,6 +86,7 @@ test-suite open-rla-test
   default-extensions:  NamedFieldPuns
                      , OverloadedStrings
                      , RecordWildCards
+                     , QuasiQuotes
 
 source-repository head
   type:     git

@@ -20,4 +20,4 @@ run:
 
 .PHONY: test
 test:
-	stack test
+	stack test --test-arguments -j1

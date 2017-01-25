@@ -1,6 +1,7 @@
 module OpenRLA.Statement.Election where
 
 import           Control.Monad (when)
+import           Data.Maybe (fromJust)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
@@ -9,14 +10,14 @@ import           OpenRLA.Statement
 import           OpenRLA.Types
 
 
-create :: Connection -> Text -> Text -> IO Integer
-create conn elTitle elDate
-  = Sql.withTransaction conn $ do
-      Sql.execute conn s (elTitle, elDate)
-      rowId <- Sql.lastInsertRowId conn
-      return $ fromIntegral rowId
-        where
-          s = "insert or replace into election (title, date) values (?, ?)"
+create :: Connection -> Text -> Text -> IO Election
+create conn elTitle elDate = do
+  let s = "insert or replace into election (title, date) values (?, ?)"
+  Sql.execute conn s (elTitle, elDate)
+  rowId <- Sql.lastInsertRowId conn
+  maybeElection <- getById conn (fromIntegral rowId)
+  return $ fromJust maybeElection
+
 
 index :: Connection -> IO [Election]
 index conn = Sql.query_ conn s
@@ -37,8 +38,7 @@ setActive conn elId
 getById :: Connection -> Integer -> IO (Maybe Election)
 getById conn elId
   = Sql.query conn s (Only elId) >>= justOneIO
-  where
-    s = "select id, title, date, active from election where active where id = ?"
+  where s = "select id, title, date, active from election where id = ?"
 
 setById :: Connection -> Election -> IO ()
 setById conn election@Election { elId, elActive } = do
