@@ -63,6 +63,8 @@ test-suite open-rla-test
   hs-source-dirs:      test
   main-is:             Test.hs
   other-modules:       IntegrationTests
+                     , IntegrationTests.Initial
+                     , IntegrationTests.Election
                      , TestSupport
   build-depends:       base
                      , directory
