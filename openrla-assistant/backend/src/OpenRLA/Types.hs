@@ -39,10 +39,14 @@ data Election
 
 instance FromRow Election where
   fromRow = do
-    elId     <- field
-    elTitle  <- field
-    elDate   <- field
-    elActive <- field
+    elId      <- field
+    elTitle   <- field
+    elDate    <- field
+    elActiveF <- field
+
+    let elActive = maybe False toTrue elActiveF
+        toTrue :: Integer -> Bool
+        toTrue = const True
 
     return $ Election { .. }
 
@@ -56,7 +60,8 @@ instance ToRow Election where
 instance ToJSON Election where
   toJSON Election { .. } =
     A.object
-    [ "title"  .= elTitle
+    [ "id"     .= elId
+    , "title"  .= elTitle
     , "date"   .= elDate
     , "active" .= elActive
     ]
