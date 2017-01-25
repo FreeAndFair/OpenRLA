@@ -1,7 +1,7 @@
 module OpenRLA.Controller.Election where
 
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), (.=), object)
+import           Data.Aeson (Object, (.:))
 import           Data.Aeson.Types (Parser)
 import           Data.Maybe (maybe)
 import           Data.Text (Text)

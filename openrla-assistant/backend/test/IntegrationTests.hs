@@ -29,12 +29,20 @@ integrationSpec = do
                        date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)"
                      }
                    |]
+        electionBody = [json|
+            {
+              date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)",
+              active: true,
+              id: 1,
+              title: "POTUS 2016"
+            }
+          |]
 
     it "should create the election" $ do
       let expectedBody = [json|
           [{
             date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)",
-            active: false,
+            active: true,
             id: 1,
             title: "POTUS 2016"
           }]
@@ -43,12 +51,12 @@ integrationSpec = do
       get "/election" `shouldRespondWith` expectedBody
 
     it "should return the new election" $ do
-      let expectedBody = [json|
-          {
-            date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)",
-            active: false,
-            id: 1,
-            title: "POTUS 2016"
-          }
-        |]
-      post "/election" postBody `shouldRespondWith` expectedBody
+      post "/election" postBody `shouldRespondWith` electionBody
+
+    it "should expose the new election via its id" $ do
+      post "/election" postBody
+      get "/election/1" `shouldRespondWith` electionBody
+
+    it "should set the new (and only) election as active" $ do
+      post "/election" postBody
+      get "/election/active" `shouldRespondWith` electionBody

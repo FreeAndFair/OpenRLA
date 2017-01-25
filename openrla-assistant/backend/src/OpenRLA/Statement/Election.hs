@@ -15,9 +15,10 @@ create conn elTitle elDate = do
   let s = "insert or replace into election (title, date) values (?, ?)"
   Sql.execute conn s (elTitle, elDate)
   rowId <- Sql.lastInsertRowId conn
-  maybeElection <- getById conn (fromIntegral rowId)
+  let elId = fromIntegral rowId
+  setActive conn elId
+  maybeElection <- getById conn elId
   return $ fromJust maybeElection
-
 
 index :: Connection -> IO [Election]
 index conn = Sql.query_ conn s
