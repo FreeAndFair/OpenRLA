@@ -39,12 +39,12 @@ spec = do
 
   around withApp $ context "Creating a second election" $ do
     let dateA = "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)" :: String
-        postBodyA = [matchJson|{
+        postBodyA = [json|{
           date: #{dateA},
           title: "Election A"
         }|]
         dateB = "Wed Jan 02 2016 13:02:35 GMT-0000 (UTC)" :: String
-        postBodyB = [matchJson|{
+        postBodyB = [json|{
           date: #{dateB},
           title: "Election B"
         }|]
@@ -62,18 +62,18 @@ spec = do
         }|]
 
     it "should set the newest election as active" $ do
-      post "/election" postBodyA
-      post "/election" postBodyB
+      postJson "/election" postBodyA
+      postJson "/election" postBodyB
 
       get "/election/active" `shouldRespondWithJson` (mkElectionJsonB True)
 
     it "should return the distinct created elections" $ do
-      post "/election" postBodyA `shouldRespondWithJson` (mkElectionJsonA True)
-      post "/election" postBodyB `shouldRespondWithJson` (mkElectionJsonB True)
+      postJson "/election" postBodyA `shouldRespondWithJson` (mkElectionJsonA True)
+      postJson "/election" postBodyB `shouldRespondWithJson` (mkElectionJsonB True)
 
     it "should create two elections" $ do
-      post "/election" postBodyA
-      post "/election" postBodyB
+      postJson "/election" postBodyA
+      postJson "/election" postBodyB
 
       get "/election" `shouldRespondWithJson` [json|[
         #{mkElectionJsonA False},
@@ -81,8 +81,8 @@ spec = do
       ]|]
 
     it "should make both elections accessible via id" $ do
-      post "/election" postBodyA
-      post "/election" postBodyB
+      postJson "/election" postBodyA
+      postJson "/election" postBodyB
 
       get "/election/1" `shouldRespondWithJson` (mkElectionJsonA False)
       get "/election/2" `shouldRespondWithJson` (mkElectionJsonB True)
