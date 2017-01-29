@@ -66,6 +66,7 @@ test-suite open-rla-test
                      , IntegrationTests.Initial
                      , IntegrationTests.Election
                      , IntegrationTests.Manifest
+                     , JsonTestSupport
                      , TestSupport
   build-depends:       aeson
                      , aeson-qq
@@ -85,6 +86,7 @@ test-suite open-rla-test
                      , temporary
                      , text
                      , time
+                     , unordered-containers
                      , wai
                      , wai-extra
   ghc-options:         -threaded -O2 -rtsopts -with-rtsopts=-N
