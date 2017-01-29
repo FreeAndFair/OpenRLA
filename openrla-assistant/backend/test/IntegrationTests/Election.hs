@@ -1,8 +1,5 @@
 module IntegrationTests.Election where
 
-import qualified Data.Aeson as A
-import           Data.ByteString (ByteString)
-
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
 
@@ -17,7 +14,6 @@ spec = do
           title: "POTUS 2016",
           date: #{date}
         }|]
-        postBodyS = A.encode postBody
         electionBody = [json|{
           date: #{date},
           active: true,
@@ -27,18 +23,18 @@ spec = do
 
     it "should create the election" $ do
       let expectedBody = [matchJson|[#{electionBody}]|]
-      post "/election" postBodyS
+      postJson "/election" postBody
       get "/election" `shouldRespondWith` expectedBody
 
     it "should return the new election" $ do
-      post "/election" postBodyS `shouldRespondWithJson` electionBody
+      postJson "/election" postBody `shouldRespondWithJson` electionBody
 
     it "should expose the new election via its id" $ do
-      post "/election" postBodyS
+      postJson "/election" postBody
       get "/election/1" `shouldRespondWithJson` electionBody
 
     it "should set the new (and only) election as active" $ do
-      post "/election" postBodyS
+      postJson "/election" postBody
       get "/election/active" `shouldRespondWithJson` electionBody
 
   around withApp $ context "Creating a second election" $ do

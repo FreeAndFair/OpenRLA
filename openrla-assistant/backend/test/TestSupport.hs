@@ -1,11 +1,18 @@
+{-# LANGUAGE FlexibleInstances #-}
 module TestSupport where
 
-import           Test.Hspec.Wai
+import           Test.Hspec.Wai (
+    WaiExpectation
+  , WaiSession
+  , shouldRespondWith
+  )
+import qualified Test.Hspec.Wai as HspecWai
 import           Test.Tasty.Hspec
 import qualified Test.Hspec.Wai.JSON as HspecJson
 
 import qualified Data.Aeson as A
 import qualified Data.Aeson.QQ
+import           Data.ByteString (ByteString)
 import qualified Database.SQLite.Simple as Sql
 import           Network.Wai (Application)
 import           Network.Wai.Test (SResponse)
@@ -66,3 +73,7 @@ shouldRespondWithJson
   -> WaiExpectation
 shouldRespondWithJson action val = shouldRespondWith action matcher
   where matcher = [HspecJson.json|#{val}|]
+
+postJson :: A.ToJSON a => ByteString -> a -> WaiSession SResponse
+postJson path o = HspecWai.post path body
+  where body = A.encode (A.toJSON o)
