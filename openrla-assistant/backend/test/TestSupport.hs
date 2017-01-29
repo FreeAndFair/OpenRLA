@@ -2,13 +2,16 @@ module TestSupport where
 
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
+import qualified Test.Hspec.Wai.JSON as HspecJson
 
+import qualified Data.Aeson as A
+import qualified Data.Aeson.QQ
 import qualified Database.SQLite.Simple as Sql
 import           Network.Wai (Application)
+import           Network.Wai.Test (SResponse)
 import qualified System.Directory as Dir
 import           System.FilePath ((</>))
 import qualified System.IO.Temp as Temp
-import           Control.Exception (bracket)
 
 import           Web.Scotty (scottyApp)
 
@@ -52,3 +55,14 @@ withApp action = do
   app   <- setupApp state
   action app
   teardownState state
+
+matchJson = HspecJson.json
+json = Data.Aeson.QQ.aesonQQ
+
+shouldRespondWithJson
+  :: (A.ToJSON a)
+  => WaiSession SResponse
+  -> a
+  -> WaiExpectation
+shouldRespondWithJson action val = shouldRespondWith action matcher
+  where matcher = [HspecJson.json|#{val}|]

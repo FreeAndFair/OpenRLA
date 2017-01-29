@@ -65,8 +65,12 @@ test-suite open-rla-test
   other-modules:       IntegrationTests
                      , IntegrationTests.Initial
                      , IntegrationTests.Election
+                     , IntegrationTests.Manifest
                      , TestSupport
-  build-depends:       base
+  build-depends:       aeson
+                     , aeson-qq
+                     , base
+                     , bytestring
                      , directory
                      , filepath
                      , hspec
