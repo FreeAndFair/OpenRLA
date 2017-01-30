@@ -27,6 +27,8 @@ mkApp state = do
   S.get "/election/:id" $ Election.getById state
   S.put "/election/:id" $ Election.setById state
 
+  S.get "/election/:id/contest" $ Election.getContestsById state
+
   S.get "/election/:id/sample-ballot" $ Election.sampleBallot state
 
   S.get "/election/active" $ Election.getActive state

@@ -70,3 +70,9 @@ sampleBallot State { conn } = do
     offset <- randomRIO (0, count - 1)
     BalSt.getByOffset conn offset
   json ballot
+
+getContestsById :: Controller
+getContestsById State { conn } = do
+  elId <- param "id"
+  contests <- liftIO $ St.getContests conn elId
+  json contests
