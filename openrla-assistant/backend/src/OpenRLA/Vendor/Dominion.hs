@@ -55,7 +55,16 @@ processContestManifest :: State -> Integer -> Object -> IO Value
 processContestManifest (State {..}) eId o = do
   let contests = fromJust $ parseMaybe contestManifestP o
   forM_ contests $ (St.upsertContest conn eId)
-  return $ object []
+  return $ toJSON (map toVal contests)
+    where
+      toVal (cId, extId, desc, nRanks, vFor)
+        = object [ "id"         .= cId
+                 , "externalId" .= extId
+                 , "desc"       .= desc
+                 , "numRanks"   .= nRanks
+                 , "voteFor"    .= vFor
+                 ]
+  -- return $ object []
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]
 contestManifestP o = do
