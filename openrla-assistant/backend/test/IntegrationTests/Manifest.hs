@@ -15,8 +15,8 @@ import           JsonTestSupport
 import           TestSupport
 
 
-candidateManifestPath :: FilePath
-candidateManifestPath = "dominion" </> "CandidateManifest.json"
+candidatePath :: FilePath
+candidatePath = "dominion" </> "CandidateManifest.json"
 
 electionPostBody = [json|{
     title: "POTUS 2016",
@@ -29,27 +29,32 @@ testFileIO = do
   let testFile relPath = curDir </> "test" </> "data" </> relPath
   return testFile
 
+manifestPostBodyIO :: IO (String -> FilePath -> Value)
+manifestPostBodyIO = do
+  testFile <- testFileIO
+  let manifestPostBody mType path = [json|{
+    electionId: 1,
+    vendor: "dominion",
+    type: #{mType},
+    filePath: #{testFile path}
+  }|]
+  return manifestPostBody
+
 spec :: Spec
 spec = do
-  around withApp $ context "Candidate manifests" $ do
-    let mkPostBody = \testFile -> [json|{
-      electionId: 1,
-      vendor: "dominion",
-      type: "candidate",
-      filePath: #{testFile candidateManifestPath}
-    }|]
+  around withApp $ context "Uploading manifests" $ do
+    it "should process them when uploaded in the correct order" $ do
+      manifestPostBody <- liftIO manifestPostBodyIO
 
-    it "processes a valid candidate manifest" $ do
-      testFile <- liftIO testFileIO
-      let postBody = mkPostBody testFile
-
+      -- When we have an election
       postJson "/election" electionPostBody
 
-      let resp = postJson "/manifest" postBody
+      let candidatePostBody = manifestPostBody "candidate" candidatePath
+          candidateResp = postJson "/manifest" candidatePostBody
 
-      resp `shouldRespondWith` 200
+      candidateResp `shouldRespondWith` 200
 
-      SResponse { simpleBody } <- resp
+      SResponse { simpleBody } <- candidateResp
       liftIO $ do
         let body = fromJust $ A.decode simpleBody :: Value
             bodyData = case body of
