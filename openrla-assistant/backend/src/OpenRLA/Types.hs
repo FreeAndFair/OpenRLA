@@ -89,7 +89,7 @@ instance FromRow Contest where
 instance ToJSON Contest where
   toJSON Contest { .. } =
     A.object
-    [ "contestId"   .= contId
+    [ "id"   .= contId
     , "description" .= contDescription
     , "externalId"  .= contExternalId
     , "numRanks"    .= contNumRanks

@@ -73,3 +73,112 @@ spec = do
         (jsonLength bodyData) `shouldBe` (Just 20)
 
       -- And its fully-defined contests will be associated with the election
+      let electionResp = get "/election/1/contest"
+      body <- decodeBody electionResp
+      liftIO $ body `shouldBe` [json|[
+        {
+          "description": "United States Senator - DEM",
+          "id": 1001,
+          "externalId": "600013282",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "Representative to the 115th United States Congress - District 2 - DEM",
+          "id": 1002,
+          "externalId": "600013270",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "Regent of the University of Colorado - At Large - DEM",
+          "id": 1003,
+          "externalId": "600013286",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "State Representative - District 13 - DEM",
+          "id": 1004,
+          "externalId": "600013336",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "District Attorney - 5th Judicial District - DEM",
+          "id": 1005,
+          "externalId": "600013509",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "County Commissioner-District 2 - DEM",
+          "id": 1006,
+          "externalId": "600014377",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "County Commissioner-District 3 - DEM",
+          "id": 1007,
+          "externalId": "600014416",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "County Treasurer - DEM",
+          "id": 1008,
+          "externalId": "600014307",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "United States Senator - REP",
+          "id": 1009,
+          "externalId": "600013283",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "Representative to the 115th United States Congress - District 2 - REP",
+          "id": 1010,
+          "externalId": "600013271",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "Regent of the University of Colorado - At Large - REP",
+          "id": 1011,
+          "externalId": "600013287",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "State Representative - District 13 - REP",
+          "id": 1012,
+          "externalId": "600013337",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "District Attorney - 5th Judicial District - REP",
+          "id": 1013,
+          "externalId": "600013510",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "County Commissioner-District 2 - REP",
+          "id": 1014,
+          "externalId": "600014415",
+          "voteFor": 1,
+          "numRanks": 0
+        },
+        {
+          "description": "County Commissioner-District 3 - REP",
+          "id": 1015,
+          "externalId": "600014378",
+          "voteFor": 1,
+          "numRanks": 0
+        }
+      ]|]
