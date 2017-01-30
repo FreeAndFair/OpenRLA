@@ -6,7 +6,6 @@ import           Data.Aeson.Types (Parser)
 import qualified Data.ByteString.Lazy as BSL
 import           Data.Maybe (fromJust)
 import           Data.Text (Text, unpack)
-import           Database.SQLite.Simple (lastInsertRowId)
 import           System.Directory (copyFile)
 import           Web.Scotty (json)
 
