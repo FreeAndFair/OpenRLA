@@ -18,6 +18,9 @@ import           TestSupport
 candidatePath :: FilePath
 candidatePath = "dominion" </> "CandidateManifest.json"
 
+contestPath :: FilePath
+contestPath = "dominion" </> "ContestManifest.json"
+
 electionPostBody = [json|{
     title: "POTUS 2016",
     date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)"
@@ -49,6 +52,18 @@ spec = do
       -- When we have an election
       postJson "/election" electionPostBody
 
+      -- We can upload a contest manifest
+      let contestPostBody = manifestPostBody "contest" contestPath
+          contestResp = postJson "/manifest" contestPostBody
+
+      SResponse { simpleBody } <- contestResp
+      liftIO $ do
+        let body = fromJust $ A.decode simpleBody :: Value
+            bodyData = case body of
+              Object o -> o ! "data"
+        (jsonLength bodyData) `shouldBe` (Just 15)
+
+      -- We can upload a candidate manifest
       let candidatePostBody = manifestPostBody "candidate" candidatePath
           candidateResp = postJson "/manifest" candidatePostBody
 
