@@ -57,10 +57,9 @@ spec = do
       let contestPostBody = manifestPostBody "contest" contestPath
           contestResp = postJson "/manifest" contestPostBody
 
-      SResponse { simpleBody } <- contestResp
+      body <- decodeBody contestResp
       liftIO $ do
-        let body = fromJust $ A.decode simpleBody :: Value
-            bodyData = case body of
+        let bodyData = case body of
               Object o -> o ! "data"
         (jsonLength bodyData) `shouldBe` (Just 15)
 
@@ -70,9 +69,10 @@ spec = do
 
       candidateResp `shouldRespondWith` 200
 
-      SResponse { simpleBody } <- candidateResp
+      body <- decodeBody candidateResp
       liftIO $ do
-        let body = fromJust $ A.decode simpleBody :: Value
-            bodyData = case body of
+        let bodyData = case body of
               Object o -> o ! "data"
         (jsonLength bodyData) `shouldBe` (Just 20)
+
+      -- And its fully-defined contests will be associated with the election
