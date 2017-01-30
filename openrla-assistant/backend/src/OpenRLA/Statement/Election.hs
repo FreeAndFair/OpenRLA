@@ -1,7 +1,9 @@
+{-# LANGUAGE QuasiQuotes #-}
 module OpenRLA.Statement.Election where
 
 import           Control.Monad (when)
 import           Data.Maybe (fromJust)
+import           Data.String.Here (here)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
@@ -57,3 +59,15 @@ ballotCountForId conn elId = do
   rows <- Sql.query conn s (Only elId)
   let Only count = oneRow rows
   return count
+
+getContests :: Connection -> Integer -> IO [Contest]
+getContests conn elId = do
+  let s = [here|
+    select c.id, c.external_id, c.description, c.num_ranks, c.vote_for
+      from contest c
+      join election_contests ec
+        on c.id = ec.contest_id
+     where ec.election_id = ?
+  |]
+  rows <- Sql.query conn s (Only elId)
+  return rows
