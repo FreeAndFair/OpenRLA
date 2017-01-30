@@ -23,27 +23,25 @@ electionPostBody = [json|{
     date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)"
 }|]
 
-mkManifestPostBody :: Integer -> String -> String -> FilePath -> A.Value
-mkManifestPostBody elId vendor manifestType filePath = [json|{
-  electionId: #{elId},
-  vendor: #{vendor},
-  type: #{manifestType},
-  filePath: #{filePath}
-}|]
-
-testFile :: FilePath -> IO FilePath
-testFile relPath = do
+testFileIO :: IO (FilePath -> FilePath)
+testFileIO = do
   curDir <- Dir.getCurrentDirectory
-  let testDataDir = curDir </> "test" </> "data"
-  return $ testDataDir </> relPath
+  let testFile relPath = curDir </> "test" </> "data" </> relPath
+  return testFile
 
 spec :: Spec
 spec = do
-  around withApp $ context "Creating a first election" $ do
+  around withApp $ context "Candidate manifests" $ do
+    let mkPostBody = \testFile -> [json|{
+      electionId: 1,
+      vendor: "dominion",
+      type: "candidate",
+      filePath: #{testFile candidateManifestPath}
+    }|]
+
     it "processes a valid candidate manifest" $ do
-      postBody <- liftIO $ do
-        absPath <- testFile candidateManifestPath
-        return $ mkManifestPostBody 1 "dominion" "candidate" absPath
+      testFile <- liftIO testFileIO
+      let postBody = mkPostBody testFile
 
       postJson "/election" electionPostBody
 
