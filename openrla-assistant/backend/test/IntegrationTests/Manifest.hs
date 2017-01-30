@@ -21,6 +21,7 @@ candidatePath = "dominion" </> "CandidateManifest.json"
 contestPath :: FilePath
 contestPath = "dominion" </> "ContestManifest.json"
 
+electionPostBody :: Value
 electionPostBody = [json|{
     title: "POTUS 2016",
     date: "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)"
