@@ -1,13 +1,10 @@
 module IntegrationTests.Manifest where
 
-import qualified Data.Aeson as A
 import           Data.Aeson (Value(..))
 import           Data.HashMap.Lazy ((!))
-import           Data.Maybe (fromJust)
 import qualified System.Directory as Dir
 import           System.FilePath ((</>))
 
-import           Network.Wai.Test (SResponse(..), simpleBody)
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
 
