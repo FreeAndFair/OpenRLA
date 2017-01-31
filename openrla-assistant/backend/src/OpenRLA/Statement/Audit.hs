@@ -41,6 +41,9 @@ setActive conn auId
       Sql.execute_ conn "update audit set active = null where active = 1"
       Sql.execute  conn "update audit set active = 1 where id = ?" (Only auId)
 
+resetActive :: Connection -> IO ()
+resetActive conn = Sql.execute_ conn "update audit set active = null where active = 1"
+
 indexMarks :: Connection -> Integer -> IO [AuditMark]
 indexMarks conn auId = Sql.query conn s (Only auId)
   where
