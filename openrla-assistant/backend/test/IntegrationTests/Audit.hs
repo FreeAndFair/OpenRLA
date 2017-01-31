@@ -62,3 +62,10 @@ spec = do
 
       let activeBody = decodeBody auditActiveResp
       liftIO $ activeBody `shouldBe` auditJson
+
+      auditByIdResp <- get "/audit/1"
+
+      return auditByIdResp `shouldRespondWith` 200
+
+      let byIdBody = decodeBody auditByIdResp
+      liftIO $ byIdBody `shouldBe` auditJson
