@@ -178,8 +178,8 @@ instance ToRow Audit where
 instance FromRow Audit where
   fromRow = do
     auId         <- field
-    auDate       <- field
     auElectionId <- field
+    auDate       <- field
     auRiskLimit  <- field
 
     return $ Audit { .. }
