@@ -25,15 +25,15 @@ mkApp debug state = do
   S.get  "/election" $ Election.index state
   S.post "/election" $ Election.create state
 
+  S.get "/election/active" $ Election.getActive state
+  S.put "/election/active" $ Election.setActive state
+
   S.get "/election/:id" $ Election.getById state
   S.put "/election/:id" $ Election.setById state
 
   S.get "/election/:id/contest" $ Election.getContestsById state
 
   S.get "/election/:id/sample-ballot" $ Election.sampleBallot state
-
-  S.get "/election/active" $ Election.getActive state
-  S.put "/election/active" $ Election.setActive state
 
   S.get  "/ballot" $ Ballot.index state
   S.post "/ballot" $ Ballot.create state
