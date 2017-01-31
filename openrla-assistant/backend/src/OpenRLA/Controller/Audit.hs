@@ -55,8 +55,8 @@ setByIdP o = do
 
 getActive :: Controller
 getActive State { conn } = do
-  res <- liftIO $ St.getActive conn
-  maybe (status notFound404) json res
+  audit <- liftIO $ St.getActive conn
+  maybe (status notFound404) json audit
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") setActiveCb
