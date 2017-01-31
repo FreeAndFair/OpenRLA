@@ -40,6 +40,7 @@ spec = do
       postJson "/election" electionPostBody `shouldRespondWith` 200
 
       get "/audit" `shouldRespondWith` "[]"
+      get "/audit/1" `shouldRespondWith` 404
 
       auditCreateResp <- postJson "/audit" auditPostBody
 
