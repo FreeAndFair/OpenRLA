@@ -69,3 +69,5 @@ spec = do
 
       let byIdBody = decodeBody auditByIdResp
       liftIO $ byIdBody `shouldBe` auditJson
+
+      get "/audit/666" `shouldRespondWith` 404
