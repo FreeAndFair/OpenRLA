@@ -1,7 +1,7 @@
 module OpenRLA.Controller.Audit where
 
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), (.:?), (.!=))
+import           Data.Aeson (Object, (.:))
 import           Data.Aeson.Types (Parser)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
