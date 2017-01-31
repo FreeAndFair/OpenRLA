@@ -1,4 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
 module OpenRLA.Statement.Election where
 
 import           Control.Monad (when)

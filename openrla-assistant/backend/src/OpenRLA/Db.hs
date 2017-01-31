@@ -1,4 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
 module OpenRLA.Db (
     OpenRLA.Db.init
   ) where
