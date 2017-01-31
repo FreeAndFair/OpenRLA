@@ -121,3 +121,5 @@ create table if not exists audit_sample (
   audit_id  integer not null references audit (id),
   ballot_id integer not null references ballot (id)
 );
+
+PRAGMA foreign_keys = ON;
