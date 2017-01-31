@@ -36,7 +36,7 @@ auditJson = [json|{
 spec :: Spec
 spec = do
   around withApp $ context "Auditing" $ do
-    it "should work" $ do
+    it "should create an active audit" $ do
       postJson "/election" electionPostBody `shouldRespondWith` 200
 
       get "/audit" `shouldRespondWith` "[]"
