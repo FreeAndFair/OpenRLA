@@ -1,7 +1,6 @@
 module IntegrationTests.Manifest where
 
 import           Data.Aeson (Value(..))
-import           Data.HashMap.Lazy ((!))
 import qualified System.Directory as Dir
 import           System.FilePath ((</>))
 
@@ -56,11 +55,10 @@ spec = do
 
       contestResp <- postJson "/manifest" contestPostBody
 
-      let body = decodeBody contestResp
       liftIO $ do
-        let bodyData = case body of
-              Object o -> o ! "data"
-        (jsonLength bodyData) `shouldBe` (Just 15)
+        let body = decodeBody contestResp
+            bodyData = body .! "data"
+        jsonLength bodyData `shouldBe` 15
 
       -- We can upload a candidate manifest
       let candidatePostBody = manifestPostBody "candidate" candidatePath
@@ -69,11 +67,10 @@ spec = do
 
       return candidateResp `shouldRespondWith` 200
 
-      let body = decodeBody candidateResp
       liftIO $ do
-        let bodyData = case body of
-              Object o -> o ! "data"
-        (jsonLength bodyData) `shouldBe` (Just 20)
+        let body = decodeBody candidateResp
+            bodyData = body .! "data"
+        jsonLength bodyData `shouldBe` 20
 
       -- And its fully-defined contests will be associated with the election
       electionResp <- get "/election/1/contest"
