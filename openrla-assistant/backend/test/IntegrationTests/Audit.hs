@@ -55,3 +55,10 @@ spec = do
 
       let indexBody = decodeBody auditIndexResp
       liftIO $ indexBody `shouldBe` [json|[#{auditJson}]|]
+
+      auditActiveResp <- get "/audit/active"
+
+      return auditActiveResp `shouldRespondWith` 200
+
+      let activeBody = decodeBody auditActiveResp
+      liftIO $ activeBody `shouldBe` auditJson
