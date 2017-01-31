@@ -38,7 +38,7 @@ getActive conn = Sql.query_ conn s >>= justOneIO
 setActive :: Connection -> Integer -> IO ()
 setActive conn auId
   = Sql.withTransaction conn $ do
-      Sql.execute_ conn "update audit set active = null where active = 1"
+      resetActive conn
       Sql.execute  conn "update audit set active = 1 where id = ?" (Only auId)
 
 resetActive :: Connection -> IO ()
