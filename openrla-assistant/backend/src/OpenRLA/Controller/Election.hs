@@ -1,5 +1,7 @@
 module OpenRLA.Controller.Election where
 
+import           Data.Aeson.QQ (aesonQQ)
+import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson (Object, (.:))
 import           Data.Aeson.Types (Parser)
@@ -10,19 +12,25 @@ import           System.Random (randomRIO)
 import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
+import qualified OpenRLA.Statement as St
 import qualified OpenRLA.Statement.Ballot as BalSt
-import qualified OpenRLA.Statement.Election as St
-import           OpenRLA.Types (Election(..), State(..))
+import qualified OpenRLA.Statement.Election as ElSt
+import           OpenRLA.Types (
+    Candidate(..)
+  , Contest(..)
+  , Election(..)
+  , State(..)
+  )
 
 
 index :: Controller
-index State { conn } = liftIO (St.index conn) >>= json
+index State { conn } = liftIO (ElSt.index conn) >>= json
 
 create :: Controller
 create State { conn } = parseThen createP createCb
   where
     createCb (elTitle, elDate) = do
-      election <- liftIO $ St.create conn elTitle elDate
+      election <- liftIO $ ElSt.create conn elTitle elDate
       json election
 
 createP :: Object -> Parser (Text, Text)
@@ -34,7 +42,7 @@ createP o = do
 getById :: Controller
 getById State { conn } = do
   elId <- param "id"
-  res <- liftIO (St.getById conn elId)
+  res <- liftIO (ElSt.getById conn elId)
   maybe (status notFound404) json res
 
 setById :: Controller
@@ -43,7 +51,7 @@ setById State { conn } = parseThen setByIdP setByIdCb
     setByIdCb (elTitle, elDate, elActive) = do
       elId <- param "id"
       let election = Election { .. }
-      liftIO $ St.setById conn election
+      liftIO $ ElSt.setById conn election
 
 setByIdP :: Object -> Parser (Text, Text, Bool)
 setByIdP o = do
@@ -54,19 +62,19 @@ setByIdP o = do
 
 getActive :: Controller
 getActive State { conn } = do
-  active <- liftIO $ St.getActive conn
+  active <- liftIO $ ElSt.getActive conn
   maybe (status notFound404) json active
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "electionId") cb
   where
-    cb eId = liftIO (St.setActive conn eId) >>= json
+    cb eId = liftIO (ElSt.setActive conn eId) >>= json
 
 sampleBallot :: Controller
 sampleBallot State { conn } = do
   elId  <- param "id"
   ballot <- liftIO $ do
-    count <- St.ballotCountForId conn elId
+    count <- ElSt.ballotCountForId conn elId
     offset <- randomRIO (0, count - 1)
     BalSt.getByOffset conn offset
   json ballot
@@ -74,5 +82,25 @@ sampleBallot State { conn } = do
 getContestsById :: Controller
 getContestsById State { conn } = do
   elId <- param "id"
-  contests <- liftIO $ St.getContests conn elId
-  json contests
+  contests <- liftIO $ ElSt.getContests conn elId
+  let contestCb Contest { .. } = do
+        candidates <- St.getContestCandidates conn contId
+        let cb Candidate { .. } = [aesonQQ|{
+              description: #{candDescription},
+              id: #{candId},
+              externalId: #{candExternalId},
+              contestId: #{candContestId},
+              type: #{candType}
+            }|]
+            candidatesJson = map cb candidates
+        return [aesonQQ|{
+          description: #{contDescription},
+          id: #{contId},
+          externalId: #{contExternalId},
+          voteFor: #{contVoteFor},
+          numRanks: #{contNumRanks},
+          candidates: #{candidatesJson}
+        }|]
+  result <- liftIO $ forM contests contestCb
+
+  json result

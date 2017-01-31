@@ -1,6 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module OpenRLA.Statement where
 
+import           Data.String.Here (here)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
@@ -26,7 +27,11 @@ getContestCandidates :: Connection -> Integer -> IO [Candidate]
 getContestCandidates conn contestId
   = Sql.query conn s (Only contestId)
   where
-    s = "select id, external_id, contest_id, description, type from election_contests where contest_id = ?"
+    s = [here|
+      select id, contest_id, external_id, description, type
+        from candidate
+       where contest_id = ?
+    |]
 
 type CandidateRow = (Integer, Text, Text, Integer, Text)
 

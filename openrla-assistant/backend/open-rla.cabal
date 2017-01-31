@@ -32,6 +32,7 @@ library
   other-modules:       OpenRLA.Internal
   build-depends:       base >= 4.7 && < 5
                      , aeson
+                     , aeson-qq
                      , bytestring
                      , direct-sqlite
                      , directory
@@ -49,6 +50,7 @@ library
   default-extensions:  NamedFieldPuns
                      , OverloadedStrings
                      , RecordWildCards
+                     , QuasiQuotes
 
 executable open-rla-exe
   hs-source-dirs:      app
