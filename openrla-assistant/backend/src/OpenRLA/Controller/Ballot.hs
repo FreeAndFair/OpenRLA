@@ -19,17 +19,18 @@ import           OpenRLA.Types (Ballot(..), State(..))
 create :: Controller
 create state = parseThen createP createCb
   where
-    createCb srcPaths = liftIO (createIO state srcPaths) >>= json
+    createCb (elId, srcPaths) = liftIO (createIO state elId srcPaths) >>= json
 
-createP :: Object -> Parser [FilePath]
+createP :: Object -> Parser (Integer, [FilePath])
 createP o = do
-  srcPath <- o .: "filePaths"
-  return $ map unpack srcPath
+  elId     <- o .: "electionId"
+  srcPaths <- o .: "filePaths"
+  return (elId, map unpack srcPaths)
 
-createIO :: State -> [FilePath] -> IO [Ballot]
-createIO State { .. } srcPaths = do
+createIO :: State -> Integer -> [FilePath] -> IO [Ballot]
+createIO State { .. } elId srcPaths = do
   let relPath balId = dataDir </> "ballot" </> (show balId)
-  ballots <- St.create conn srcPaths relPath
+  ballots <- St.create conn elId srcPaths relPath
   let copyBallot (srcPath, ballot) = do
         let Ballot { balFilePath } = ballot
         copyFile srcPath balFilePath

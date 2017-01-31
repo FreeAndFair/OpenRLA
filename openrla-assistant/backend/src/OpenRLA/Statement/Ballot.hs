@@ -8,11 +8,10 @@ import           OpenRLA.Statement (justOneIO)
 import           OpenRLA.Types
 
 
-
-create :: Connection -> [FilePath] -> (Integer -> FilePath) -> IO [Ballot]
-create conn srcPaths relPath
+create :: Connection -> Integer -> [FilePath] -> (Integer -> FilePath) -> IO [Ballot]
+create conn elId srcPaths relPath
   = Sql.withTransaction conn $ do
-      let s = "insert into ballot_image (src_path) values ?"
+      let s = "insert into ballot_image (src_path) values (?)"
       forM srcPaths $ \src -> do
         Sql.execute conn s (Only src)
         rowId <- Sql.lastInsertRowId conn
@@ -20,6 +19,8 @@ create conn srcPaths relPath
             balFilePath = relPath balId
         let s' = "update ballot_image set file_path = ? where id = ?"
         Sql.execute conn s' (balFilePath, balId)
+        let s'' = "insert into election_ballot_image values (?, ?)"
+        Sql.execute conn s'' (elId, balId)
         return $ Ballot { .. }
 
 getById :: Connection -> Integer -> IO (Maybe Ballot)
