@@ -43,15 +43,15 @@ mkApp debug state = do
   S.get  "/audit" $ Audit.index state
   S.post "/audit" $ Audit.create state
 
+  S.get "/audit/active" $ Audit.getActive state
+  S.put "/audit/active" $ Audit.setActive state
+
   S.get "/audit/:id" $ Audit.getById state
   S.put "/audit/:id" $ Audit.setById state
 
   S.post "/audit/:id/marks" $ Audit.createMarks state
 
   S.get  "/audit/:id/sample" $ Audit.currentSample state
-
-  S.get "/audit/active" $ Audit.getActive state
-  S.put "/audit/active" $ Audit.setActive state
 
 
 runApp :: IO ()
