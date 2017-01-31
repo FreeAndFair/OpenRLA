@@ -33,6 +33,7 @@ setupDataDir = do
   baseDir <- Temp.createTempDirectory tmpDir "openrla_test"
   let dataDir = baseDir </> "data"
   Dir.createDirectoryIfMissing True dataDir
+  Dir.createDirectoryIfMissing True $ dataDir </> "ballot"
   return dataDir
 
 teardownDataDir :: FilePath -> IO ()

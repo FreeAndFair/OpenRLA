@@ -63,6 +63,7 @@ runApp = do
       dbPath  = dataRel "openrla.db"
 
   D.createDirectoryIfMissing True dataDir
+  D.createDirectoryIfMissing True $ dataRel "ballot"
 
   conn <- Sql.open dbPath
   Db.init conn
