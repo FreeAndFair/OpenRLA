@@ -1,0 +1,47 @@
+{
+  "Version": "1.0.0.0",
+  "List": [
+    {
+      "Id": 1,
+      "Description": "1-A",
+      "ExternalId": "1001-1",
+      "ContestId": 1001,
+      "Type": "Regular"
+    },
+    {
+      "Id": 2,
+      "Description": "1-B",
+      "ExternalId": "1001-2",
+      "ContestId": 1001,
+      "Type": "Regular"
+    },
+    {
+      "Id": 3,
+      "Description": "2-A",
+      "ExternalId": "1002-3",
+      "ContestId": 1001,
+      "Type": "Regular"
+    },
+    {
+      "Id": 4,
+      "Description": "2-B",
+      "ExternalId": "1002-4",
+      "ContestId": 1002,
+      "Type": "Regular"
+    },
+    {
+      "Id": 5,
+      "Description": "2-C",
+      "ExternalId": "1002-5",
+      "ContestId": 1002,
+      "Type": "Write-In"
+    },
+    {
+      "Id": 6,
+      "Description": "3-Only",
+      "ExternalId": "1003-6",
+      "ContestId": 1003,
+      "Type": "Regular"
+    }
+  ]
+}

@@ -13,10 +13,10 @@ import           TestSupport
 
 
 candidatePath :: FilePath
-candidatePath = "dominion" </> "CandidateManifest.json"
+candidatePath = "dominion" </> "example" </> "CandidateManifest.json"
 
 contestPath :: FilePath
-contestPath = "dominion" </> "ContestManifest.json"
+contestPath = "dominion" </> "example" </>"ContestManifest.json"
 
 electionPostBody :: Value
 electionPostBody = [json|{

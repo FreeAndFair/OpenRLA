@@ -1,0 +1,26 @@
+{
+  "Version": "1.0.0.0",
+  "List": [
+    {
+      "Id": 1001,
+      "Description": "Contest 1: 2 candidates",
+      "ExternalId": "E-1001",
+      "VoteFor": 1,
+      "NumOfRanks": 0
+    },
+    {
+      "Id": 1002,
+      "Description": "Contest 2: 3 candidates, has write-in",
+      "ExternalId": "E-1002",
+      "VoteFor": 1,
+      "NumOfRanks": 0
+    },
+    {
+      "Id": 1003,
+      "Description": "Contest 3: only 1 candidate",
+      "ExternalId": "E-1003",
+      "VoteFor": 1,
+      "NumOfRanks": 0
+    }
+  ]
+}
