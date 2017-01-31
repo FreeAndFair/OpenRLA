@@ -53,9 +53,10 @@ spec = do
 
       -- We can upload a contest manifest
       let contestPostBody = manifestPostBody "contest" contestPath
-          contestResp = postJson "/manifest" contestPostBody
 
-      body <- decodeBody contestResp
+      contestResp <- postJson "/manifest" contestPostBody
+
+      body <- decodeBody $ return contestResp
       liftIO $ do
         let bodyData = case body of
               Object o -> o ! "data"
@@ -63,17 +64,19 @@ spec = do
 
       -- We can upload a candidate manifest
       let candidatePostBody = manifestPostBody "candidate" candidatePath
-          candidateResp = postJson "/manifest" candidatePostBody
 
-      candidateResp `shouldRespondWith` 200
+      candidateResp <- postJson "/manifest" candidatePostBody
 
-      body <- decodeBody candidateResp
+      return candidateResp `shouldRespondWith` 200
+
+      body <- decodeBody $ return candidateResp
       liftIO $ do
         let bodyData = case body of
               Object o -> o ! "data"
         (jsonLength bodyData) `shouldBe` (Just 20)
 
       -- And its fully-defined contests will be associated with the election
-      let electionResp = get "/election/1/contest"
-      body <- decodeBody electionResp
+      electionResp <- get "/election/1/contest"
+
+      body <- decodeBody $ return electionResp
       liftIO $ body `shouldBe` Expected.contestsWithCandidates
