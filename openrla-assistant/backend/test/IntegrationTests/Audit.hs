@@ -10,11 +10,11 @@ import           TestSupport
 
 
 date :: String
-date = "Tue Jan 01 2016 12:01:23 GMT-0000 (UTC)"
+date = "Tue Jan 01 2016 12:34:56 GMT-0000 (UTC)"
 
 electionPostBody :: Value
 electionPostBody = [json|{
-  title: "POTUS 2016",
+  title: "The Election",
   date: #{date}
 }|]
 
