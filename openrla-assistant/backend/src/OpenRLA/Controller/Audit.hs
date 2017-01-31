@@ -8,13 +8,13 @@ import           Network.HTTP.Types.Status (notFound404)
 import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
-import qualified OpenRLA.Statement.Audit as St
+import qualified OpenRLA.Statement.Audit as AuSt
 import qualified OpenRLA.Statement.Ballot as BalSt
 import           OpenRLA.Types (Audit(..), AuditMark(..), State(..))
 
 
 index :: Controller
-index State { conn } = liftIO (St.index conn) >>= json
+index State { conn } = liftIO (AuSt.index conn) >>= json
 
 type CreateData = (Integer, Text, Double)
 
@@ -22,7 +22,7 @@ create :: Controller
 create State { conn } = parseThen createP createCb
   where
     createCb args = do
-      audit <- liftIO $ St.create conn args
+      audit <- liftIO $ AuSt.create conn args
       json audit
 
 createP :: Object -> Parser CreateData
@@ -35,7 +35,7 @@ createP o = do
 getById :: Controller
 getById State { conn } = do
   auId <- param "id"
-  audit <- liftIO $ St.getById conn auId
+  audit <- liftIO $ AuSt.getById conn auId
   maybe (status notFound404) json audit
 
 setById :: Controller
@@ -44,7 +44,7 @@ setById State { conn } = parseThen setByIdP setByIdCb
     setByIdCb (auDate, auElectionId, auRiskLimit) = do
       auId <- param "id"
       let audit = Audit { .. }
-      liftIO $ St.setById conn audit
+      liftIO $ AuSt.setById conn audit
 
 setByIdP :: Object -> Parser (Text, Integer, Double)
 setByIdP o = do
@@ -55,18 +55,18 @@ setByIdP o = do
 
 getActive :: Controller
 getActive State { conn } = do
-  audit <- liftIO $ St.getActive conn
+  audit <- liftIO $ AuSt.getActive conn
   maybe (status notFound404) json audit
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") setActiveCb
   where
-    setActiveCb auId = liftIO (St.setActive conn auId) >>= json
+    setActiveCb auId = liftIO (AuSt.setActive conn auId) >>= json
 
 indexMarks :: Controller
 indexMarks State { conn } = do
   auId <- param "id"
-  marks <- liftIO $ St.indexMarks conn auId
+  marks <- liftIO $ AuSt.indexMarks conn auId
   json marks
 
 createMarks :: Controller
@@ -75,7 +75,7 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
     createMarksCb (amBallotId, amContestId, amCandidateId) = do
       amAuditId <- param "id"
       let auditMark = AuditMark { .. }
-      liftIO $ St.createMark conn auditMark
+      liftIO $ AuSt.createMark conn auditMark
 
 createMarksP :: Object -> Parser (Integer, Integer, Integer)
 createMarksP o = do
@@ -88,6 +88,6 @@ currentSample :: Controller
 currentSample State { conn } = do
   auId <- param "id"
   sample <- liftIO $ do
-    sampleId <- St.currentSampleId conn auId
+    sampleId <- AuSt.currentSampleId conn auId
     BalSt.getById conn sampleId
   json sample
