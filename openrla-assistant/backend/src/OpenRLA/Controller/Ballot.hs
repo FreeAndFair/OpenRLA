@@ -16,9 +16,6 @@ import qualified OpenRLA.Statement.Ballot as St
 import           OpenRLA.Types (Ballot(..), State(..))
 
 
-index :: Controller
-index State { conn } = liftIO (St.index conn (0, 20)) >>= json
-
 create :: Controller
 create state = parseThen createP createCb
   where

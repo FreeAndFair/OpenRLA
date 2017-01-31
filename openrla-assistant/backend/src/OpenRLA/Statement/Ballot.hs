@@ -8,10 +8,6 @@ import           OpenRLA.Statement (justOneIO)
 import           OpenRLA.Types
 
 
-index :: Connection -> (Integer, Integer) -> IO [Ballot]
-index conn args = Sql.query conn s args
-  where
-    s = "select id, file_path from ballot_image limit ? offset ?"
 
 create :: Connection -> [FilePath] -> (Integer -> FilePath) -> IO [Ballot]
 create conn srcPaths relPath

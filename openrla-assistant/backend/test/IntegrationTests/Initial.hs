@@ -15,8 +15,5 @@ spec = do
     it "should have no active election" $ do
       get "/election/active" `shouldRespondWith` 404
 
-    it "should have no ballots" $ do
-      get "/ballot" `shouldRespondWith` "[]"
-
     it "should have no audits" $ do
       get "/audit" `shouldRespondWith` "[]"
