@@ -66,6 +66,7 @@ test-suite open-rla-test
   main-is:             Test.hs
   other-modules:       IntegrationTests
                      , IntegrationTests.Audit
+                     , IntegrationTests.Ballot
                      , IntegrationTests.Initial
                      , IntegrationTests.Election
                      , IntegrationTests.Expected

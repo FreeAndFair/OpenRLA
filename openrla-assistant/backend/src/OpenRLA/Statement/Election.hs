@@ -59,6 +59,17 @@ ballotCountForId conn elId = do
   let Only count = oneRow rows
   return count
 
+getBallots :: Connection -> Integer -> IO [Ballot]
+getBallots conn elId = do
+  let s = [here|
+    select b.id, b.file_path
+      from ballot_image b
+      join election_ballot_image eb
+        on b.id = eb.ballot_image
+     where eb.election_id = ?
+  |]
+  Sql.query conn s (Only elId)
+
 getContests :: Connection -> Integer -> IO [Contest]
 getContests conn elId = do
   let s = [here|

@@ -31,6 +31,8 @@ mkApp debug state = do
   S.get "/election/:id" $ Election.getById state
   S.put "/election/:id" $ Election.setById state
 
+  S.get "/election/:id/ballot" $ Election.getBallotsById state
+
   S.get "/election/:id/contest" $ Election.getContestsById state
 
   S.get "/election/:id/sample-ballot" $ Election.sampleBallot state

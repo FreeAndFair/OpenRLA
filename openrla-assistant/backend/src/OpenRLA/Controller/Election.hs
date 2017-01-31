@@ -79,6 +79,12 @@ sampleBallot State { conn } = do
     BalSt.getByOffset conn offset
   json ballot
 
+getBallotsById :: Controller
+getBallotsById State { conn } = do
+  elId  <- param "id"
+  ballots <- liftIO $ ElSt.getBallots conn elId
+  json ballots
+
 getContestsById :: Controller
 getContestsById State { conn } = do
   elId <- param "id"
