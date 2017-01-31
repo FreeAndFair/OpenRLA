@@ -39,19 +39,18 @@ spec = do
     it "should work" $ do
       postJson "/election" electionPostBody `shouldRespondWith` 200
 
-      auditIndexResp <- get "/audit"
-      (return auditIndexResp) `shouldRespondWith` "[]"
+      get "/audit" `shouldRespondWith` "[]"
 
       auditCreateResp <- postJson "/audit" auditPostBody
 
       return auditCreateResp `shouldRespondWith` 200
 
-      createBody <- decodeBody $ return auditCreateResp
+      let createBody = decodeBody auditCreateResp
       liftIO $ createBody `shouldBe` auditJson
 
       auditIndexResp <- get "/audit"
 
       return auditIndexResp `shouldRespondWith` 200
 
-      indexBody <- decodeBody $ return auditIndexResp
+      let indexBody = decodeBody auditIndexResp
       liftIO $ indexBody `shouldBe` [json|[#{auditJson}]|]

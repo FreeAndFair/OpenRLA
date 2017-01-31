@@ -12,7 +12,5 @@ jsonLength v = case v of
   Array a -> Just $ (fromIntegral . length) a
   _       -> Nothing
 
-decodeBody :: Monad m => m SResponse -> m Value
-decodeBody resp = do
-  SResponse { simpleBody } <- resp
-  return $ fromJust $ A.decode simpleBody
+decodeBody :: SResponse -> Value
+decodeBody SResponse { simpleBody } = fromJust $ A.decode simpleBody

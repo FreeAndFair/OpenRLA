@@ -56,7 +56,7 @@ spec = do
 
       contestResp <- postJson "/manifest" contestPostBody
 
-      body <- decodeBody $ return contestResp
+      let body = decodeBody contestResp
       liftIO $ do
         let bodyData = case body of
               Object o -> o ! "data"
@@ -69,7 +69,7 @@ spec = do
 
       return candidateResp `shouldRespondWith` 200
 
-      body <- decodeBody $ return candidateResp
+      let body = decodeBody candidateResp
       liftIO $ do
         let bodyData = case body of
               Object o -> o ! "data"
@@ -78,5 +78,5 @@ spec = do
       -- And its fully-defined contests will be associated with the election
       electionResp <- get "/election/1/contest"
 
-      body <- decodeBody $ return electionResp
+      let body = decodeBody electionResp
       liftIO $ body `shouldBe` Expected.contestsWithCandidates
