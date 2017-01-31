@@ -52,7 +52,6 @@ teardownState State { conn, dataDir } = do
   Sql.close conn
   teardownDataDir dataDir
 
-
 setupApp :: State -> IO Application
 setupApp = scottyApp . (mkApp False)
 
