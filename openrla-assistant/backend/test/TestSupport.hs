@@ -54,7 +54,7 @@ teardownState State { conn, dataDir } = do
 
 
 setupApp :: State -> IO Application
-setupApp = scottyApp . mkApp
+setupApp = scottyApp . (mkApp False)
 
 withApp :: ActionWith Application -> IO ()
 withApp action = do

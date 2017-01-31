@@ -1,5 +1,6 @@
 module OpenRLA (runApp, mkApp) where
 
+import           Control.Monad (when)
 import           Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import qualified Web.Scotty as S
 import qualified Database.SQLite.Simple as Sql
@@ -15,9 +16,9 @@ import qualified OpenRLA.Db as Db
 import           OpenRLA.Types (State(..))
 
 
-mkApp :: State -> S.ScottyM ()
-mkApp state = do
-  S.middleware logStdoutDev
+mkApp :: Bool -> State -> S.ScottyM ()
+mkApp debug state = do
+  when debug (S.middleware logStdoutDev)
 
   S.post "/manifest" $ Manifest.create state
 
@@ -67,4 +68,4 @@ runApp = do
   Db.init conn
 
   let state = State { .. }
-  S.scotty 8080 (mkApp state)
+  S.scotty 8080 (mkApp True state)
