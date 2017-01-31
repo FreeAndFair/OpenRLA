@@ -33,11 +33,10 @@ createP o = do
   return (elId, date, riskLimit)
 
 getById :: Controller
-getById State { conn } = parseThen (.: "auditId") getByIdCb
-  where
-    getByIdCb auditId = do
-      res <- liftIO $ St.getById conn auditId
-      maybe (status notFound404) json res
+getById State { conn } = do
+  auId <- param "id"
+  audit <- liftIO $ St.getById conn auId
+  maybe (status notFound404) json audit
 
 setById :: Controller
 setById State { conn } = parseThen setByIdP setByIdCb
