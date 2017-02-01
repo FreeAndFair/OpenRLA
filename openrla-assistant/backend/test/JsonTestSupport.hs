@@ -7,6 +7,8 @@ import           Data.Maybe (fromJust)
 import           Data.Text (Text)
 
 import           Network.Wai.Test (SResponse(..), simpleBody)
+import           Test.Hspec.Wai
+import           Test.Tasty.Hspec
 
 
 jsonLength :: Value -> Integer
@@ -17,3 +19,11 @@ Object o .! k = o ! k
 
 decodeBody :: SResponse -> Value
 decodeBody SResponse { simpleBody } = fromJust $ A.decode simpleBody
+
+bodyShouldBe :: SResponse -> Value -> WaiSession ()
+bodyShouldBe resp val = liftIO $ decodeBody resp `shouldBe` val
+
+getBodyId :: SResponse -> Integer
+getBodyId resp = truncate balId
+  where body = decodeBody resp
+        Number balId = body .! "id"
