@@ -109,7 +109,9 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
   where
     createMarksCb (amBallotId, markData) = do
       amAuditId <- param "id"
-      let mkMarkJson (amContestId, amCandidateId) = do
+      audit <- liftIO $ AuSt.getById conn amAuditId >>= return . fromJust
+      let Audit { auElectionId } = audit
+          mkMarkJson (amContestId, amCandidateId) = do
             let auditMark = AuditMark { .. }
             liftIO $ AuSt.createMark conn auditMark
             return [aesonQQ|{
@@ -117,6 +119,9 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
               candidateId: #{amCandidateId}
             }|]
       marks <- liftIO $ forM markData mkMarkJson
+      newBallot <- liftIO $ ElSt.randomBallot conn auElectionId >>= return . fromJust
+      let Ballot { balId } = newBallot
+      liftIO $ AuSt.setCurrentSample conn amAuditId balId
       json marks
 
 createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
