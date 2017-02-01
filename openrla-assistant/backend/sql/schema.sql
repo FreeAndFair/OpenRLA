@@ -99,13 +99,14 @@ create table if not exists audit_contest (
 create table if not exists audit_current_sample (
   audit_id  integer primary key
                     references audit (id),
-  ballot_id integer not null references ballot (id)
+  ballot_id integer not null
+                    references ballot_image (id)
 );
 
 create table if not exists audit_sample (
   id        integer not null primary key,
   audit_id  integer not null references audit (id),
-  ballot_id integer not null references ballot (id)
+  ballot_id integer not null references ballot_image (id)
 );
 
 PRAGMA foreign_keys = ON;
