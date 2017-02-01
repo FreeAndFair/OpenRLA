@@ -38,6 +38,19 @@ create table if not exists candidate (
   type        text     not null
 );
 
+create table if not exists election_contest_outcome (
+  created      datetime not null default current_timestamp,
+  election_id  integer  not null references election (id),
+  contest_id   integer  not null references contest (id),
+  candidate_id integer  not null references contest (id),
+  share        real     not null
+                        check (
+                              0.0 <= share
+                          and share <= 1.0
+                        ),
+  primary key (election_id, contest_id, candidate_id)
+);
+
 create table if not exists manifest (
   id        integer  primary key,
   created   datetime not null
