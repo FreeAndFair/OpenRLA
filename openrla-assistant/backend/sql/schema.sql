@@ -90,7 +90,7 @@ create table if not exists audit_mark (
   candidate_id integer not null references candidate (id)
 );
 
-create table if not exists audit_contest_state (
+create table if not exists audit_contest (
   audit_id       integer not null references audit (id),
   contest_id     integer not null references contest (id),
   test_statistic real    not null
