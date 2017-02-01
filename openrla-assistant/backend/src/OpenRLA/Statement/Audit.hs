@@ -1,6 +1,7 @@
 module OpenRLA.Statement.Audit where
 
 import           Data.Maybe (fromJust)
+import           Data.String.Here (here)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
@@ -62,3 +63,11 @@ currentSampleId conn auId = do
   rows <- Sql.query conn s (Only auId)
   Only sampleId <- oneRowIO rows
   return sampleId
+
+addContest :: Connection -> Integer -> Integer -> IO ()
+addContest conn auId contestId = do
+  let s = [here|
+    insert into audit_contest
+    values (?, ?, 1.0)
+  |]
+  Sql.execute conn s (auId, contestId)
