@@ -81,32 +81,20 @@ spec = do
       get "/audit/1" `shouldRespondWith` 404
 
       auditCreateResp <- postJson "/audit" auditPostBodyA
-
       return auditCreateResp `shouldRespondWith` 200
-
-      let createBody = decodeBody auditCreateResp
-      liftIO $ createBody `shouldBe` auditJsonA
+      auditCreateResp `bodyShouldBe` auditJsonA
 
       auditIndexResp <- get "/audit"
-
       return auditIndexResp `shouldRespondWith` 200
-
-      let indexBody = decodeBody auditIndexResp
-      liftIO $ indexBody `shouldBe` [json|[#{auditJsonA}]|]
+      auditIndexResp `bodyShouldBe` [json|[#{auditJsonA}]|]
 
       auditActiveResp <- get "/audit/active"
-
       return auditActiveResp `shouldRespondWith` 200
-
-      let activeBody = decodeBody auditActiveResp
-      liftIO $ activeBody `shouldBe` auditJsonA
+      auditActiveResp `bodyShouldBe` auditJsonA
 
       auditByIdResp <- get "/audit/1"
-
       return auditByIdResp `shouldRespondWith` 200
-
-      let byIdBody = decodeBody auditByIdResp
-      liftIO $ byIdBody `shouldBe` auditJsonA
+      auditByIdResp `bodyShouldBe` auditJsonA
 
       get "/audit/666" `shouldRespondWith` 404
 
@@ -116,40 +104,26 @@ spec = do
 
       postJson "/audit" auditPostBodyA
       auditCreateResp <- postJson "/audit" auditPostBodyB
-
-      let createBody = decodeBody auditCreateResp
-      liftIO $ createBody `shouldBe` auditJsonB
+      auditCreateResp `bodyShouldBe` auditJsonB
 
       auditIndexResp <- get "/audit"
-
       return auditIndexResp `shouldRespondWith` 200
-
-      let indexBody = decodeBody auditIndexResp
-      liftIO $ indexBody `shouldBe` [json|[
+      auditIndexResp `bodyShouldBe` [json|[
         #{auditJsonA},
         #{auditJsonB}
       ]|]
 
       auditActiveResp <- get "/audit/active"
-
       return auditActiveResp `shouldRespondWith` 200
-
-      let activeBody = decodeBody auditActiveResp
-      liftIO $ activeBody `shouldBe` auditJsonB
+      auditActiveResp `bodyShouldBe` auditJsonB
 
       auditByIdResp <- get "/audit/1"
-
       return auditByIdResp `shouldRespondWith` 200
-
-      let byIdBody = decodeBody auditByIdResp
-      liftIO $ byIdBody `shouldBe` auditJsonA
+      auditByIdResp `bodyShouldBe` auditJsonA
 
       auditByIdResp <- get "/audit/2"
-
       return auditByIdResp `shouldRespondWith` 200
-
-      let byIdBody = decodeBody auditByIdResp
-      liftIO $ byIdBody `shouldBe` auditJsonB
+      auditByIdResp `bodyShouldBe` auditJsonB
 
       get "/audit/666" `shouldRespondWith` 404
 
@@ -160,15 +134,9 @@ spec = do
       postJson "/audit" auditPostBodyA
 
       sampleRespA <- get "/audit/1/sample"
-
       return sampleRespA `shouldRespondWith` 200
 
-      let getBallotId :: SResponse -> Integer
-          getBallotId resp = truncate balId
-            where body = decodeBody resp
-                  Number balId = body .! "id"
-
-      let ballotIdA = getBallotId sampleRespA
+      let ballotIdA = getBodyId sampleRespA
 
       markResp <- postJson "/audit/1/marks" [json|{
         ballotId: #{ballotIdA},
@@ -183,11 +151,8 @@ spec = do
           }
         ]
       }|]
-
       return markResp `shouldRespondWith` 200
-
-      let markRespBody = decodeBody markResp
-      liftIO $ markRespBody `shouldBe` [json|[
+      markResp `bodyShouldBe` [json|[
         {
           contestId: 1001,
           candidateId: 1
@@ -199,10 +164,9 @@ spec = do
       ]|]
 
       sampleRespB <- get "/audit/1/sample"
+      return sampleRespB `shouldRespondWith` 200
 
-      return sampleRespA `shouldRespondWith` 200
-
-      let ballotIdB = getBallotId sampleRespB
+      let ballotIdB = getBodyId sampleRespB
       liftIO $ ballotIdA `shouldNotBe` ballotIdB
 
       markResp <- postJson "/audit/1/marks" [json|{
@@ -218,8 +182,8 @@ spec = do
           }
         ]
       }|]
-      let markRespBody = decodeBody markResp
-      liftIO $ markRespBody `shouldBe` [json|[
+      return markResp `shouldRespondWith` 200
+      markResp `bodyShouldBe` [json|[
         {
           contestId: 1001,
           candidateId: 2
@@ -231,8 +195,7 @@ spec = do
       ]|]
 
       sampleRespC <- get "/audit/1/sample"
-
       return sampleRespC `shouldRespondWith` 200
 
-      let ballotIdC = getBallotId sampleRespC
+      let ballotIdC = getBodyId sampleRespC
       liftIO $ ballotIdB `shouldNotBe` ballotIdC
