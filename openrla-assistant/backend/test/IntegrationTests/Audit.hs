@@ -204,3 +204,35 @@ spec = do
 
       let ballotIdB = getBallotId sampleRespB
       liftIO $ ballotIdA `shouldNotBe` ballotIdB
+
+      markResp <- postJson "/audit/1/marks" [json|{
+        ballotId: #{ballotIdB},
+        marks: [
+          {
+            contestId: 1001,
+            candidateId: 2
+          },
+          {
+            contestId: 1003,
+            candidateId: 6
+          }
+        ]
+      }|]
+      let markRespBody = decodeBody markResp
+      liftIO $ markRespBody `shouldBe` [json|[
+        {
+          contestId: 1001,
+          candidateId: 2
+        },
+        {
+          contestId: 1003,
+          candidateId: 6
+        }
+      ]|]
+
+      sampleRespC <- get "/audit/1/sample"
+
+      return sampleRespC `shouldRespondWith` 200
+
+      let ballotIdC = getBallotId sampleRespC
+      liftIO $ ballotIdB `shouldNotBe` ballotIdC
