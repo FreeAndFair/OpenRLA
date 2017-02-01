@@ -2,7 +2,6 @@ module IntegrationTests.Audit where
 
 import           Data.Aeson (Value(..))
 
-import           Network.Wai.Test (SResponse(..))
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
 
