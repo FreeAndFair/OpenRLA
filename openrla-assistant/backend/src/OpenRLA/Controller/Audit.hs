@@ -2,7 +2,7 @@ module OpenRLA.Controller.Audit where
 
 import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), Value)
+import           Data.Aeson (Object, (.:), Value(..))
 import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser)
 import           Database.SQLite.Simple (Connection)
@@ -13,7 +13,13 @@ import           Web.Scotty (json, param, status)
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement.Audit as AuSt
 import qualified OpenRLA.Statement.Ballot as BalSt
-import           OpenRLA.Types (Audit(..), AuditMark(..), State(..))
+import qualified OpenRLA.Statement.Election as ElSt
+import           OpenRLA.Types (
+    Audit(..)
+  , AuditMark(..)
+  , Ballot(..)
+  , State(..)
+  )
 
 
 mkJson :: Connection -> Audit -> IO Value
@@ -44,6 +50,10 @@ create State { conn } = parseThen createP createCb
   where
     createCb args = do
       audit <- liftIO $ AuSt.create conn args
+      let Audit { .. } = audit
+      Just ballot <- liftIO $ ElSt.randomBallot conn auElectionId
+      let Ballot { balId } = ballot
+      liftIO $ AuSt.setCurrentSample conn auId balId
       liftIO (mkJson conn audit) >>= json
 
 createP :: Object -> Parser CreateData
@@ -96,17 +106,27 @@ indexMarks State { conn } = do
 createMarks :: Controller
 createMarks State { conn } = parseThen createMarksP createMarksCb
   where
-    createMarksCb (amBallotId, amContestId, amCandidateId) = do
+    createMarksCb (amBallotId, markData) = do
       amAuditId <- param "id"
-      let auditMark = AuditMark { .. }
-      liftIO $ AuSt.createMark conn auditMark
+      let mkMarkJson (amContestId, amCandidateId) = do
+            let auditMark = AuditMark { .. }
+            liftIO $ AuSt.createMark conn auditMark
+            return [aesonQQ|{
+              contestId: #{amContestId},
+              candidateId: #{amCandidateId}
+            }|]
+      marks <- liftIO $ forM markData mkMarkJson
+      json marks
 
-createMarksP :: Object -> Parser (Integer, Integer, Integer)
+createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
 createMarksP o = do
-  ballotId    <- o .: "ballotId"
-  contestId   <- o .: "contestId"
-  candidateId <- o .: "candidateId"
-  return (ballotId, contestId, candidateId)
+  ballotId <- o .: "ballotId"
+  marksArr <- o .: "marks"
+  marks <- forM marksArr $ \m -> do
+    contestId   <- m .: "contestId"
+    candidateId <- m .: "candidateId"
+    return (contestId, candidateId)
+  return (ballotId, marks)
 
 currentSample :: Controller
 currentSample State { conn } = do
