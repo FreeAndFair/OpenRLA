@@ -1,5 +1,6 @@
 module OpenRLA.Statement.Audit where
 
+import           Control.Monad (forM_)
 import           Data.Maybe (fromJust)
 import           Data.String.Here (here)
 import           Data.Text (Text)
@@ -14,14 +15,16 @@ index :: Connection -> IO [Audit]
 index conn = Sql.query_ conn s
   where s = "select id, election_id, date, risk_limit from audit order by date"
 
-create :: Connection -> (Integer, Text, Double) -> IO Audit
-create conn args = do
+create :: Connection -> (Integer, Text, Double, [Integer]) -> IO Audit
+create conn (elId, date, riskLimit, contestIds) = do
   let s = "insert into audit (election_id, date, risk_limit) values (?, ?, ?)"
-  Sql.execute conn s args
+  Sql.execute conn s (elId, date, riskLimit)
   rowId <- Sql.lastInsertRowId conn
   let auId = fromIntegral rowId
   setActive conn auId
   audit <- getById conn auId
+  forM_ contestIds $ \cId -> do
+    addContest conn auId cId
   return $ fromJust audit
 
 getById :: Connection -> Integer -> IO (Maybe Audit)
