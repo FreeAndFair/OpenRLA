@@ -42,7 +42,7 @@ create table if not exists election_contest_outcome (
   created      datetime not null default current_timestamp,
   election_id  integer  not null references election (id),
   contest_id   integer  not null references contest (id),
-  candidate_id integer  not null references contest (id),
+  candidate_id integer  not null references candidate (id),
   share        real     not null
                         check (
                               0.0 <= share
