@@ -70,6 +70,7 @@ test-suite open-rla-test
                      , IntegrationTests.Initial
                      , IntegrationTests.Election
                      , IntegrationTests.Expected
+                     , IntegrationTests.Fixture
                      , IntegrationTests.Manifest
                      , JsonTestSupport
                      , TestSupport

@@ -5,6 +5,7 @@ import           Data.Aeson (Value(..))
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
 
+import qualified IntegrationTests.Fixture as Fixture
 import           JsonTestSupport
 import           TestSupport
 
@@ -37,6 +38,9 @@ spec :: Spec
 spec = do
   around withApp $ context "Auditing" $ do
     it "should create an active audit" $ do
+      Fixture.withElection
+      Fixture.withBallots
+
       postJson "/election" electionPostBody `shouldRespondWith` 200
 
       get "/audit" `shouldRespondWith` "[]"
