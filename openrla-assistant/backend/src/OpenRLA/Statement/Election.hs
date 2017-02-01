@@ -6,8 +6,10 @@ import           Data.String.Here (here)
 import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
+import           System.Random (randomRIO)
 
 import           OpenRLA.Statement
+import qualified OpenRLA.Statement.Ballot as BalSt
 import           OpenRLA.Types
 
 
@@ -81,3 +83,9 @@ getContests conn elId = do
   |]
   rows <- Sql.query conn s (Only elId)
   return rows
+
+randomBallot :: Connection -> Integer -> IO (Maybe Ballot)
+randomBallot conn elId = do
+    count  <- ballotCountForId conn elId
+    offset <- randomRIO (0, count - 1)
+    BalSt.getByOffset conn offset

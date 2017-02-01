@@ -5,15 +5,13 @@ import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson (Object, (.:))
 import           Data.Aeson.Types (Parser)
-import           Data.Maybe (maybe)
+import           Data.Maybe (fromJust, maybe)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
-import           System.Random (randomRIO)
 import           Web.Scotty (json, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement as St
-import qualified OpenRLA.Statement.Ballot as BalSt
 import qualified OpenRLA.Statement.Election as ElSt
 import           OpenRLA.Types (
     Candidate(..)
@@ -73,11 +71,8 @@ setActive State { conn } = parseThen (.: "electionId") cb
 sampleBallot :: Controller
 sampleBallot State { conn } = do
   elId  <- param "id"
-  ballot <- liftIO $ do
-    count <- ElSt.ballotCountForId conn elId
-    offset <- randomRIO (0, count - 1)
-    BalSt.getByOffset conn offset
-  json ballot
+  ballot <- liftIO $ ElSt.randomBallot conn elId
+  json $ fromJust ballot
 
 getBallotsById :: Controller
 getBallotsById State { conn } = do
