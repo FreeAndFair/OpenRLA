@@ -3,6 +3,8 @@ module IntegrationTests.Election where
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
 
+import qualified IntegrationTests.Fixture as Fixture
+import           JsonTestSupport
 import           TestSupport
 
 
@@ -86,3 +88,70 @@ spec = do
 
       get "/election/1" `shouldRespondWithJson` (mkElectionJsonA False)
       get "/election/2" `shouldRespondWithJson` (mkElectionJsonB True)
+
+
+  around withApp $ context "Election outcomes" $ do
+    it "should allow associating contest outcomes with the election" $ do
+      Fixture.withElection
+
+      get "/election/1/outcome" `shouldRespondWithJson` [json|[]|]
+
+      let outcome1Json = [json|{
+            id: 1001,
+            shares: [
+              {
+                id: 1,
+                share: 0.6
+              },
+              {
+                id: 2,
+                share: 0.3
+              },
+              {
+                id: 3,
+                share: 0.1
+              }
+            ]
+          }|]
+          outcome2Json = [json|{
+            id: 1002,
+            shares: [
+              {
+                id: 4,
+                share: 0.8
+              },
+              {
+                id: 5,
+                share: 0.2
+              }
+            ]
+          }|]
+          outcome3Json = [json|{
+            id: 1003,
+            shares: [
+              {
+                id: 6,
+                share: 1.0
+              }
+            ]
+          }|]
+
+      postResp1 <- postJson "/election/1/outcome" outcome1Json
+      return postResp1 `shouldRespondWith` 200
+      postResp1 `bodyShouldBe` outcome1Json
+
+      postResp2 <- postJson "/election/1/outcome" outcome2Json
+      return postResp2 `shouldRespondWith` 200
+      postResp2 `bodyShouldBe` outcome2Json
+
+      postResp3 <- postJson "/election/1/outcome" outcome3Json
+      return postResp3 `shouldRespondWith` 200
+      postResp3 `bodyShouldBe` outcome3Json
+
+      indexResp <- get "/election/1/outcome"
+      return indexResp `shouldRespondWith` 200
+      indexResp `bodyShouldBe` [json|[
+        #{outcome1Json},
+        #{outcome2Json},
+        #{outcome3Json}
+      ]|]

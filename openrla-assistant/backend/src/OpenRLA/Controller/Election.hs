@@ -1,14 +1,16 @@
 module OpenRLA.Controller.Election where
 
-import           Data.Aeson.QQ (aesonQQ)
-import           Control.Monad (forM)
+import           Control.Monad (forM, forM_)
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:))
+import           Data.Aeson (Object, Value(..), (.:))
+import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser)
+import           Data.Function (on)
+import           Data.List (sortBy, groupBy)
 import           Data.Maybe (fromJust, maybe)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
-import           Web.Scotty (json, param, status)
+import           Web.Scotty (json, jsonData, param, status)
 
 import           OpenRLA.Controller
 import qualified OpenRLA.Statement as St
@@ -16,6 +18,7 @@ import qualified OpenRLA.Statement.Election as ElSt
 import           OpenRLA.Types (
     Candidate(..)
   , Contest(..)
+  , ContestOutcome(..)
   , Election(..)
   , State(..)
   )
@@ -105,3 +108,49 @@ getContestsById State { conn } = do
   result <- liftIO $ forM contests contestCb
 
   json result
+
+indexContestOutcomes :: Controller
+indexContestOutcomes State { conn } = do
+  elId <- param "id"
+  rows <- liftIO $ ElSt.indexContestOutcomes conn elId
+  json $ formatOutcomes rows
+
+formatOutcomes :: [ContestOutcome] -> Value
+formatOutcomes outcomes = [aesonQQ|#{formatted}|]
+  where cmp = compare `on` coContestId
+        sorted = sortBy cmp outcomes
+        eq o o' = coContestId o == coContestId o'
+        grouped = groupBy eq sorted
+        formatted = map formatOutcomeGroup grouped
+
+formatOutcomeGroup:: [ContestOutcome] -> Value
+formatOutcomeGroup grp = [aesonQQ|{
+    id: #{contestId},
+    shares: #{shares}
+  }|]
+  where contestId = coContestId $ head grp
+        fmtShare ContestOutcome { .. } = [aesonQQ|{
+          id: #{coCandidateId},
+          share: #{coShare}
+        }|]
+        shares = map fmtShare grp
+
+setContestOutcome :: Controller
+setContestOutcome State { conn } = do
+  elId      <- param "id"
+  parseThen (outcomeP elId) $ \outcomes -> do
+    forM_ outcomes $ \o -> do
+      liftIO $ ElSt.setContestOutcome conn o
+    json $ formatOutcomeGroup outcomes
+
+outcomeP :: Integer -> Object -> Parser [ContestOutcome]
+outcomeP coElectionId o = do
+  coContestId <- o .: "id"
+  sharesArr   <- o .: "shares"
+  forM sharesArr $ \sh -> do
+    coCandidateId <- sh .: "id"
+    coShare       <- sh .: "share"
+    return $ ContestOutcome { .. }
+
+getContestOutcome :: Controller
+getContestOutcome = undefined
