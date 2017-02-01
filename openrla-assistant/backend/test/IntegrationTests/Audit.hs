@@ -19,16 +19,16 @@ electionPostBody = [json|{
   date: #{date}
 }|]
 
-auditPostBody :: Value
-auditPostBody = [json|{
+auditPostBodyA :: Value
+auditPostBodyA = [json|{
   electionId: 1,
   date: #{date},
   riskLimit: 0.1,
   contests: [1001, 1003]
 }|]
 
-auditJson :: Value
-auditJson = [json|{
+auditJsonA :: Value
+auditJsonA = [json|{
   id: 1,
   electionId: 1,
   date: #{date},
@@ -46,6 +46,29 @@ auditJson = [json|{
   ]
 }|]
 
+auditPostBodyB :: Value
+auditPostBodyB = [json|{
+  electionId: 1,
+  date: #{date},
+  riskLimit: 0.02,
+  contests: [1002]
+}|]
+
+auditJsonB :: Value
+auditJsonB = [json|{
+  id: 2,
+  electionId: 1,
+  date: #{date},
+  riskLimit: 0.02,
+  sampled: [],
+  contests: [
+    {
+      id: 1002,
+      statistic: 1.0
+    }
+  ]
+}|]
+
 spec :: Spec
 spec = do
   around withApp $ context "Auditing" $ do
@@ -53,37 +76,78 @@ spec = do
       Fixture.withElection
       Fixture.withBallots
 
-      postJson "/election" electionPostBody `shouldRespondWith` 200
-
       get "/audit" `shouldRespondWith` "[]"
       get "/audit/1" `shouldRespondWith` 404
 
-      auditCreateResp <- postJson "/audit" auditPostBody
+      auditCreateResp <- postJson "/audit" auditPostBodyA
 
       return auditCreateResp `shouldRespondWith` 200
 
       let createBody = decodeBody auditCreateResp
-      liftIO $ createBody `shouldBe` auditJson
+      liftIO $ createBody `shouldBe` auditJsonA
 
       auditIndexResp <- get "/audit"
 
       return auditIndexResp `shouldRespondWith` 200
 
       let indexBody = decodeBody auditIndexResp
-      liftIO $ indexBody `shouldBe` [json|[#{auditJson}]|]
+      liftIO $ indexBody `shouldBe` [json|[#{auditJsonA}]|]
 
       auditActiveResp <- get "/audit/active"
 
       return auditActiveResp `shouldRespondWith` 200
 
       let activeBody = decodeBody auditActiveResp
-      liftIO $ activeBody `shouldBe` auditJson
+      liftIO $ activeBody `shouldBe` auditJsonA
 
       auditByIdResp <- get "/audit/1"
 
       return auditByIdResp `shouldRespondWith` 200
 
       let byIdBody = decodeBody auditByIdResp
-      liftIO $ byIdBody `shouldBe` auditJson
+      liftIO $ byIdBody `shouldBe` auditJsonA
+
+      get "/audit/666" `shouldRespondWith` 404
+
+    it "should handle multiple audits" $ do
+      Fixture.withElection
+      Fixture.withBallots
+
+      postJson "/audit" auditPostBodyA
+      auditCreateResp <- postJson "/audit" auditPostBodyB
+
+      let createBody = decodeBody auditCreateResp
+      liftIO $ createBody `shouldBe` auditJsonB
+
+      auditIndexResp <- get "/audit"
+
+      return auditIndexResp `shouldRespondWith` 200
+
+      let indexBody = decodeBody auditIndexResp
+      liftIO $ indexBody `shouldBe` [json|[
+        #{auditJsonA},
+        #{auditJsonB}
+      ]|]
+
+      auditActiveResp <- get "/audit/active"
+
+      return auditActiveResp `shouldRespondWith` 200
+
+      let activeBody = decodeBody auditActiveResp
+      liftIO $ activeBody `shouldBe` auditJsonB
+
+      auditByIdResp <- get "/audit/1"
+
+      return auditByIdResp `shouldRespondWith` 200
+
+      let byIdBody = decodeBody auditByIdResp
+      liftIO $ byIdBody `shouldBe` auditJsonA
+
+      auditByIdResp <- get "/audit/2"
+
+      return auditByIdResp `shouldRespondWith` 200
+
+      let byIdBody = decodeBody auditByIdResp
+      liftIO $ byIdBody `shouldBe` auditJsonB
 
       get "/audit/666" `shouldRespondWith` 404
