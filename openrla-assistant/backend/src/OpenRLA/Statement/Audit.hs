@@ -74,3 +74,12 @@ addContest conn auId contestId = do
     values (?, ?, 1.0)
   |]
   Sql.execute conn s (auId, contestId)
+
+getContestData :: Connection -> Integer -> IO [(Integer, Double)]
+getContestData conn auId = do
+  let s = [here|
+    select contest_id, test_statistic
+      from audit_contest
+     where audit_id = ?
+  |]
+  Sql.query conn s (Only auId)
