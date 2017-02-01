@@ -2,6 +2,7 @@ module IntegrationTests.Audit where
 
 import           Data.Aeson (Value(..))
 
+import           Network.Wai.Test (SResponse(..))
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
 
@@ -151,3 +152,55 @@ spec = do
       liftIO $ byIdBody `shouldBe` auditJsonB
 
       get "/audit/666" `shouldRespondWith` 404
+
+    it "should select a random sample and update it when marks are added" $ do
+      Fixture.withElection
+      Fixture.withBallots
+
+      postJson "/audit" auditPostBodyA
+
+      sampleRespA <- get "/audit/1/sample"
+
+      return sampleRespA `shouldRespondWith` 200
+
+      let getBallotId :: SResponse -> Integer
+          getBallotId resp = truncate balId
+            where body = decodeBody resp
+                  Number balId = body .! "id"
+
+      let ballotIdA = getBallotId sampleRespA
+
+      markResp <- postJson "/audit/1/marks" [json|{
+        ballotId: #{ballotIdA},
+        marks: [
+          {
+            contestId: 1001,
+            candidateId: 1
+          },
+          {
+            contestId: 1003,
+            candidateId: 6
+          }
+        ]
+      }|]
+
+      return markResp `shouldRespondWith` 200
+
+      let markRespBody = decodeBody markResp
+      liftIO $ markRespBody `shouldBe` [json|[
+        {
+          contestId: 1001,
+          candidateId: 1
+        },
+        {
+          contestId: 1003,
+          candidateId: 6
+        }
+      ]|]
+
+      sampleRespB <- get "/audit/1/sample"
+
+      return sampleRespA `shouldRespondWith` 200
+
+      let ballotIdB = getBallotId sampleRespB
+      liftIO $ ballotIdA `shouldNotBe` ballotIdB
