@@ -262,3 +262,45 @@ instance FromJSON Vendor where
   parseJSON v = case v of
     Object o -> o .: "vendor"
     _        -> typeMismatch "Vendor" v
+
+data ContestOutcome
+  = ContestOutcome
+  { coElectionId  :: Integer
+  , coContestId   :: Integer
+  , coCandidateId :: Integer
+  , coShare       :: Double
+  } deriving (Show, Eq)
+
+instance FromRow ContestOutcome where
+  fromRow = do
+    coElectionId  <- field
+    coContestId   <- field
+    coCandidateId <- field
+    coShare       <- field
+    return $ ContestOutcome { .. }
+
+instance ToRow ContestOutcome where
+  toRow ContestOutcome { .. }
+    = [ SQLInteger $ fromInteger coElectionId
+      , SQLInteger $ fromInteger coContestId
+      , SQLInteger $ fromInteger coCandidateId
+      , SQLFloat   $ coShare
+      ]
+
+instance ToJSON ContestOutcome where
+  toJSON ContestOutcome { .. }
+    = A.object [ "electionId"  .= coElectionId
+               , "contestId"   .= coContestId
+               , "candidateId" .= coCandidateId
+               , "share"       .= coShare
+               ]
+
+instance FromJSON ContestOutcome where
+  parseJSON v = case v of
+    Object o -> do
+      coElectionId  <- o .: "electionId"
+      coContestId   <- o .: "contestId"
+      coCandidateId <- o .: "candidateId"
+      coShare       <- o .: "share"
+      return $ ContestOutcome { .. }
+    _        -> typeMismatch "AuditMark" v
