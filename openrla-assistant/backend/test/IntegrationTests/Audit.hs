@@ -23,7 +23,8 @@ auditPostBody :: Value
 auditPostBody = [json|{
   electionId: 1,
   date: #{date},
-  riskLimit: 0.1
+  riskLimit: 0.1,
+  contests: [1001, 1003]
 }|]
 
 auditJson :: Value
@@ -31,7 +32,18 @@ auditJson = [json|{
   id: 1,
   electionId: 1,
   date: #{date},
-  riskLimit: 0.1
+  riskLimit: 0.1,
+  sampled: [],
+  contests: [
+    {
+      id: 1001,
+      statistic: 1.0
+    },
+    {
+      id: 1003,
+      statistic: 1.0
+    }
+  ]
 }|]
 
 spec :: Spec
