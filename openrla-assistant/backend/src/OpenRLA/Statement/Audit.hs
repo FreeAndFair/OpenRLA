@@ -70,12 +70,13 @@ setCurrentSample conn auId balId = do
   let s' = "insert into audit_sample (audit_id, ballot_id) values (?, ?)"
   Sql.execute conn s' (auId, balId)
 
-currentSampleId :: Connection -> Integer -> IO Integer
+currentSampleId :: Connection -> Integer -> IO (Maybe Integer)
 currentSampleId conn auId = do
   let s = "select ballot_id from audit_current_sample where audit_id = ?"
   rows <- Sql.query conn s (Only auId)
-  Only sampleId <- oneRowIO rows
-  return sampleId
+  return $ case rows of
+    []              -> Nothing
+    [Only sampleId] -> sampleId
 
 addContest :: Connection -> Integer -> Integer -> IO ()
 addContest conn auId contestId = do

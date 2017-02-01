@@ -5,6 +5,7 @@ import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson (Object, (.:), Value(..))
 import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser)
+import           Data.Maybe (fromJust, isJust)
 import           Database.SQLite.Simple (Connection)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
@@ -133,5 +134,5 @@ currentSample State { conn } = do
   auId <- param "id"
   sample <- liftIO $ do
     sampleId <- AuSt.currentSampleId conn auId
-    BalSt.getById conn sampleId
+    BalSt.getById conn (fromJust sampleId)
   json sample
