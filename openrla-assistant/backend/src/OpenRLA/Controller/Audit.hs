@@ -1,8 +1,11 @@
 module OpenRLA.Controller.Audit where
 
+import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:))
+import           Data.Aeson (Object, (.:), Value)
+import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser)
+import           Database.SQLite.Simple (Connection)
 import           Data.Text (Text)
 import           Network.HTTP.Types.Status (notFound404)
 import           Web.Scotty (json, param, status)
@@ -13,30 +16,50 @@ import qualified OpenRLA.Statement.Ballot as BalSt
 import           OpenRLA.Types (Audit(..), AuditMark(..), State(..))
 
 
-index :: Controller
-index State { conn } = liftIO (AuSt.index conn) >>= json
+mkJson :: Connection -> Audit -> IO Value
+mkJson conn Audit { .. } = do
+  contestData <- AuSt.getContestData conn auId
+  let contests = [ [aesonQQ|{id: #{cId}, statistic: #{stat}}|]
+                 | (cId, stat) <- contestData ]
+      sampled = [] :: [Integer]
+  return [aesonQQ|{
+    id: #{auId},
+    electionId: #{auElectionId},
+    date: #{auDate},
+    riskLimit: #{auRiskLimit},
+    sampled: #{sampled},
+    contests: #{contests}
+  }|]
 
-type CreateData = (Integer, Text, Double)
+index :: Controller
+index State { conn } = do
+  rows <- liftIO $ AuSt.index conn
+  objects <- liftIO $ forM rows (mkJson conn)
+  json objects
+
+type CreateData = (Integer, Text, Double, [Integer])
 
 create :: Controller
 create State { conn } = parseThen createP createCb
   where
     createCb args = do
       audit <- liftIO $ AuSt.create conn args
-      json audit
+      liftIO (mkJson conn audit) >>= json
 
 createP :: Object -> Parser CreateData
 createP o = do
   elId      <- o .: "electionId"
   date      <- o .: "date"
   riskLimit <- o .: "riskLimit"
-  return (elId, date, riskLimit)
+  contests  <- o .: "contests"
+  return (elId, date, riskLimit, contests)
 
 getById :: Controller
 getById State { conn } = do
   auId <- param "id"
   audit <- liftIO $ AuSt.getById conn auId
-  maybe (status notFound404) json audit
+  let ifJust a = liftIO (mkJson conn a) >>= json
+  maybe (status notFound404) ifJust audit
 
 setById :: Controller
 setById State { conn } = parseThen setByIdP setByIdCb
@@ -56,7 +79,8 @@ setByIdP o = do
 getActive :: Controller
 getActive State { conn } = do
   audit <- liftIO $ AuSt.getActive conn
-  maybe (status notFound404) json audit
+  let ifJust a = liftIO (mkJson conn a) >>= json
+  maybe (status notFound404) ifJust audit
 
 setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") setActiveCb
