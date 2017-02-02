@@ -123,7 +123,7 @@ formatOutcomes outcomes = [aesonQQ|#{formatted}|]
         grouped = groupBy eq sorted
         formatted = map formatOutcomeGroup grouped
 
-formatOutcomeGroup:: [ContestOutcome] -> Value
+formatOutcomeGroup :: [ContestOutcome] -> Value
 formatOutcomeGroup grp = [aesonQQ|{
     id: #{contestId},
     shares: #{shares}
