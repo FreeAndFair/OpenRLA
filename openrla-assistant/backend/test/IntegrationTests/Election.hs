@@ -155,3 +155,15 @@ spec = do
         #{outcomeJson2},
         #{outcomeJson3}
       ]|]
+
+      byIdResp1 <- get "/election/1/outcome/1001"
+      return byIdResp1 `shouldRespondWith` 200
+      byIdResp1 `bodyShouldBe` outcomeJson1
+
+      byIdResp2 <- get "/election/1/outcome/1002"
+      return byIdResp2 `shouldRespondWith` 200
+      byIdResp2 `bodyShouldBe` outcomeJson2
+
+      byIdResp3 <- get "/election/1/outcome/1003"
+      return byIdResp3 `shouldRespondWith` 200
+      byIdResp3 `bodyShouldBe` outcomeJson3
