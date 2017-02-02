@@ -98,12 +98,6 @@ setActive State { conn } = parseThen (.: "auditId") setActiveCb
   where
     setActiveCb auId = liftIO (AuSt.setActive conn auId) >>= json
 
-indexMarks :: Controller
-indexMarks State { conn } = do
-  auId <- param "id"
-  marks <- liftIO $ AuSt.indexMarks conn auId
-  json marks
-
 createMarks :: Controller
 createMarks State { conn } = parseThen createMarksP createMarksCb
   where
