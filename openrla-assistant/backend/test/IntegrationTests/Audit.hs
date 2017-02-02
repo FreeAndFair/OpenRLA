@@ -69,6 +69,18 @@ auditJsonB = [json|{
   ]
 }|]
 
+mkMarks :: Integer -> Integer -> Value
+mkMarks candId1001 candId1003 = [json|[
+  {
+    contestId: 1001,
+    candidateId: #{candId1001}
+  },
+  {
+    contestId: 1003,
+    candidateId: #{candId1003}
+  }
+]|]
+
 spec :: Spec
 spec = do
   around withApp $ context "Auditing" $ do
@@ -142,28 +154,10 @@ spec = do
 
       markResp <- postJson "/audit/1/marks" [json|{
         ballotId: #{ballotIdA},
-        marks: [
-          {
-            contestId: 1001,
-            candidateId: 1
-          },
-          {
-            contestId: 1003,
-            candidateId: 6
-          }
-        ]
+        marks: #{mkMarks 1 6}
       }|]
       return markResp `shouldRespondWith` 200
-      markResp `bodyShouldBe` [json|[
-        {
-          contestId: 1001,
-          candidateId: 1
-        },
-        {
-          contestId: 1003,
-          candidateId: 6
-        }
-      ]|]
+      markResp `bodyShouldBe` [json|#{mkMarks 1 6}|]
 
       sampleRespB <- get "/audit/1/sample"
       return sampleRespB `shouldRespondWith` 200
@@ -173,31 +167,24 @@ spec = do
 
       markResp <- postJson "/audit/1/marks" [json|{
         ballotId: #{ballotIdB},
-        marks: [
-          {
-            contestId: 1001,
-            candidateId: 2
-          },
-          {
-            contestId: 1003,
-            candidateId: 6
-          }
-        ]
+        marks: #{mkMarks 2 6}
       }|]
       return markResp `shouldRespondWith` 200
-      markResp `bodyShouldBe` [json|[
-        {
-          contestId: 1001,
-          candidateId: 2
-        },
-        {
-          contestId: 1003,
-          candidateId: 6
-        }
-      ]|]
+      markResp `bodyShouldBe` [json|#{mkMarks 2 6}|]
 
       sampleRespC <- get "/audit/1/sample"
       return sampleRespC `shouldRespondWith` 200
 
       let ballotIdC = getBodyId sampleRespC
       liftIO $ ballotIdB `shouldNotBe` ballotIdC
+
+    -- it "should set up and update statistics when marks are added" $ do
+    --   Fixture.withElection
+    --   Fixture.withBallots
+    --   Fixture.withOutcomes
+
+    --   postJson "/audit" auditPostBodyA
+
+    --   -- stats
+
+    --   postJson "/audit/1/marks" $ mkMarks 1 6
