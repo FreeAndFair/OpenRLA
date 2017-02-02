@@ -98,6 +98,14 @@ indexContestOutcomes conn elId = Sql.query conn s (Only elId)
      where election_id = ?
   |]
 
+getContestOutcomes :: Connection -> Integer -> Integer -> IO [ContestOutcome]
+getContestOutcomes conn elId contId = Sql.query conn s (elId, contId)
+  where s = [here|
+    select election_id, contest_id, candidate_id, share
+      from election_contest_outcome
+     where election_id = ?
+       and contest_id = ?
+  |]
 
 setContestOutcome :: Connection -> ContestOutcome -> IO ()
 setContestOutcome conn outcome = Sql.execute conn s outcome

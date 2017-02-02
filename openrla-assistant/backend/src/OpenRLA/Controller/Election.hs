@@ -153,4 +153,8 @@ outcomeP coElectionId o = do
     return $ ContestOutcome { .. }
 
 getContestOutcome :: Controller
-getContestOutcome = undefined
+getContestOutcome State { conn } = do
+  elId   <- param "id"
+  contId <- param "contestId"
+  outcomes <- liftIO $ ElSt.getContestOutcomes conn elId contId
+  json $ formatOutcomeGroup outcomes
