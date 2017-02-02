@@ -1,6 +1,6 @@
 module OpenRLA.Statement.Audit where
 
-import           Control.Monad (forM_)
+import           Control.Monad (forM, forM_)
 import           Data.Maybe (fromJust)
 import           Data.String.Here (here)
 import           Data.Text (Text)
@@ -82,15 +82,18 @@ addContest :: Connection -> Integer -> Integer -> IO ()
 addContest conn auId contestId = do
   let s = [here|
     insert into audit_contest
-    values (?, ?, 1.0)
+    values (?, ?)
   |]
   Sql.execute conn s (auId, contestId)
 
 getContestData :: Connection -> Integer -> IO [(Integer, Double)]
 getContestData conn auId = do
   let s = [here|
-    select contest_id, test_statistic
+    select contest_id
       from audit_contest
      where audit_id = ?
   |]
-  Sql.query conn s (Only auId)
+  rows <- Sql.query conn s (Only auId)
+  forM rows $ \row -> do
+    let Only cId = row
+    return (cId, 1.0)
