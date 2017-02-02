@@ -96,7 +96,7 @@ spec = do
 
       get "/election/1/outcome" `shouldRespondWithJson` [json|[]|]
 
-      let outcome1Json = [json|{
+      let outcomeJson1 = [json|{
             id: 1001,
             shares: [
               {
@@ -113,7 +113,7 @@ spec = do
               }
             ]
           }|]
-          outcome2Json = [json|{
+          outcomeJson2 = [json|{
             id: 1002,
             shares: [
               {
@@ -126,7 +126,7 @@ spec = do
               }
             ]
           }|]
-          outcome3Json = [json|{
+          outcomeJson3 = [json|{
             id: 1003,
             shares: [
               {
@@ -136,22 +136,22 @@ spec = do
             ]
           }|]
 
-      postResp1 <- postJson "/election/1/outcome" outcome1Json
+      postResp1 <- postJson "/election/1/outcome" outcomeJson1
       return postResp1 `shouldRespondWith` 200
-      postResp1 `bodyShouldBe` outcome1Json
+      postResp1 `bodyShouldBe` outcomeJson1
 
-      postResp2 <- postJson "/election/1/outcome" outcome2Json
+      postResp2 <- postJson "/election/1/outcome" outcomeJson2
       return postResp2 `shouldRespondWith` 200
-      postResp2 `bodyShouldBe` outcome2Json
+      postResp2 `bodyShouldBe` outcomeJson2
 
-      postResp3 <- postJson "/election/1/outcome" outcome3Json
+      postResp3 <- postJson "/election/1/outcome" outcomeJson3
       return postResp3 `shouldRespondWith` 200
-      postResp3 `bodyShouldBe` outcome3Json
+      postResp3 `bodyShouldBe` outcomeJson3
 
       indexResp <- get "/election/1/outcome"
       return indexResp `shouldRespondWith` 200
       indexResp `bodyShouldBe` [json|[
-        #{outcome1Json},
-        #{outcome2Json},
-        #{outcome3Json}
+        #{outcomeJson1},
+        #{outcomeJson2},
+        #{outcomeJson3}
       ]|]
