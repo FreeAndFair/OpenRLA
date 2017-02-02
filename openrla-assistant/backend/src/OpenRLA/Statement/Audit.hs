@@ -7,7 +7,9 @@ import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
 
+import           OpenRLA.Audit (computeRisk)
 import           OpenRLA.Statement (justOneIO)
+import qualified OpenRLA.Statement.Election as ElSt
 import           OpenRLA.Types
 
 
@@ -89,9 +91,13 @@ getContestData conn auId = do
      where audit_id = ?
   |]
   rows <- Sql.query conn s (Only auId)
-  forM rows $ \row -> do
-    let Only cId = row
-    return (cId, 1.0)
+  forM rows $ \(Only contId) -> do
+    Just audit <- getById conn auId
+    let Audit { auElectionId } = audit
+    outcomes <- ElSt.getContestOutcomes conn auElectionId contId
+    marks <- indexContestMarks conn auId contId
+    let risk = computeRisk outcomes marks
+    return (contId, risk)
 
 indexContestMarks :: Connection -> Integer -> Integer -> IO [AuditMark]
 indexContestMarks conn auId contId = Sql.query conn s (auId, contId)
