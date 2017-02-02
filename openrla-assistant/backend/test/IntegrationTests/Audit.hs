@@ -179,18 +179,16 @@ spec = do
       liftIO $ ballotIdB `shouldNotBe` ballotIdC
 
     it "should set up and update statistics when marks are added" $ do
-      let mkAuditJson :: Double -> Double -> [Integer] -> Value
-          mkAuditJson stat1001 stat1003 sampled = [json|{
-            id: 1,
-            electionId: 1,
-            date: #{date},
-            riskLimit: 0.1,
-            sampled: #{sampled},
-            contests: [
-              { id: 1001, statistic: #{stat1001} },
-              { id: 1003, statistic: #{stat1003} }
-            ]
-          }|]
+      let mkContestsJson :: Double -> Double -> Value
+          mkContestsJson stat1001 stat1003 = [json|[
+            { id: 1001, statistic: #{stat1001} },
+            { id: 1003, statistic: #{stat1003} }
+          ]|]
+          -- getContests r = decodeBody r .! "contest" :: Value
+          statsShouldBe stat1001 stat1003 = do
+            resp <- get "/audit/1"
+            let contests = decodeBody resp .! "contests"
+            liftIO $ contests `shouldBe` (mkContestsJson stat1001 stat1003)
 
       Fixture.withElection
       Fixture.withBallots
@@ -198,7 +196,6 @@ spec = do
 
       postJson "/audit" auditPostBodyA
 
-      auditResp <- get "/audit/1"
-      auditResp `bodyShouldBe` (mkAuditJson 1.0 1.0 [])
+      statsShouldBe 1.0 1.0
 
       -- postJson "/audit/1/marks" $ mkMarks 1 6
