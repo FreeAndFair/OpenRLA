@@ -75,6 +75,7 @@ spec = do
     it "should create an active audit" $ do
       Fixture.withElection
       Fixture.withBallots
+      Fixture.withOutcomes
 
       get "/audit" `shouldRespondWith` "[]"
       get "/audit/1" `shouldRespondWith` 404
@@ -100,6 +101,7 @@ spec = do
     it "should handle multiple audits" $ do
       Fixture.withElection
       Fixture.withBallots
+      Fixture.withOutcomes
 
       postJson "/audit" auditPostBodyA
       auditCreateResp <- postJson "/audit" auditPostBodyB
@@ -129,6 +131,7 @@ spec = do
     it "should select a random sample and update it when marks are added" $ do
       Fixture.withElection
       Fixture.withBallots
+      Fixture.withOutcomes
 
       postJson "/audit" auditPostBodyA
 

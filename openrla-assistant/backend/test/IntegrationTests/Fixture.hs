@@ -66,3 +66,33 @@ withBallots = do
   postJson "/ballot" ballotPostBody
 
   return ()
+
+withOutcomes :: WaiSession ()
+withOutcomes = do
+  let outcomeJson1 = [json|{
+        id: 1001,
+        shares: [
+          { id: 1, share: 0.6 },
+          { id: 2, share: 0.3 },
+          { id: 3, share: 0.1 }
+        ]
+      }|]
+      outcomeJson2 = [json|{
+        id: 1002,
+        shares: [
+          { id: 4, share: 0.8 },
+          { id: 5, share: 0.2 }
+        ]
+      }|]
+      outcomeJson3 = [json|{
+        id: 1003,
+        shares: [
+          { id: 6, share: 1.0 }
+        ]
+      }|]
+
+  postJson "/election/1/outcome" outcomeJson1
+  postJson "/election/1/outcome" outcomeJson2
+  postJson "/election/1/outcome" outcomeJson3
+
+  return ()
