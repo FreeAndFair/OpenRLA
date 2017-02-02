@@ -50,11 +50,6 @@ setActive conn auId
 resetActive :: Connection -> IO ()
 resetActive conn = Sql.execute_ conn "update audit set active = null where active = 1"
 
-indexMarks :: Connection -> Integer -> IO [AuditMark]
-indexMarks conn auId = Sql.query conn s (Only auId)
-  where
-    s = "select audit_id, ballot_id, contest_id, candidate_id from audit_mark where audit_id = ?"
-
 createMark :: Connection -> AuditMark -> IO ()
 createMark conn auditMark = Sql.execute conn s auditMark
   where s = [here|
