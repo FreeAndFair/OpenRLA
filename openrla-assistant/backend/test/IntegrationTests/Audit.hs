@@ -1,6 +1,8 @@
 module IntegrationTests.Audit where
 
 import           Data.Aeson (Value(..))
+import           Data.Scientific (toRealFloat)
+import           Data.Vector (toList)
 
 import           Test.Hspec.Wai
 import           Test.Tasty.Hspec
@@ -80,6 +82,12 @@ mkMarks candId1001 candId1003 = [json|[
     candidateId: #{candId1003}
   }
 ]|]
+
+mkMarksBody :: Integer -> Integer -> Integer -> Value
+mkMarksBody ballotId candId1001 candId1003 = [json|{
+  ballotId: #{ballotId},
+  marks: #{mkMarks candId1001 candId1003}
+}|]
 
 spec :: Spec
 spec = do
@@ -184,18 +192,38 @@ spec = do
             { id: 1001, statistic: #{stat1001} },
             { id: 1003, statistic: #{stat1003} }
           ]|]
-          -- getContests r = decodeBody r .! "contest" :: Value
           statsShouldBe stat1001 stat1003 = do
             resp <- get "/audit/1"
-            let contests = decodeBody resp .! "contests"
-            liftIO $ contests `shouldBe` (mkContestsJson stat1001 stat1003)
+            let Array contests = decodeBody resp .! "contests"
+                [Number n1001, Number n1003] = map (.! "statistic") $ toList contests
+                d1001 = toRealFloat n1001
+                d1003 = toRealFloat n1003
+            liftIO $ do
+              let eps = 0.0000001
+              abs (d1001 - stat1001) < eps `shouldBe` True
+              abs (d1003 - stat1003) < eps `shouldBe` True
 
       Fixture.withElection
       Fixture.withBallots
       Fixture.withOutcomes
 
       postJson "/audit" auditPostBodyA
-
       statsShouldBe 1.0 1.0
 
-      -- postJson "/audit/1/marks" $ mkMarks 1 6
+      postJson "/audit/1/marks" $ mkMarksBody 1 1 6
+      statsShouldBe 1.2 2.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 2 1 6
+      statsShouldBe 1.44 4.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 3 2 6
+      statsShouldBe 1.152 8.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 4 1 6
+      statsShouldBe 1.3824 16.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 5 3 6
+      statsShouldBe 1.10592 32.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 6 1 6
+      statsShouldBe 1.327104 64.0

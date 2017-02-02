@@ -85,6 +85,7 @@ test-suite open-rla-test
                      , hspec-wai
                      , hspec-wai-json
                      , open-rla
+                     , scientific
                      , scotty
                      , sqlite-simple
                      , tasty
@@ -94,6 +95,7 @@ test-suite open-rla-test
                      , text
                      , time
                      , unordered-containers
+                     , vector
                      , wai
                      , wai-extra
   ghc-options:         -threaded -O2 -rtsopts -with-rtsopts=-N
