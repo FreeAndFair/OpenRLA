@@ -92,3 +92,12 @@ getContestData conn auId = do
   forM rows $ \row -> do
     let Only cId = row
     return (cId, 1.0)
+
+indexContestMarks :: Connection -> Integer -> Integer -> IO [AuditMark]
+indexContestMarks conn auId contId = Sql.query conn s (auId, contId)
+  where s = [here|
+    select audit_id, ballot_id, contest_id, candidate_id
+      from audit_mark
+     where audit_id = ?
+       and contest_id = ?
+  |]
