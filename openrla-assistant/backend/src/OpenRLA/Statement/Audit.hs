@@ -7,7 +7,7 @@ import           Data.Text (Text)
 import qualified Database.SQLite.Simple as Sql
 import           Database.SQLite.Simple (Connection, Only(..))
 
-import           OpenRLA.Statement (justOneIO, oneRowIO)
+import           OpenRLA.Statement (justOneIO)
 import           OpenRLA.Types
 
 
