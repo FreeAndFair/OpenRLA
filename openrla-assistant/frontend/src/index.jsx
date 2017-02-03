@@ -11,6 +11,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import mainReducer from './reducer';
 import Main from './component/main';
+import fetchActiveElection from './action/fetchActiveElection';
 
 
 // See: http://www.material-ui.com/#/customization/themes#api
@@ -39,5 +40,6 @@ const tree = (
 window.onload = () => {
   injectTapEventPlugin();
   const mainEl = document.getElementById('main');
+  store.dispatch(fetchActiveElection());
   ReactDOM.render(tree, mainEl);
 };
