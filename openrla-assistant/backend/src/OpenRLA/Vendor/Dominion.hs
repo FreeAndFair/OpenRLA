@@ -60,7 +60,7 @@ processContestManifest (State {..}) eId o = do
       toVal (cId, extId, desc, nRanks, vFor)
         = object [ "id"         .= cId
                  , "externalId" .= extId
-                 , "desc"       .= desc
+                 , "description"       .= desc
                  , "numRanks"   .= nRanks
                  , "voteFor"    .= vFor
                  ]
