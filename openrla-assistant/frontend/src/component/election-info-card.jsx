@@ -19,9 +19,7 @@ import isElectionDefined from '../selector/is-election-defined';
 const ElectionInfoCard = ({ election, electionDefined, navigateElection }) => {
   let status;
 
-  if (_.isEmpty(election)) {
-    status = 'Election is not defined.';
-  } else if (!electionDefined) {
+  if (!electionDefined) {
     status = 'Election definition is incomplete.';
   } else {
     status = 'Election is defined.';
