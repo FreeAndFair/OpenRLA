@@ -31,7 +31,7 @@ const ContestManifestCard = ({
 };
 
 ContestManifestCard.propTypes = {
-  contests: PropTypes.object.isRequired,
+  contests: PropTypes.array.isRequired,
   uploadContestManifest: PropTypes.func.isRequired,
 };
 

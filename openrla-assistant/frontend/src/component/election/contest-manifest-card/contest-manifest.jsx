@@ -43,7 +43,7 @@ const ContestManifest = ({ contests }) => {
 };
 
 ContestManifest.PropTypes = {
-  contests: PropTypes.object.isRequired,
+  contests: PropTypes.array.isRequired,
 };
 
 
