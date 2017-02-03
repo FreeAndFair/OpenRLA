@@ -11,7 +11,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 const CandidateManifestCard = ({
-  candidates,
   uploadCandidateManifest,
   viewCandidateManifest
 }) => {
@@ -29,7 +28,6 @@ const CandidateManifestCard = ({
 };
 
 CandidateManifestCard.propTypes = {
-  candidates: PropTypes.object.isRequired,
   uploadCandidateManifest: PropTypes.func.isRequired,
   viewCandidateManifest: PropTypes.func.isRequired,
 };
