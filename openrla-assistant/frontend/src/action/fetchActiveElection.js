@@ -5,5 +5,7 @@ export default () => dispatch => {
     .then(election => dispatch({
       type: 'UPDATE_ELECTION',
       election,
-    }));
+    }))
+    .catch(err => console.error)
+  ;
 }
