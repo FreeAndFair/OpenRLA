@@ -6,6 +6,5 @@ export default () => dispatch => {
       type: 'UPDATE_ELECTION',
       election,
     }))
-    .catch(err => console.error)
-  ;
+    .catch(console.error);
 }
