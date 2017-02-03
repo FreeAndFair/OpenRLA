@@ -10,8 +10,8 @@ import {
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import setPage from '../action/setPage';
-import isAuditActive from '../selector/is-audit-active';
+import setPage from '../../action/setPage';
+import isAuditActive from '../../selector/is-audit-active';
 
 
 const AuditInfoCard = ({ audit, active, navigateAudit }) => {
