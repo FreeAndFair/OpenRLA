@@ -1,3 +1,4 @@
 import _ from 'lodash';
 
-export default (audit) => !_.isEmpty(audit);
+
+export default election => !_.isEmpty(election);
