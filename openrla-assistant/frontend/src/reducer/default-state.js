@@ -113,7 +113,10 @@ const testArchive = [
 
 export default {
   page: 'home',
-  election: coloradoElection,
+  election: {
+    candidates: {},
+    contests: {},
+  },
   audit: {},
-  archive: testArchive,
+  archive: [],
 };
