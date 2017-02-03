@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import _ from 'lodash';
-
 import {
   Card,
   CardTitle,
@@ -14,13 +12,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 const ElectionSummary = ({ election }) => {
-  let cardText;
-  let subtitle;
-
-  if (_.isEmpty(election)) {
-    subtitle = 'No election defined';
-  } else {
-    cardText = (
+  return (
+    <Card>
+      <CardTitle title='Election summary' />
       <CardText>
         <List>
           <ListItem
@@ -31,15 +25,6 @@ const ElectionSummary = ({ election }) => {
              secondaryText='Election date' />
         </List>
       </CardText>
-    );
-  }
-
-  return (
-    <Card>
-      <CardTitle
-         title='Election summary'
-         subtitle={subtitle} />
-      {cardText}
     </Card>
   );
 };
