@@ -119,4 +119,8 @@ export default {
   },
   audit: {},
   archive: [],
+  manifests: {
+    contest: null,
+    candidate: null,
+  },
 };
