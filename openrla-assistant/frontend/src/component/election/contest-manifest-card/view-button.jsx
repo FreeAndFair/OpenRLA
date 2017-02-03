@@ -15,8 +15,8 @@ const styles = {
 };
 
 export default class ViewContestManifestButton extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { open: false };
   }
 
