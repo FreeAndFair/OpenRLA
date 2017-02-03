@@ -5,5 +5,7 @@ export const fetch = path =>
   .then(r => r.json());
 
 export const submit = (path, data) =>
-  window.fetch(mkUrl(path), { body: JSON.stringify(data) })
-  .then(r => r.json());
+  window.fetch(mkUrl(path), {
+    method: 'post',
+    body: JSON.stringify(data),
+  }).then(r => r.json());
