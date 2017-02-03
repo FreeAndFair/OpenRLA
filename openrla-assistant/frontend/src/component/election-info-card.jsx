@@ -48,7 +48,7 @@ ElectionInfoCard.propTypes = {
   navigateElection: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ election, }) => ({
+const mapStateToProps = ({ election }) => ({
   election,
   electionDefined: isElectionDefined(election),
 });
