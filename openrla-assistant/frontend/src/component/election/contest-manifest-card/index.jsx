@@ -12,6 +12,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import ViewContestManifestButton from './view-button';
 
+import submitContestManifest from '../../../action/submitContestManifest';
+
 
 const ContestManifestCard = ({
   contests,
@@ -38,8 +40,9 @@ ContestManifestCard.propTypes = {
 const mapDispatchToProps = dispatch => ({
   uploadContestManifest: () => {
     const options = { properties: ['openFile'] };
-    const cb = console.log;
-    remote.dialog.showOpenDialog(options, cb);
+    remote.dialog.showOpenDialog(options, filePaths => {
+      dispatch(submitContestManifest(filePaths[0]));
+    });
   },
 });
 
