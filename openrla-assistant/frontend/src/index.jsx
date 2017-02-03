@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -22,7 +23,10 @@ const theme = getMuiTheme({
   },
 });
 
-const store = createStore(mainReducer);
+const store = createStore(
+  mainReducer,
+  applyMiddleware(thunkMiddleware)
+);
 
 const tree = (
   <MuiThemeProvider muiTheme={theme}>
