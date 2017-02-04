@@ -22,3 +22,11 @@ export const submit = (path, data) =>
   })
   .then(checkStatus)
   .then(r => r.json());
+
+export const save = (path, data) =>
+  window.fetch(mkUrl(path), {
+    method: 'put',
+    body: JSON.stringify(data),
+  })
+  .then(checkStatus)
+  .then(r => r.json());
