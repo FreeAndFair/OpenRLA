@@ -2,7 +2,8 @@ module OpenRLA.Controller where
 
 import           Data.Aeson (Object)
 import           Data.Aeson.Types (Parser, parseMaybe)
-import           Web.Scotty (ActionM, jsonData)
+import           Network.HTTP.Types.Status (badRequest400)
+import           Web.Scotty (ActionM, jsonData, status)
 
 import           OpenRLA.Types (State)
 
@@ -13,5 +14,5 @@ parseThen :: (Object -> Parser a) -> (a -> ActionM ()) -> ActionM ()
 parseThen p f = do
   o <- jsonData
   case parseMaybe p o of
-    Nothing -> return ()
+    Nothing -> status badRequest400
     Just a  -> f a
