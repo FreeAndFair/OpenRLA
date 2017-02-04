@@ -46,10 +46,9 @@ getById conn elId
 
 setById :: Connection -> Election -> IO ()
 setById conn election@Election { elId, elActive } = do
-  Sql.withTransaction conn $ do
-    let s = "insert or replace into election (id, title, date) values (?, ?, ?)"
-    Sql.execute conn s election
-    when elActive $ setActive conn elId
+  let s = "insert or replace into election (id, title, date) values (?, ?, ?)"
+  Sql.execute conn s election
+  when elActive $ setActive conn elId
 
 resetActive :: Connection -> IO ()
 resetActive conn = Sql.execute_ conn "update election set active = null where active = 1"
