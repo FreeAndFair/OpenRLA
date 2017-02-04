@@ -53,6 +53,7 @@ setById State { conn } = parseThen setByIdP setByIdCb
       elId <- param "id"
       let election = Election { .. }
       liftIO $ ElSt.setById conn election
+      json election
 
 setByIdP :: Object -> Parser (Text, Text, Bool)
 setByIdP o = do
