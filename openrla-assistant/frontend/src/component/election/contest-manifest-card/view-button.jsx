@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -56,3 +56,7 @@ export default class ViewContestManifestButton extends React.Component {
     );
   }
 }
+
+ViewContestManifestButton.PropTypes = {
+  contests: PropTypes.object.isRequired,
+};

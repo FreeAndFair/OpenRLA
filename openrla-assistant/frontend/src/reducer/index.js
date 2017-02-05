@@ -2,6 +2,8 @@ import { merge } from 'lodash';
 
 import defaultState from './default-state';
 
+import pivotContests from '../selector/pivot-contests';
+
 
 const update = (...objects) => merge({}, ...objects);
 
@@ -15,11 +17,10 @@ export default (state = defaultState, action) => {
     const { election } = action;
     return update(state, { election });
   case 'UPDATE_CONTEST_MANIFEST':
-    const { manifest } = action;
-    return update(state, { manifest: { contest: manifest }});
+    return update(state, { manifest: { contest: { uploaded: true } } });
   case 'UPDATE_CONTESTS':
-    const { contests } = action;
-    return update(state, { election: { contests }});
+    const contests = pivotContests(action.contests);
+    return update(state, { election: { contests } });
   default:
     return state;
   }
