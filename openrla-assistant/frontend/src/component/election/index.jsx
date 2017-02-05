@@ -7,7 +7,7 @@ import BallotManifestCard from './ballot-manifest-card';
 import CandidateManifestCard from './candidate-manifest-card';
 import CVRManifestCard from './cvr-manifest-card';
 import ContestManifestCard from './contest-manifest-card';
-import ElectionSummary from './election-summary';
+import ElectionSummary from './summary';
 
 
 const Election = ({ election }) => {
