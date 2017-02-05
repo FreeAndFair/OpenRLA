@@ -1,53 +1,33 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
-import { remote } from 'electron';
 
-import {
-  Card,
-  CardActions,
-  CardTitle,
-} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import ViewContestManifestButton from './view-button';
+import _ from 'lodash';
 
 import submitContestManifest from '../../../action/submitContestManifest';
 
+import ManifestCard from '../manifest-card';
 
-class ContestManifestCard extends React.Component {
-  render() {
-    const { contests, uploadContestManifest } = this.props;
+import ContestManifest from './contest-manifest';
 
-    return (
-      <Card>
-        <CardTitle
-           title='Contest Manifest'
-           subtitle='Upload or view the manifest for the contests in the election.' />
-        <CardActions>
-          <RaisedButton label="Upload" onClick={uploadContestManifest} />
-          <ViewContestManifestButton contests={contests} />
-        </CardActions>
-      </Card>
-    );
-  }
-}
+
+const ContestManifestCard = ({ contests }) => {
+  const manifestEl = <ContestManifest contests={contests} />;
+  const title = 'Contest Manifest';
+  const subtitle = 'Upload or view the manifest for the contests in the election.';
+  const viewDisabled = _.isEmpty(contests);
+
+  return (
+    <ManifestCard
+       manifestEl={manifestEl}
+       title={title}
+       subtitle={subtitle}
+       submitManifest={submitContestManifest}
+       viewDisabled={viewDisabled} />
+  );
+};
 
 ContestManifestCard.propTypes = {
   contests: PropTypes.object.isRequired,
-  uploadContestManifest: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  uploadContestManifest: () => {
-    const options = { properties: ['openFile'] };
-
-    remote.dialog.showOpenDialog(options, filePaths => {
-      if (filePaths) {
-        dispatch(submitContestManifest(filePaths[0]));
-      }
-    });
-  },
-});
-
-export default connect(null, mapDispatchToProps)(ContestManifestCard);
+export default ContestManifestCard;
