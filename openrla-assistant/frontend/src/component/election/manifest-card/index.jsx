@@ -19,6 +19,10 @@ class ManifestCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { open: false };
+
+    ['openDialog', 'closeDialog'].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
   }
 
   openDialog() {
@@ -43,7 +47,7 @@ class ManifestCard extends React.Component {
       <FlatButton
          label="Close"
          primary={true}
-         onTouchTap={this.closeDialog.bind(this)} />
+         onTouchTap={this.closeDialog} />
     );
     const actions = [closeButton];
 
@@ -57,14 +61,14 @@ class ManifestCard extends React.Component {
           <RaisedButton
              disabled={viewDisabled}
              label="View"
-             onTouchTap={this.openDialog.bind(this)} >
+             onTouchTap={this.openDialog} >
           </RaisedButton>
           <Dialog
              title="Contest Manifest"
              actions={actions}
              modal={false}
              open={this.state.open}
-             onRequestClose={this.closeDialog.bind(this)}
+             onRequestClose={this.closeDialog}
              autoScrollBodyContent={true} >
             { manifestEl }
           </Dialog>
