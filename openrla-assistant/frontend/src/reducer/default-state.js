@@ -114,7 +114,7 @@ const testArchive = [
 export default {
   page: 'home',
   election: {
-    contests: [],
+    contests: {},
   },
   audit: {},
   archive: [],
