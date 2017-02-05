@@ -40,8 +40,11 @@ ContestManifestCard.propTypes = {
 const mapDispatchToProps = dispatch => ({
   uploadContestManifest: () => {
     const options = { properties: ['openFile'] };
+
     remote.dialog.showOpenDialog(options, filePaths => {
-      dispatch(submitContestManifest(filePaths[0]));
+      if (filePaths) {
+        dispatch(submitContestManifest(filePaths[0]));
+      }
     });
   },
 });
