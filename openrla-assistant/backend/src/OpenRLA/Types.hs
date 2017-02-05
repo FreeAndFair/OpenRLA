@@ -134,7 +134,7 @@ data CandidateType
 instance FromField CandidateType where
   fromField f = case fieldData f of
     SQLText "Regular" -> Ok Regular
-    SQLText "WriteIn" -> Ok WriteIn
+    SQLText "Write-In" -> Ok WriteIn
     _ -> error "Bad conversion"
 
 instance ToJSON CandidateType where
