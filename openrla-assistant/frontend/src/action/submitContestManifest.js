@@ -1,5 +1,7 @@
 import { fetch, submit } from '../util';
 
+import pivotContests from '../selector/pivot-contests';
+
 
 export default filePath => (dispatch, getState) => {
   const electionId = getState().election.id;
@@ -18,7 +20,7 @@ export default filePath => (dispatch, getState) => {
       fetch(`/election/${electionId}/contest`)
         .then(contests => dispatch({
           type: 'UPDATE_CONTESTS',
-          contests,
+          contests: pivotContests(contests),
         }));
     });
 }
