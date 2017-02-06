@@ -9,19 +9,32 @@ import {
 import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
+import Slider from 'material-ui/Slider';
 import TextField from 'material-ui/TextField';
+
+
+const defaultRiskLimit = 0.05;
 
 
 class DefineAudit extends React.Component {
   constructor(props) {
     super(props);
 
-    ['onDateChange'].forEach(m => {
+    this.state = { riskLimit: defaultRiskLimit };
+
+    ['onDateChange', 'onSliderChange'].forEach(m => {
       this[m] = this[m].bind(this);
     });
   }
 
-  onDateChange() {}
+  onDateChange(_, dateObj) {
+    const date = `${dateObj}`;
+    this.setState({ date });
+  }
+
+  onSliderChange(_, riskLimit) {
+    this.setState({ riskLimit });
+  }
 
   render() {
     return (
@@ -29,13 +42,26 @@ class DefineAudit extends React.Component {
         <List>
           <ListItem secondaryText='Date'>
             <DatePicker
+               defaultDate={new Date()}
                onChange={this.onDateChange}
                id='auditDate'
                ref='auditDate' />
-            <DatePicker />
           </ListItem>
           <ListItem secondaryText='Risk Limit'>
-            <TextField />
+            <Slider
+               onChange={this.onSliderChange}
+               defaultValue={defaultRiskLimit}
+               style={{height: 100}}
+               min={0.0001}
+               max={0.5000}
+               step={0.0001}
+               axis='y'
+               id='riskLimitSlider'
+               ref='riskLimitSlider' />
+            <TextField
+               value={this.state.riskLimit}
+               id='riskLimitText'
+               ref='riskLimitText' />
           </ListItem>
           <ListItem secondaryText='Contests to Audit'>
             <TextField />
