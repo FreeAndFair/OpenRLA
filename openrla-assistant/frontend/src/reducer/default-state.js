@@ -118,8 +118,4 @@ export default {
   },
   audit: {},
   archive: [],
-  manifests: {
-    contest: { uploaded: false },
-    candidate: { uploaded: false },
-  },
 };
