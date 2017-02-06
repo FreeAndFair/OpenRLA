@@ -11,16 +11,11 @@ export default filePath => (dispatch, getState) => {
     type: 'contest',
     filePath,
   };
-  submit('/manifest', data)
-    .then(manifest => {
-      dispatch({
-        type: 'UPDATE_CONTEST_MANIFEST',
-        manifest,
-      });
-      fetch(`/election/${electionId}/contest`)
-        .then(contests => dispatch({
-          type: 'UPDATE_CONTESTS',
-          contests: pivotContests(contests),
-        }));
-    });
+  submit('/manifest', data).then(() => {
+    fetch(`/election/${electionId}/contest`)
+      .then(contests => dispatch({
+        type: 'UPDATE_CONTESTS',
+        contests: pivotContests(contests),
+      }));
+  });
 }
