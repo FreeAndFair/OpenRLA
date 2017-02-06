@@ -3,7 +3,7 @@ module OpenRLA.Types where
 import qualified Data.Aeson as A
 import           Data.Aeson ((.=), (.:), FromJSON, ToJSON, Value(..))
 import           Data.Aeson.Types (typeMismatch)
-import           Data.Text (Text)
+import           Data.Text (Text, unpack)
 import           Database.SQLite.Simple (
     Connection
   , FromRow
@@ -134,8 +134,9 @@ data CandidateType
 instance FromField CandidateType where
   fromField f = case fieldData f of
     SQLText "Regular" -> Ok Regular
-    SQLText "Write-In" -> Ok WriteIn
-    _ -> error "Bad conversion"
+    SQLText "WriteIn" -> Ok WriteIn
+    SQLText t -> error $ "Bad conversion, can't parse text '" ++ unpack t ++ "'"
+    _ -> error "Bad conversion, can't parse type"
 
 instance ToJSON CandidateType where
   toJSON Regular = A.String "Regular"
