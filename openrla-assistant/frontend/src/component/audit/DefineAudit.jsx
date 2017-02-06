@@ -52,8 +52,9 @@ class DefineAudit extends React.Component {
     const { contests } = this.props;
 
     if (selectedRows === 'all') {
-      const selectedContestIds = _.map(contests, c => c.id);
-      return this.setState({ selectedContestIds });
+      return this.setState({
+        selectedContestIds: _.map(contests, c => c.id),
+      });
     }
 
     const selectedContestIds = _.map(selectedRows, i => contests[i].id);
