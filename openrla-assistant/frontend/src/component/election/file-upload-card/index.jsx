@@ -36,7 +36,6 @@ class FileUploadCard extends React.Component {
   render() {
     const {
       chooseFiles,
-      submitFiles,
       subtitle,
       title,
       uploadDisabled,
@@ -61,7 +60,7 @@ class FileUploadCard extends React.Component {
           <RaisedButton
              disabled={uploadDisabled}
              label="Upload"
-             onClick={chooseFiles(submitFiles)} />
+             onClick={chooseFiles} />
           <RaisedButton
              disabled={viewDisabled}
              label="View"
@@ -92,16 +91,20 @@ FileUploadCard.propTypes = {
   viewDisabled: PropTypes.bool.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  chooseFiles: submitFiles => () => {
-    const options = { properties: ['openFile'] };
+const mapDispatchToProps = (dispatch, props) => {
+  const { submitFiles } = props;
 
-    remote.dialog.showOpenDialog(options, filePaths => {
-      if (filePaths) {
-        dispatch(submitFiles(filePaths));
-      }
-    });
-  },
-});
+  return {
+    chooseFiles: () => {
+      const options = { properties: ['openFile'] };
+
+      remote.dialog.showOpenDialog(options, filePaths => {
+        if (filePaths) {
+          dispatch(submitFiles(filePaths));
+        }
+      });
+    },
+  };
+};
 
 export default connect(null, mapDispatchToProps)(FileUploadCard);
