@@ -15,7 +15,7 @@ const Election = ({ election }) => {
     <div>
       <ElectionSummary election={election} />
       <ContestManifestCard contests={election.contests} />
-      <CandidateManifestCard candidates={election.candidates} />
+      <CandidateManifestCard />
       <BallotManifestCard election={election} />
       <CVRManifestCard election={election} />
       <BallotImagesCard />

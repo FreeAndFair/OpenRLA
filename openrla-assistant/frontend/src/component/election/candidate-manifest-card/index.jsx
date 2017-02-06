@@ -1,40 +1,43 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { remote } from 'electron';
 
-import {
-  Card,
-  CardActions,
-  CardTitle,
-} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import _ from 'lodash';
+
+import submitCandidateManifest from '../../../action/submitCandidateManifest';
+
+import ManifestCard from '../manifest-card';
+
+import CandidateManifest from './candidate-manifest';
 
 
-const CandidateManifestCard = ({
-  uploadCandidateManifest,
-  viewCandidateManifest
-}) => {
+const CandidateManifestCard = ({ candidates }) => {
+  const manifestEl = <CandidateManifest candidates={candidates} />;
+  const title = 'Candidate Manifest';
+  const subtitle = 'Upload or view the manifest for the candidates in the election.';
+  const viewDisabled = _.isEmpty(candidates);
+
   return (
-    <Card>
-      <CardTitle
-         title='Candidate Manifest'
-         subtitle='Upload or view the candidate manifest for the election.' />
-      <CardActions>
-        <RaisedButton label="Upload" onClick={uploadCandidateManifest} />
-        <RaisedButton label="View" onClick={viewCandidateManifest} />
-      </CardActions>
-    </Card>
+    <ManifestCard
+       manifestEl={manifestEl}
+       title={title}
+       subtitle={subtitle}
+       submitManifest={submitCandidateManifest}
+       viewDisabled={viewDisabled} />
   );
 };
 
 CandidateManifestCard.propTypes = {
-  uploadCandidateManifest: PropTypes.func.isRequired,
-  viewCandidateManifest: PropTypes.func.isRequired,
+  candidates: PropTypes.array.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  uploadCandidateManifest: () => {},
-  viewCandidateManifest: () => {},
-});
+const mapStateToProps = state => {
+  const { election: { contests } } = state;
 
-export default connect(null, mapDispatchToProps)(CandidateManifestCard);
+  const candidates = _.flatten(_.map(contests, c => _.values(c.candidates)));
+
+  return { candidates };
+};
+
+export default connect(mapStateToProps)(CandidateManifestCard);
