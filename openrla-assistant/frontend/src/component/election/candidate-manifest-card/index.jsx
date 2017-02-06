@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 import submitCandidateManifest from '../../../action/submitCandidateManifest';
 
-import ManifestCard from '../manifest-card';
+import FileUploadCard from '../file-upload-card';
 
 import CandidateManifest from './candidate-manifest';
 
@@ -17,16 +17,16 @@ const CandidateManifestCard = ({
   uploadDisabled,
   viewDisabled,
 }) => {
-  const manifestEl = <CandidateManifest candidates={candidates} />;
+  const uploadedDataEl = <CandidateManifest candidates={candidates} />;
   const title = 'Candidate Manifest';
   const subtitle = 'Upload or view the manifest for the candidates in the election.';
 
   return (
-    <ManifestCard
-       manifestEl={manifestEl}
+    <FileUploadCard
+       uploadedDataEl={uploadedDataEl}
        title={title}
        subtitle={subtitle}
-       submitManifest={submitCandidateManifest}
+       submitFiles={submitCandidateManifest}
        uploadDisabled={uploadDisabled}
        viewDisabled={viewDisabled} />
   );

@@ -5,24 +5,24 @@ import _ from 'lodash';
 
 import submitContestManifest from '../../../action/submitContestManifest';
 
-import ManifestCard from '../manifest-card';
+import FileUploadCard from '../file-upload-card';
 
 import ContestManifest from './contest-manifest';
 
 
 const ContestManifestCard = ({ contests }) => {
-  const manifestEl = <ContestManifest contests={contests} />;
+  const uploadedDataEl = <ContestManifest contests={contests} />;
   const title = 'Contest Manifest';
   const subtitle = 'Upload or view the manifest for the contests in the election.';
   const uploadDisabled = !_.isEmpty(contests);
   const viewDisabled = _.isEmpty(contests);
 
   return (
-    <ManifestCard
-       manifestEl={manifestEl}
+    <FileUploadCard
+       uploadedDataEl={uploadedDataEl}
        title={title}
        subtitle={subtitle}
-       submitManifest={submitContestManifest}
+       submitFiles={submitContestManifest}
        uploadDisabled={uploadDisabled}
        viewDisabled={viewDisabled} />
   );
