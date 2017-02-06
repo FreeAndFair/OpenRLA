@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import ElectionInfoCard from './home/election-info-card';
-import ArchiveInfoCard from './home/archive-info-card';
-import AuditInfoCard from './home/audit-info-card';
+import ElectionInfoCard from './home/ElectionInfoCard';
+import ArchiveInfoCard from './home/ArchiveInfoCard';
+import AuditInfoCard from './home/AuditInfoCard';
 
 
 const Home = () => (
