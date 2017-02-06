@@ -11,7 +11,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 
 import setPage from '../../action/setPage';
-import isAuditActive from '../../selector/is-audit-active';
+import isAuditActive from '../../selector/isAuditActive';
 
 
 const AuditInfoCard = ({ audit, active, navigateAudit }) => {
