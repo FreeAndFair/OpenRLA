@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import BallotImagesCard from './ballot-images-card';
-import CandidateManifestCard from './candidate-manifest-card';
-import ContestManifestCard from './contest-manifest-card';
+import BallotImagesCard from './BallotImagesCard';
+import CandidateManifestCard from './CandidateManifestCard';
+import ContestManifestCard from './ContestManifestCard';
 import ElectionSummary from './summary';
 
 

@@ -5,9 +5,9 @@ import _ from 'lodash';
 
 import submitContestManifest from '../../../action/submitContestManifest';
 
-import FileUploadCard from '../file-upload-card';
+import FileUploadCard from '../FileUploadCard';
 
-import ContestManifest from './contest-manifest';
+import ContestManifest from './ContestManifest';
 
 
 const ContestManifestCard = ({ contests }) => {

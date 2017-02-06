@@ -7,9 +7,9 @@ import _ from 'lodash';
 
 import submitCandidateManifest from '../../../action/submitCandidateManifest';
 
-import FileUploadCard from '../file-upload-card';
+import FileUploadCard from '../FileUploadCard';
 
-import CandidateManifest from './candidate-manifest';
+import CandidateManifest from './CandidateManifest';
 
 
 const CandidateManifestCard = ({

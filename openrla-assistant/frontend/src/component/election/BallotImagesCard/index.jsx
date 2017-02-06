@@ -6,9 +6,9 @@ import _ from 'lodash';
 
 import submitBallotImages from '../../../action/submitBallotImages';
 
-import FileUploadCard from '../file-upload-card';
+import FileUploadCard from '../FileUploadCard';
 
-import BallotImages from './ballot-images';
+import BallotImages from './BallotImages';
 
 
 const BallotImagesCard = ({ ballots }) => {
