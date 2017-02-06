@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
+import ActiveAudit from './ActiveAudit';
 import NoAudit from './NoAudit';
 
 
@@ -12,7 +13,7 @@ const Audit = ({ audit }) => {
     return <NoAudit />;
   }
 
-  return <NoAudit />;
+  return <ActiveAudit audit={audit} />;
 };
 
 const mapStateToProps = ({ audit }) => ({ audit });
