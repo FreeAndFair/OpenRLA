@@ -14,6 +14,7 @@ const ContestManifestCard = ({ contests }) => {
   const manifestEl = <ContestManifest contests={contests} />;
   const title = 'Contest Manifest';
   const subtitle = 'Upload or view the manifest for the contests in the election.';
+  const uploadDisabled = !_.isEmpty(contests);
   const viewDisabled = _.isEmpty(contests);
 
   return (
@@ -22,6 +23,7 @@ const ContestManifestCard = ({ contests }) => {
        title={title}
        subtitle={subtitle}
        submitManifest={submitContestManifest}
+       uploadDisabled={uploadDisabled}
        viewDisabled={viewDisabled} />
   );
 };

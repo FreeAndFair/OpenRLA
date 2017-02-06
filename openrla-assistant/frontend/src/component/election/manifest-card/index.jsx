@@ -40,6 +40,7 @@ class ManifestCard extends React.Component {
       submitManifest,
       subtitle,
       title,
+      uploadDisabled,
       viewDisabled,
     } = this.props;
 
@@ -57,7 +58,10 @@ class ManifestCard extends React.Component {
            title={title}
            subtitle={subtitle} />
         <CardActions>
-          <RaisedButton label="Upload" onClick={chooseManifest(submitManifest)} />
+          <RaisedButton
+             disabled={uploadDisabled}
+             label="Upload"
+             onClick={chooseManifest(submitManifest)} />
           <RaisedButton
              disabled={viewDisabled}
              label="View"
@@ -84,6 +88,7 @@ ManifestCard.propTypes = {
   submitManifest: PropTypes.func.isRequired,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  uploadDisabled: PropTypes.bool.isRequired,
   viewDisabled: PropTypes.bool.isRequired,
 };
 
