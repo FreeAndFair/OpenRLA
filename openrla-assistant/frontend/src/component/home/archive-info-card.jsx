@@ -12,7 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 
 import setPage from '../../action/setPage';
-import isElectionDefined from '../../selector/is-election-defined';
+import isElectionDefined from '../../selector/isElectionDefined';
 
 
 const ArchiveInfoCard = ({ archive, navigateArchive }) => {
