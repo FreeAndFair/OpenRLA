@@ -1,6 +1,6 @@
 import { fetch, submit } from '../util';
 
-import pivotContests from '../selector/pivot-contests';
+import pivotContests from '../selector/pivotContests';
 
 
 export default filePaths => (dispatch, getState) => {

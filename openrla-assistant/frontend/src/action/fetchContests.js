@@ -1,6 +1,6 @@
 import { fetch } from '../util';
 
-import pivotContests from '../selector/pivot-contests';
+import pivotContests from '../selector/pivotContests';
 
 
 export default id => dispatch => {
