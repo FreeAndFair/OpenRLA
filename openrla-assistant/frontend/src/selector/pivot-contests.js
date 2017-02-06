@@ -1,10 +1,14 @@
 import _ from 'lodash';
 
 
-const cb = (acc, o) => {
-  acc[o.id] = o;
-  return acc;
+const keyById = a => _.keyBy(a, o => o.id);
+
+
+export default contests => {
+  const cb = c => {
+    c.candidates = keyById(c.candidates);
+    return c;
+  };
+  const result = keyById(_.map(contests, cb));
+  return result;
 };
-
-
-export default contests => _.reduce(contests, cb, {});
