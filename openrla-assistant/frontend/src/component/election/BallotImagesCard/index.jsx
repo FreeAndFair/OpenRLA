@@ -11,12 +11,14 @@ import FileUploadCard from '../FileUploadCard';
 import BallotImages from './BallotImages';
 
 
-const BallotImagesCard = ({ ballots }) => {
+const BallotImagesCard = ({
+  ballots,
+  uploadDisabled,
+  viewDisabled,
+}) => {
   const uploadedDataEl = <BallotImages ballots={ballots} />;
   const title = 'Ballot Images';
   const subtitle = 'Upload or view the ballot image files for the election.';
-  const uploadDisabled = !_.isEmpty(ballots);
-  const viewDisabled = _.isEmpty(ballots);
 
   return (
     <FileUploadCard
@@ -36,7 +38,11 @@ BallotImagesCard.propTypes = {
 
 const mapStateToProps = state => {
   const { election: { ballots } } = state;
-  return { ballots };
+  return {
+    ballots,
+    uploadDisabled: !_.isEmpty(ballots),
+    viewDisabled: _.isEmpty(ballots),
+  };
 };
 
 export default connect(mapStateToProps)(BallotImagesCard);
