@@ -118,4 +118,5 @@ export default {
   },
   audit: {},
   archive: [],
+  ballotImages: {},
 };
