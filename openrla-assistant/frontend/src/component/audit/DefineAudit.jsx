@@ -30,9 +30,15 @@ class DefineAudit extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { riskLimit: defaultRiskLimit };
+    this.state = {
+      selectedContestIds: [],
+      riskLimit: defaultRiskLimit,
+    };
 
-    ['onDateChange', 'onSliderChange'].forEach(m => {
+    ['onDateChange',
+     'onRowSelection',
+     'onSliderChange',
+    ].forEach(m => {
       this[m] = this[m].bind(this);
     });
   }
@@ -42,6 +48,19 @@ class DefineAudit extends React.Component {
     this.setState({ date });
   }
 
+  onRowSelection(selectedRows) {
+    const { contests } = this.props;
+
+    if (selectedRows === 'all') {
+      const selectedContestIds = _.map(contests, c => c.id);
+      return this.setState({ selectedContestIds });
+    }
+
+    const selectedContestIds = _.map(selectedRows, i => contests[i].id);
+
+    this.setState({ selectedContestIds });
+  }
+
   onSliderChange(_, riskLimit) {
     this.setState({ riskLimit });
   }
@@ -49,13 +68,17 @@ class DefineAudit extends React.Component {
   render() {
     const { contests } = this.props;
 
-    const makeRow = ({ id, externalId, description }) => (
-      <TableRow>
-        <TableRowColumn>{id}</TableRowColumn>
-        <TableRowColumn>{externalId}</TableRowColumn>
-        <TableRowColumn>{description}</TableRowColumn>
-      </TableRow>
-    );
+    const makeRow = ({ id, externalId, description }) => {
+      const selected = _.includes(this.state.selectedContestIds, id);
+
+      return (
+        <TableRow selected={selected} >
+          <TableRowColumn>{id}</TableRowColumn>
+          <TableRowColumn>{externalId}</TableRowColumn>
+          <TableRowColumn>{description}</TableRowColumn>
+        </TableRow>
+      );
+    };
 
     const rows = _.map(contests, makeRow);
 
@@ -85,8 +108,10 @@ class DefineAudit extends React.Component {
                ref='riskLimitText' />
           </ListItem>
           <ListItem secondaryText='Contests to Audit'>
-            <Table multiSelectable={true} >
-              <TableHeader displaySelectAll={false}>
+            <Table
+               onRowSelection={this.onRowSelection}
+               multiSelectable={true} >
+              <TableHeader>
                 <TableRow>
                   <TableHeaderColumn>ID</TableHeaderColumn>
                   <TableHeaderColumn>External ID</TableHeaderColumn>
@@ -105,14 +130,15 @@ class DefineAudit extends React.Component {
 }
 
 DefineAudit.PropTypes = {
-  contests: PropTypes.object.isRequired,
+  contests: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = state => {
-  const { election } = state;
-  const { contests } = election;
+const sortById = coll => _.sortBy(coll, o => o.id);
 
-  return { contests };
+const mapStateToProps = state => {
+  const { election: { contests } } = state;
+
+  return { contests: sortById(contests) };
 };
 
 export default connect(mapStateToProps)(DefineAudit);
