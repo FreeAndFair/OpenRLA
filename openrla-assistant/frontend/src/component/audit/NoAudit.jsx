@@ -21,7 +21,11 @@ class NoAudit extends React.Component {
 
     this.state = { open: false };
 
-    ['openDialog', 'closeDialog'].forEach(m => {
+    [
+      'openDialog',
+      'closeDialog',
+      'saveAudit',
+    ].forEach(m => {
       this[m] = this[m].bind(this);
     });
   }
@@ -34,6 +38,9 @@ class NoAudit extends React.Component {
     this.setState({ open: false });
   };
 
+  saveAudit() {
+  }
+
   render() {
     const cancelButton = (
       <FlatButton
@@ -45,7 +52,7 @@ class NoAudit extends React.Component {
       <RaisedButton
          label="Save"
          primary={true}
-         onTouchTap={this.closeDialog} />
+         onTouchTap={this.saveAudit} />
     );
     const actions = [cancelButton, saveButton];
 
