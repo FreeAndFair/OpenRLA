@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import {
   Card,
   CardTitle,
-  CardText
 } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
@@ -16,23 +15,29 @@ import TextField from 'material-ui/TextField';
 class DefineAudit extends React.Component {
   constructor(props) {
     super(props);
+
+    ['onDateChange'].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
   }
+
+  onDateChange() {}
 
   render() {
     return (
       <Card>
-        <CardTitle title='Define Audit' />
-        <CardText>
-          Define a new audit.
-        </CardText>
         <List>
-          <ListItem>
+          <ListItem secondaryText='Date'>
+            <DatePicker
+               onChange={this.onDateChange}
+               id='auditDate'
+               ref='auditDate' />
+            <DatePicker />
+          </ListItem>
+          <ListItem secondaryText='Risk Limit'>
             <TextField />
           </ListItem>
-          <ListItem>
-            <TextField />
-          </ListItem>
-          <ListItem>
+          <ListItem secondaryText='Contests to Audit'>
             <TextField />
           </ListItem>
         </List>
