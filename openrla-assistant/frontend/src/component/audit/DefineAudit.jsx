@@ -31,8 +31,9 @@ class DefineAudit extends React.Component {
     super(props);
 
     this.state = {
-      selectedContestIds: [],
+      date: new Date(),
       riskLimit: defaultRiskLimit,
+      selectedContestIds: [],
     };
 
     ['onDateChange',
@@ -43,8 +44,7 @@ class DefineAudit extends React.Component {
     });
   }
 
-  onDateChange(_, dateObj) {
-    const date = `${dateObj}`;
+  onDateChange(_, date) {
     this.setState({ date });
   }
 
@@ -87,7 +87,7 @@ class DefineAudit extends React.Component {
         <List>
           <ListItem secondaryText='Date'>
             <DatePicker
-               defaultDate={new Date()}
+               value={this.state.date}
                onChange={this.onDateChange}
                id='auditDate'
                ref='auditDate' />
