@@ -97,9 +97,9 @@ class DefineAudit extends React.Component {
                onChange={this.onSliderChange}
                value={this.state.riskLimit}
                style={{width: 100}}
-               min={0.0001}
-               max={0.5000}
-               step={0.0001}
+               min={0.001}
+               max={0.500}
+               step={0.001}
                id='riskLimitSlider'
                ref='riskLimitSlider' />
             <TextField
