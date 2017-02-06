@@ -85,7 +85,7 @@ class DefineAudit extends React.Component {
                ref='riskLimitText' />
           </ListItem>
           <ListItem secondaryText='Contests to Audit'>
-            <Table>
+            <Table multiSelectable={true} >
               <TableHeader displaySelectAll={false}>
                 <TableRow>
                   <TableHeaderColumn>ID</TableHeaderColumn>
