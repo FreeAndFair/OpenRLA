@@ -35,13 +35,19 @@ class NoAudit extends React.Component {
   };
 
   render() {
-    const closeButton = (
+    const cancelButton = (
       <FlatButton
-         label="Close"
+         label="Cancel"
          primary={true}
          onTouchTap={this.closeDialog} />
     );
-    const actions = [closeButton];
+    const saveButton = (
+      <RaisedButton
+         label="Save"
+         primary={true}
+         onTouchTap={this.closeDialog} />
+    );
+    const actions = [cancelButton, saveButton];
 
     return (
       <Card>
