@@ -18,6 +18,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 class FileUploadCard extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = { open: false };
 
     ['openDialog', 'closeDialog'].forEach(m => {
