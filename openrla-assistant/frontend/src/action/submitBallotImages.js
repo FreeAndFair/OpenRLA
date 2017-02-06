@@ -1,6 +1,6 @@
 import { fetch, submit } from '../util';
 
-import pivotBallots from '../selector/pivot-ballots';
+import pivotBallots from '../selector/pivotBallots';
 
 
 export default filePaths => (dispatch, getState) => {

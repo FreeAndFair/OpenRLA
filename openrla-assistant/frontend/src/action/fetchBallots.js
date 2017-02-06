@@ -1,6 +1,6 @@
 import { fetch } from '../util';
 
-import pivotBallots from '../selector/pivot-ballots';
+import pivotBallots from '../selector/pivotBallots';
 
 
 export default id => dispatch => {
