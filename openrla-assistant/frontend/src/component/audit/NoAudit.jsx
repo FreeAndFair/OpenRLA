@@ -14,6 +14,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import DefineAudit from './DefineAudit';
 
+import submitNewAudit from 'action/submitNewAudit';
+
 
 class NoAudit extends React.Component {
   constructor(props) {
@@ -39,6 +41,14 @@ class NoAudit extends React.Component {
   };
 
   saveAudit() {
+    const { state } = this.refs.defineAudit.getWrappedInstance();
+
+    this.props.submitNewAudit({
+      electionId: this.props.electionId,
+      date: `${state.date}`,
+      riskLimit: state.riskLimit,
+      contests: state.selectedContestIds,
+    });
   }
 
   render() {
@@ -85,4 +95,12 @@ class NoAudit extends React.Component {
   }
 }
 
-export default connect()(NoAudit);
+const mapStateToProps = state => ({
+  electionId: state.election.id,
+});
+
+const mapDispatchToProps = dispatch => ({
+  submitNewAudit: data => dispatch(submitNewAudit(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NoAudit);
