@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
+import _ from 'lodash';
+
 import {
   Card,
   CardTitle,
@@ -10,6 +12,14 @@ import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 import Slider from 'material-ui/Slider';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 
 
@@ -37,6 +47,18 @@ class DefineAudit extends React.Component {
   }
 
   render() {
+    const { contests } = this.props;
+
+    const makeRow = ({ id, externalId, description }) => (
+      <TableRow>
+        <TableRowColumn>{id}</TableRowColumn>
+        <TableRowColumn>{externalId}</TableRowColumn>
+        <TableRowColumn>{description}</TableRowColumn>
+      </TableRow>
+    );
+
+    const rows = _.map(contests, makeRow);
+
     return (
       <Card>
         <List>
@@ -63,7 +85,18 @@ class DefineAudit extends React.Component {
                ref='riskLimitText' />
           </ListItem>
           <ListItem secondaryText='Contests to Audit'>
-            <TextField />
+            <Table>
+              <TableHeader displaySelectAll={false}>
+                <TableRow>
+                  <TableHeaderColumn>ID</TableHeaderColumn>
+                  <TableHeaderColumn>External ID</TableHeaderColumn>
+                  <TableHeaderColumn>Description</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody
+                 showRowHover={true}
+                 children={rows} />
+            </Table>
           </ListItem>
         </List>
       </Card>
@@ -71,4 +104,15 @@ class DefineAudit extends React.Component {
   }
 }
 
-export default connect()(DefineAudit);
+DefineAudit.PropTypes = {
+  contests: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => {
+  const { election } = state;
+  const { contests } = election;
+
+  return { contests };
+};
+
+export default connect(mapStateToProps)(DefineAudit);
