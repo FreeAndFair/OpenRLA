@@ -1,6 +1,6 @@
 import { merge } from 'lodash';
 
-import defaultState from './default-state';
+import defaultState from './defaultState';
 
 
 const update = (...objects) => merge({}, ...objects);
