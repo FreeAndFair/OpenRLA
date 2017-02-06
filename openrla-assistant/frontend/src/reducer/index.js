@@ -14,6 +14,8 @@ export default (state = defaultState, action) => {
   case 'UPDATE_ELECTION':
     const { election } = action;
     return update(state, { election });
+  case 'UPDATE_CANDIDATE_MANIFEST':
+    return update(state, { manifest: { candidate: { uploaded: true } } });
   case 'UPDATE_CONTEST_MANIFEST':
     return update(state, { manifest: { contest: { uploaded: true } } });
   case 'UPDATE_CONTESTS':
