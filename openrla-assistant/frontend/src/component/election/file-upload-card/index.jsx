@@ -83,6 +83,7 @@ class FileUploadCard extends React.Component {
 
 FileUploadCard.propTypes = {
   chooseFiles: PropTypes.func.isRequired,
+  multiSelections: PropTypes.bool.isRequired,
   submitFiles: PropTypes.func.isRequired,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
@@ -92,11 +93,15 @@ FileUploadCard.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch, props) => {
-  const { submitFiles } = props;
+  const { multiSelections, submitFiles } = props;
 
   return {
     chooseFiles: () => {
       const options = { properties: ['openFile'] };
+
+      if (multiSelections) {
+        options.properties.push('multiSelections');
+      }
 
       remote.dialog.showOpenDialog(options, filePaths => {
         if (filePaths) {

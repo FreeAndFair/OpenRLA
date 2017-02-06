@@ -19,6 +19,7 @@ const ContestManifestCard = ({ contests }) => {
 
   return (
     <FileUploadCard
+       multiSelections={false}
        uploadedDataEl={uploadedDataEl}
        title={title}
        subtitle={subtitle}

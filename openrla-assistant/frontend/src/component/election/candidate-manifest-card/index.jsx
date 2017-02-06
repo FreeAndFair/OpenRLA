@@ -23,6 +23,7 @@ const CandidateManifestCard = ({
 
   return (
     <FileUploadCard
+       multiSelections={false}
        uploadedDataEl={uploadedDataEl}
        title={title}
        subtitle={subtitle}
