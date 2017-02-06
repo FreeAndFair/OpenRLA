@@ -40,14 +40,17 @@ CandidateManifestCard.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { election: { contests } } = state;
+  const { election } = state;
+  const { contests, id } = election;
 
   const candidates = _.flatten(_.map(contests, c => _.values(c.candidates)));
+  const uploadDisabled = !id || _.isEmpty(contests) || !_.isEmpty(candidates);
+  const viewDisabled = _.isEmpty(candidates);
 
   return {
     candidates,
-    uploadDisabled: !_.isEmpty(candidates),
-    viewDisabled: _.isEmpty(candidates),
+    uploadDisabled,
+    viewDisabled,
   };
 };
 
