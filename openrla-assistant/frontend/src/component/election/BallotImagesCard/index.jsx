@@ -37,11 +37,16 @@ BallotImagesCard.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { election: { ballots } } = state;
+  const { election } = state;
+  const { ballots, id } = election;
+
+  const uploadDisabled = !id || !_.isEmpty(ballots);
+  const viewDisabled = _.isEmpty(ballots);
+
   return {
     ballots,
-    uploadDisabled: !_.isEmpty(ballots),
-    viewDisabled: _.isEmpty(ballots),
+    uploadDisabled,
+    viewDisabled,
   };
 };
 
