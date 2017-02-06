@@ -98,7 +98,7 @@ const mapDispatchToProps = dispatch => ({
 
     remote.dialog.showOpenDialog(options, filePaths => {
       if (filePaths) {
-        dispatch(submitManifest(filePaths[0]));
+        dispatch(submitManifest(filePaths));
       }
     });
   },

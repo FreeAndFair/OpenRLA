@@ -3,7 +3,8 @@ import { fetch, submit } from '../util';
 import pivotContests from '../selector/pivot-contests';
 
 
-export default filePath => (dispatch, getState) => {
+export default filePaths => (dispatch, getState) => {
+  const [filePath] = filePaths;
   const electionId = getState().election.id;
   const data = {
     electionId,
