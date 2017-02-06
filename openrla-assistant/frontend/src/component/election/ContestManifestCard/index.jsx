@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
@@ -10,12 +11,14 @@ import FileUploadCard from '../FileUploadCard';
 import ContestManifest from './ContestManifest';
 
 
-const ContestManifestCard = ({ contests }) => {
+const ContestManifestCard = ({
+  contests,
+  uploadDisabled,
+  viewDisabled,
+}) => {
   const uploadedDataEl = <ContestManifest contests={contests} />;
   const title = 'Contest Manifest';
   const subtitle = 'Upload or view the manifest for the contests in the election.';
-  const uploadDisabled = !_.isEmpty(contests);
-  const viewDisabled = _.isEmpty(contests);
 
   return (
     <FileUploadCard
@@ -33,4 +36,18 @@ ContestManifestCard.propTypes = {
   contests: PropTypes.object.isRequired,
 };
 
-export default ContestManifestCard;
+const mapStateToProps = state => {
+  const { election } = state;
+  const { contests, id } = election;
+
+  const uploadDisabled = !id || !_.isEmpty(contests);
+  const viewDisabled = _.isEmpty(contests);
+
+  return {
+    contests,
+    uploadDisabled,
+    viewDisabled,
+  };
+};
+
+export default connect(mapStateToProps)(ContestManifestCard);
