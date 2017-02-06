@@ -12,7 +12,7 @@ const Election = ({ election }) => {
   return (
     <div>
       <ElectionSummary election={election} />
-      <ContestManifestCard contests={election.contests} />
+      <ContestManifestCard />
       <CandidateManifestCard />
       <BallotImagesCard />
     </div>
