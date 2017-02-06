@@ -50,7 +50,7 @@ class DefineAudit extends React.Component {
           <ListItem secondaryText='Risk Limit'>
             <Slider
                onChange={this.onSliderChange}
-               defaultValue={defaultRiskLimit}
+               value={this.state.riskLimit}
                style={{height: 100}}
                min={0.0001}
                max={0.5000}
