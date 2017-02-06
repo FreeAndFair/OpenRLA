@@ -2,36 +2,41 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import {
-  Card,
-  CardActions,
-  CardTitle,
-} from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import _ from 'lodash';
+
+import submitBallotImages from '../../../action/submitBallotImages';
+
+import FileUploadCard from '../file-upload-card';
+
+import BallotImages from './ballot-images';
 
 
-const BallotImagesCard = ({ uploadBallotImages, viewBallotImages }) => {
+const BallotImagesCard = ({ ballots }) => {
+  const uploadedDataEl = <BallotImages ballots={ballots} />;
+  const title = 'Ballot Images';
+  const subtitle = 'Upload or view the ballot image files for the election.';
+  const uploadDisabled = !_.isEmpty(ballots);
+  const viewDisabled = _.isEmpty(ballots);
+
   return (
-    <Card>
-      <CardTitle
-         title='Ballot Images'
-         subtitle='Upload or view the ballot images for the election.' />
-      <CardActions>
-        <RaisedButton label="Upload" onClick={uploadBallotImages} />
-        <RaisedButton label="View" onClick={viewBallotImages} />
-      </CardActions>
-    </Card>
+    <FileUploadCard
+       multiSelections={true}
+       uploadedDataEl={uploadedDataEl}
+       title={title}
+       subtitle={subtitle}
+       submitFiles={submitBallotImages}
+       uploadDisabled={uploadDisabled}
+       viewDisabled={viewDisabled} />
   );
 };
 
 BallotImagesCard.propTypes = {
-  uploadBallotImages: PropTypes.func.isRequired,
-  viewBallotImages: PropTypes.func.isRequired,
+  ballots: PropTypes.object.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  uploadBallotImages: () => {},
-  viewBallotImages: () => {},
-});
+const mapStateToProps = state => {
+  const { election: { ballots } } = state;
+  return { ballots };
+};
 
-export default connect(null, mapDispatchToProps)(BallotImagesCard);
+export default connect(mapStateToProps)(BallotImagesCard);
