@@ -78,7 +78,7 @@ class NoAudit extends React.Component {
            open={this.state.open}
            onRequestClose={this.closeDialog}
            autoScrollBodyContent={true} >
-          <DefineAudit />
+          <DefineAudit ref='defineAudit' />
         </Dialog>
       </Card>
     );

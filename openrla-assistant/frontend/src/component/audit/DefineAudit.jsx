@@ -141,4 +141,9 @@ const mapStateToProps = state => {
   return { contests: sortById(contests) };
 };
 
-export default connect(mapStateToProps)(DefineAudit);
+export default connect(
+  mapStateToProps,
+  null,
+  null,
+  { withRef: true }
+)(DefineAudit);
