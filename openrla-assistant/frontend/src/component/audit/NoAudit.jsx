@@ -49,6 +49,8 @@ class NoAudit extends React.Component {
       riskLimit: state.riskLimit,
       contests: state.selectedContestIds,
     });
+
+    this.closeDialog();
   }
 
   render() {
