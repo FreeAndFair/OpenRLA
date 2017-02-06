@@ -15,6 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DefineAudit from './DefineAudit';
 
 import submitNewAudit from 'action/submitNewAudit';
+import isElectionDefined from 'selector/isElectionDefined';
 
 
 class NoAudit extends React.Component {
@@ -76,6 +77,7 @@ class NoAudit extends React.Component {
         </CardText>
         <CardActions>
           <RaisedButton
+             disabled={this.props.startButtonDisabled}
              label='Start'
              onClick={this.openDialog} />
           <RaisedButton
@@ -84,7 +86,7 @@ class NoAudit extends React.Component {
              onClick={console.log} />
         </CardActions>
         <Dialog
-           title="Define new audit"
+           title='Define new audit'
            actions={actions}
            modal={false}
            open={this.state.open}
@@ -99,6 +101,7 @@ class NoAudit extends React.Component {
 
 const mapStateToProps = state => ({
   electionId: state.election.id,
+  startButtonDisabled: !isElectionDefined(state.election),
 });
 
 const mapDispatchToProps = dispatch => ({
