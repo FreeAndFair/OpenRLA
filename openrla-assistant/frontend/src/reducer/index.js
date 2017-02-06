@@ -24,6 +24,10 @@ export default (state = defaultState, action) => {
     const { contests } = action;
     return update(state, { election: { contests } });
   }
+  case 'UPDATE_BALLOTS': {
+    const { ballots } = action;
+    return update(state, { election: { ballots } });
+  }
   default: { return state; }
   }
 };
