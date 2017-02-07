@@ -32,6 +32,10 @@ export default (state = defaultState, action) => {
     const { audit } = action;
     return update(state, { audit });
   }
+  case 'UPDATE_AUDIT_MARKS': {
+    const { marks } = action;
+    return update(state, { audit: { marks } });
+  }
   default: { return state; }
   }
 };
