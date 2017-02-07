@@ -11,7 +11,4 @@ const pivotBallotMarks = ballotMarks => {
 };
 
 
-export default auditMarks => {
-  const pivotedBallotMarks = _.map(auditMarks, pivotBallotMarks);
-  return _.keyBy(pivotBallotMarks, m => m.ballotId);
-};
+export default auditMarks => _.map(auditMarks, pivotBallotMarks);
