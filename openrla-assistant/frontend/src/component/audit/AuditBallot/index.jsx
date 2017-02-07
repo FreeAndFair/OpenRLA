@@ -18,17 +18,27 @@ import TextField from 'material-ui/TextField';
 
 import ContestMarkForm from './ContestMarkForm';
 
+import submitAuditMarks from 'action/submitAuditMarks';
+
 
 class AuditBallot extends React.Component {
   constructor(props) {
     super(props);
+
+    this.contestMarkForms = {};
 
     ['saveMarks'].forEach(m => {
       this[m] = this[m].bind(this);
     });
   }
 
-  saveMarks() {}
+  saveMarks() {
+    const { ballotId } = this.props;
+    const marks = _.map(this.contestMarkForms, f => f.formData());
+    const data = { ballotId, marks };
+    this.props.submitAuditMarks(this.props.audit.id, data);
+    this.props.closeDialog();
+  }
 
   render() {
     const {
@@ -54,9 +64,14 @@ class AuditBallot extends React.Component {
     const actions = [closeButton, saveButton];
 
     const contestForms = _.map(contests, c => {
+      const ref = f => {
+        this.contestMarkForms[c.id] = f;
+      };
       return (
         <ListItem key={c.id}>
-          <ContestMarkForm contest={c} />
+          <ContestMarkForm
+             contest={c}
+             ref={ref} />
         </ListItem>
       );
     });
@@ -97,7 +112,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch, props) => {
-  return {};
+  return {
+    submitAuditMarks: (id, data) => submitAuditMarks(id, data)(dispatch),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuditBallot);
