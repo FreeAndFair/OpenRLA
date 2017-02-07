@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { Card } from 'material-ui/Card';
+import { List, ListItem } from 'material-ui/List';
 
 import AuditMark from './AuditMark';
 
@@ -18,15 +19,17 @@ class AuditMarkList extends React.Component {
     const { marks } = this.props;
 
     const makeMark = mark => (
-      <AuditMark
-         key={mark.ballotId}
-         ballotMark={mark} />
+      <ListItem key={mark.ballotId}>
+        <AuditMark ballotMark={mark} />
+      </ListItem>
     );
     const auditMarks = _.map(marks, makeMark);
 
     return (
       <Card>
-        {auditMarks}
+        <List>
+          {auditMarks}
+        </List>
       </Card>
     );
   }
