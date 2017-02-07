@@ -15,9 +15,9 @@ class AuditMarkList extends React.Component {
   render() {
     const marks = ['a', 'b', 'c'];
 
-    const mkMark = mark => <AuditMark mark={mark} />;
+    const makeMark = mark => <AuditMark mark={mark} />;
 
-    const auditMarks = React.Children.map(marks, mkMark);
+    const auditMarks = React.Children.map(marks, makeMark);
 
     return (
       <div>
