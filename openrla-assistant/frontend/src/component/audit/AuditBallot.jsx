@@ -28,6 +28,7 @@ class AuditBallot extends React.Component {
 
   render() {
     const {
+      audit,
       closeDialog,
       dialogOpen,
     } = this.props;
@@ -60,12 +61,18 @@ class AuditBallot extends React.Component {
 }
 
 AuditBallot.propTypes = {
+  audit: PropTypes.object.isRequired,
   closeDialog: PropTypes.func.isRequired,
   dialogOpen: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => {
+  const { audit } = state;
+  return { audit };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   return {};
 };
 
-export default connect(null, mapDispatchToProps)(AuditBallot);
+export default connect(mapStateToProps, mapDispatchToProps)(AuditBallot);
