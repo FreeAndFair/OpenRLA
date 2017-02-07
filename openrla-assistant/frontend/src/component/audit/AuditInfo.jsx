@@ -26,17 +26,25 @@ class AuditInfo extends React.Component {
     return (
       <Card>
         <List>
-          <ListItem secondaryText='Election ID'>
-            <TextField value={audit.electionId} />
+          <ListItem>
+            <TextField
+               floatingLabelText='Election ID'
+               value={audit.electionId} />
           </ListItem>
-          <ListItem secondaryText='Audit ID'>
-            <TextField value={audit.id} />
+          <ListItem>
+            <TextField
+               floatingLabelText='Audit ID'
+               value={audit.id} />
           </ListItem>
-          <ListItem secondaryText='Date'>
-            <DatePicker value={new Date(audit.date)} />
+          <ListItem>
+            <DatePicker
+               floatingLabelText='Date'
+               value={new Date(audit.date)} />
           </ListItem>
-          <ListItem secondaryText='Risk limit'>
-            <TextField value={audit.riskLimit} />
+          <ListItem>
+            <TextField
+               floatingLabelText='Risk limit'
+               value={audit.riskLimit} />
           </ListItem>
         </List>
       </Card>
