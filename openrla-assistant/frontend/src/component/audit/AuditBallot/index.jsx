@@ -29,6 +29,7 @@ class AuditBallot extends React.Component {
   render() {
     const {
       audit,
+      ballotId,
       closeDialog,
       dialogOpen,
     } = this.props;

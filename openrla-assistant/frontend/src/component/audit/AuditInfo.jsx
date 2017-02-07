@@ -75,6 +75,7 @@ class AuditInfo extends React.Component {
           </ListItem>
         </List>
         <AuditBallot
+           ballotId={currentSampleId}
            closeDialog={this.closeDialog}
            dialogOpen={this.state.open} />
       </Card>
