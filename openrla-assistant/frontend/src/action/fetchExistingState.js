@@ -1,6 +1,8 @@
 import { fetch } from '../util';
 
 import fetchActiveAudit from './fetchActiveAudit';
+import fetchAuditMarks from './fetchAuditMarks';
+import fetchAuditSample from './fetchAuditSample';
 import fetchBallots from './fetchBallots';
 import fetchContests from './fetchContests';
 
@@ -12,9 +14,14 @@ export default () => dispatch => {
       election,
     }))
     .then(({ election: { id } }) => {
-      fetchActiveAudit()(dispatch);
       fetchBallots(id)(dispatch);
       fetchContests(id)(dispatch);
+      fetchActiveAudit()(dispatch)
+        .then(audit => {
+          const { id } = audit;
+          fetchAuditMarks(id)(dispatch);
+          fetchAuditSample(id)(dispatch);
+        });
     })
     .catch(console.error);
 }
