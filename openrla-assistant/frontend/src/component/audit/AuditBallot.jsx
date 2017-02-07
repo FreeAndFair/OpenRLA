@@ -38,7 +38,13 @@ class AuditBallot extends React.Component {
          primary={true}
          onTouchTap={closeDialog} />
     );
-    const actions = [closeButton];
+    const saveButton = (
+      <RaisedButton
+         label="Save"
+         primary={true}
+         onTouchTap={this.saveMarks} />
+    );
+    const actions = [closeButton, saveButton];
 
     return (
         <Dialog
@@ -48,7 +54,6 @@ class AuditBallot extends React.Component {
            open={dialogOpen}
            onRequestClose={closeDialog}
            autoScrollBodyContent={true} >
-          <RaisedButton onClick={this.saveMarks} />
         </Dialog>
     );
   }
