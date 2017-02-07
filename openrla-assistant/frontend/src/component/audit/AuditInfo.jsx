@@ -23,6 +23,11 @@ class AuditInfo extends React.Component {
   render() {
     const { audit } = this.props;
 
+    let currentSampleId;
+    if (audit.sample) {
+      currentSampleId = audit.sample.id;
+    }
+
     return (
       <Card>
         <List>
@@ -45,6 +50,12 @@ class AuditInfo extends React.Component {
             <TextField
                floatingLabelText='Risk limit'
                value={audit.riskLimit} />
+          </ListItem>
+          <ListItem>
+            <TextField
+               floatingLabelText='Current sample ID'
+               value={currentSampleId} />
+            <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
       </Card>
