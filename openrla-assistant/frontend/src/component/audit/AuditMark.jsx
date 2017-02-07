@@ -4,6 +4,18 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
+import { Card } from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
+
 
 class AuditMark extends React.Component {
   constructor(props) {
@@ -11,14 +23,41 @@ class AuditMark extends React.Component {
   }
 
   render() {
+    const { ballotMark } = this.props;
+
+    const makeRow = ({ contestId, candidateId }) => {
+      return (
+        <TableRow key={`${contestId}-${candidateId}`}>
+          <TableRowColumn>{contestId}</TableRowColumn>
+          <TableRowColumn>{candidateId}</TableRowColumn>
+        </TableRow>
+      )
+    };
+
+    const { ballotId, marks } = ballotMark;
+    const rows = _.map(marks, makeRow);
+
     return (
-      <div>Audit mark</div>
+      <Card>
+        <TextField floatingLabelText='Ballot ID' value={ballotId} />
+        <Table selectable={false}>
+          <TableHeader displaySelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn>Contest ID</TableHeaderColumn>
+              <TableHeaderColumn>Candidate ID</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+            {rows}
+          </TableBody>
+        </Table>
+      </Card>
     );
   }
 }
 
 AuditMark.PropTypes = {
-  mark: PropTypes.object.isRequired,
+  ballotMark: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => {
