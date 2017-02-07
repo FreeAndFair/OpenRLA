@@ -4,25 +4,20 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
-import AuditInfo from './AuditInfo';
-import AuditMarkList from './AuditMarkList';
 
-class ActiveAudit extends React.Component {
+class AuditInfo extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <div>
-        <AuditInfo />
-        <AuditMarkList />
-      </div>
+      <div>Active audit info</div>
     );
   }
 }
 
-ActiveAudit.PropTypes = {};
+AuditInfo.PropTypes = {};
 
 const mapStateToProps = state => {
   return {};
@@ -33,4 +28,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActiveAudit);
+export default connect(mapStateToProps, mapDispatchToProps)(AuditInfo);
