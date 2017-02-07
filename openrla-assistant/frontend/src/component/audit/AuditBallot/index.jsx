@@ -12,7 +12,11 @@ import {
 } from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+import ContestMarkForm from './ContestMarkForm';
 
 
 class AuditBallot extends React.Component {
@@ -33,6 +37,7 @@ class AuditBallot extends React.Component {
       closeDialog,
       dialogOpen,
     } = this.props;
+    const { contests } = audit;
 
     const closeButton = (
       <FlatButton
@@ -48,6 +53,14 @@ class AuditBallot extends React.Component {
     );
     const actions = [closeButton, saveButton];
 
+    const contestForms = _.map(contests, c => {
+      return (
+        <ListItem key={c.id}>
+          <ContestMarkForm contest={c} />
+        </ListItem>
+      );
+    });
+
     return (
         <Dialog
           title="Audit ballot"
@@ -56,6 +69,12 @@ class AuditBallot extends React.Component {
            open={dialogOpen}
            onRequestClose={closeDialog}
            autoScrollBodyContent={true} >
+          <TextField
+             floatingLabelText='Ballot ID'
+             value={ballotId} />
+          <List>
+            {contestForms}
+          </List>
         </Dialog>
     );
   }
@@ -63,6 +82,7 @@ class AuditBallot extends React.Component {
 
 AuditBallot.propTypes = {
   audit: PropTypes.object.isRequired,
+  ballotId: PropTypes.number.isRequired,
   closeDialog: PropTypes.func.isRequired,
   dialogOpen: PropTypes.bool.isRequired,
 };
