@@ -20,6 +20,28 @@ import TextField from 'material-ui/TextField';
 class ContestMarkForm extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { selected: null };
+
+    ['isSelected', 'onRowSelection'].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
+  }
+
+  onRowSelection(selectedRows) {
+    const i = selectedRows[0];
+    const sorted = _.sortBy(this.props.contest.candidates, 'id');
+    const selected = sorted[i];
+
+    this.setState({ selected });
+  }
+
+  isSelected(id) {
+    const { selected } = this.state;
+
+    if (!selected) return false;
+
+    return selected.id === id;
   }
 
   render() {
@@ -33,7 +55,7 @@ class ContestMarkForm extends React.Component {
       description,
     }) => {
       return (
-        <TableRow key={id}>
+        <TableRow key={id} selected={this.isSelected(id)}>
           <TableRowColumn>{id}</TableRowColumn>
           <TableRowColumn>{description}</TableRowColumn>
           <TableRowColumn>{externalId}</TableRowColumn>
@@ -42,7 +64,8 @@ class ContestMarkForm extends React.Component {
       );
     };
 
-    const rows = _.map(candidates, makeRow);
+    const sorted = _.sortBy(candidates, 'id');
+    const rows = _.map(sorted, makeRow);
 
     return (
       <Card>
@@ -65,6 +88,7 @@ class ContestMarkForm extends React.Component {
             </TableRow>
           </TableHeader>
           <TableBody
+             deselectOnClickaway={false}
              showRowHover={true}
              children={rows} />
         </Table>
