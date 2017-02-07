@@ -44,6 +44,13 @@ class ContestMarkForm extends React.Component {
     return selected.id === id;
   }
 
+  formData() {
+    return {
+      contestId: this.props.contest.id,
+      candidateId: this.state.selected.id,
+    };
+  }
+
   render() {
     const { contest } = this.props;
     const { candidates } = contest;
