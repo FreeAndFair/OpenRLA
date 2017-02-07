@@ -55,6 +55,7 @@ mkApp debug state = do
   S.get "/audit/:id" $ Audit.getById state
   S.put "/audit/:id" $ Audit.setById state
 
+  S.get  "/audit/:id/marks" $ Audit.indexMarks state
   S.post "/audit/:id/marks" $ Audit.createMarks state
 
   S.get  "/audit/:id/sample" $ Audit.currentSample state

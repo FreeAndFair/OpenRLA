@@ -5,6 +5,8 @@ import           Control.Monad.IO.Class (liftIO)
 import           Data.Aeson (Object, (.:), Value(..))
 import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser)
+import           Data.Function (on)
+import           Data.List (groupBy, sortBy)
 import           Data.Maybe (fromJust)
 import           Database.SQLite.Simple (Connection)
 import           Data.Text (Text)
@@ -97,6 +99,26 @@ setActive :: Controller
 setActive State { conn } = parseThen (.: "auditId") setActiveCb
   where
     setActiveCb auId = liftIO (AuSt.setActive conn auId) >>= json
+
+indexMarks :: Controller
+indexMarks State { conn } = do
+  auId <- param "id"
+  marks <- liftIO $ do
+    ungrouped <- AuSt.indexMarks conn auId
+    let cmp = compare `on` amBallotId
+        sorted = sortBy cmp ungrouped
+        eq m m' = amBallotId m == amBallotId m'
+        grouped = groupBy eq sorted
+    forM grouped $ \grp -> do
+      let balId = amBallotId (head grp)
+      grpMarks <- forM grp $ \am -> do
+        let AuditMark { .. } = am
+        return [aesonQQ|{
+          contestId: #{amContestId},
+          candidateId: #{amCandidateId}
+        }|]
+      return [aesonQQ|{ ballotId: #{balId}, marks: #{grpMarks} }|]
+  json marks
 
 createMarks :: Controller
 createMarks State { conn } = parseThen createMarksP createMarksCb

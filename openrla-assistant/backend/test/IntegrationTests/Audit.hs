@@ -227,3 +227,30 @@ spec = do
 
       postJson "/audit/1/marks" $ mkMarksBody 6 1 6
       statsShouldBe 1.327104 64.0
+
+    it "should allow fetching existing marks" $ do
+      Fixture.withElection
+      Fixture.withBallots
+      Fixture.withOutcomes
+
+      postJson "/audit" auditPostBodyA
+
+      postJson "/audit/1/marks" $ mkMarksBody 1 1 6
+      postJson "/audit/1/marks" $ mkMarksBody 2 1 6
+      postJson "/audit/1/marks" $ mkMarksBody 3 2 6
+      postJson "/audit/1/marks" $ mkMarksBody 4 1 6
+      postJson "/audit/1/marks" $ mkMarksBody 5 3 6
+      postJson "/audit/1/marks" $ mkMarksBody 6 1 6
+
+      resp <- get "/audit/1/marks"
+
+      return resp `shouldRespondWith` 200
+
+      resp `bodyShouldBe` [json|[
+        #{mkMarksBody 1 1 6},
+        #{mkMarksBody 2 1 6},
+        #{mkMarksBody 3 2 6},
+        #{mkMarksBody 4 1 6},
+        #{mkMarksBody 5 3 6},
+        #{mkMarksBody 6 1 6}
+      ]|]
