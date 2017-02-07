@@ -14,10 +14,26 @@ import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import AuditBallot from './AuditBallot';
+
 
 class AuditInfo extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { open: false };
+
+    ['openDialog', 'closeDialog'].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
+  }
+
+  openDialog() {
+    this.setState({ open: true });
+  }
+
+  closeDialog() {
+    this.setState({ open: false });
   }
 
   render() {
@@ -58,6 +74,9 @@ class AuditInfo extends React.Component {
             <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
+        <AuditBallot
+           closeDialog={this.closeDialog}
+           dialogOpen={this.state.open} />
       </Card>
     );
   }
