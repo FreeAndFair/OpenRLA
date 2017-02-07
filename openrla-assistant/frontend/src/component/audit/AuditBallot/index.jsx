@@ -34,10 +34,10 @@ class AuditBallot extends React.Component {
     const {
       audit,
       ballotId,
+      contests,
       closeDialog,
       dialogOpen,
     } = this.props;
-    const { contests } = audit;
 
     const closeButton = (
       <FlatButton
@@ -82,14 +82,18 @@ class AuditBallot extends React.Component {
 
 AuditBallot.propTypes = {
   audit: PropTypes.object.isRequired,
+  contests: PropTypes.array.isRequired,
   ballotId: PropTypes.number.isRequired,
   closeDialog: PropTypes.func.isRequired,
   dialogOpen: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => {
-  const { audit } = state;
-  return { audit };
+  const { audit, election } = state;
+
+  const contests = _.map(audit.contests, c => election.contests[c.id]);
+
+  return { audit, contests };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
