@@ -30,13 +30,11 @@ mkJson conn Audit { .. } = do
   contestData <- AuSt.getContestData conn auId
   let contests = [ [aesonQQ|{id: #{cId}, statistic: #{stat}}|]
                  | (cId, stat) <- contestData ]
-      sampled = [] :: [Integer]
   return [aesonQQ|{
     id: #{auId},
     electionId: #{auElectionId},
     date: #{auDate},
     riskLimit: #{auRiskLimit},
-    sampled: #{sampled},
     contests: #{contests}
   }|]
 

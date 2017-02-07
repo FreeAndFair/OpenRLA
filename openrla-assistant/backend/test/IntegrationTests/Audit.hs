@@ -35,7 +35,6 @@ auditJsonA = [json|{
   electionId: 1,
   date: #{date},
   riskLimit: 0.1,
-  sampled: [],
   contests: [
     {
       id: 1001,
@@ -62,7 +61,6 @@ auditJsonB = [json|{
   electionId: 1,
   date: #{date},
   riskLimit: 0.02,
-  sampled: [],
   contests: [
     {
       id: 1002,
