@@ -1,0 +1,3 @@
+[submodule "audit_cvrs"]
+	path = audit_cvrs
+	url = https://github.com/nealmcb/audit_cvrs.git
