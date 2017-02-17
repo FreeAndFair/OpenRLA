@@ -14,6 +14,8 @@ import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import ContestOutcomes from './ContestOutcomes.jsx';
+
 import addElection from 'action/addElection';
 import saveElection from 'action/saveElection';
 
@@ -69,28 +71,31 @@ class ElectionSummary extends React.Component {
     const form = this.formData();
 
     return (
-      <Card>
-        <CardTitle title='Election summary' />
-        <CardText>
-          <List>
-            <ListItem secondaryText='Election title'>
-              <TextField
-                 onChange={this.onTitleChange.bind(this)}
-                 value={form.title}
-                 id='formTitle'
-                 ref='formTitle' />
-            </ListItem>
-            <ListItem secondaryText='Election date'>
-              <DatePicker
-                 onChange={this.onDateChange.bind(this)}
-                 value={form.date && new Date(form.date)}
-                 id='formDate'
-                 ref='formDate' />
-            </ListItem>
-          </List>
-        </CardText>
-        {button}
-      </Card>
+      <div>
+        <Card>
+          <CardTitle title='Election summary' />
+          <CardText>
+            <List>
+              <ListItem secondaryText='Election title'>
+                <TextField
+                   onChange={this.onTitleChange.bind(this)}
+                   value={form.title}
+                   id='formTitle'
+                   ref='formTitle' />
+              </ListItem>
+              <ListItem secondaryText='Election date'>
+                <DatePicker
+                   onChange={this.onDateChange.bind(this)}
+                   value={form.date && new Date(form.date)}
+                   id='formDate'
+                   ref='formDate' />
+              </ListItem>
+            </List>
+          </CardText>
+          {button}
+        </Card>
+        <ContestOutcomes />
+      </div>
     );
   }
 }
