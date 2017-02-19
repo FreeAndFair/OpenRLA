@@ -35,8 +35,8 @@ mkApp debug state = do
 
   S.get "/election/:id/contest" $ Election.getContestsById state
 
-  S.get "/election/:id/outcome" $ Election.indexContestOutcomes state
-  S.post "/election/:id/outcome" $ Election.setContestOutcome state
+  S.get "/election/:id/outcome" $ Election.indexElectionOutcomes state
+  S.post "/election/:id/outcome" $ Election.setElectionOutcomes state
 
   S.get "/election/:id/outcome/:contestId" $ Election.getContestOutcome state
 
