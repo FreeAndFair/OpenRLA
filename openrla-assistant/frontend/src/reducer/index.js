@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { forEach, merge } from 'lodash';
 
 import defaultState from './defaultState';
 
@@ -39,6 +39,24 @@ export default (state = defaultState, action) => {
   case 'UPDATE_AUDIT_SAMPLE': {
     const { sample } = action;
     return update(state, { audit: { sample } });
+  }
+  case 'UPDATE_OUTCOMES': {
+    const { outcomes } = action;
+    const newState = merge({}, state);
+
+    forEach(outcomes, o => {
+      const { id: contestId, shares } = o;
+
+      forEach(shares, s => {
+        const contest = newState.election.contests[contestId];
+        if (!contest) return;
+        if (!contest.candidates) return;
+
+        contest.candidates[s.id].share = s.share;
+      });
+    });
+
+    return update(state, newState);
   }
   default: { return state; }
   }
