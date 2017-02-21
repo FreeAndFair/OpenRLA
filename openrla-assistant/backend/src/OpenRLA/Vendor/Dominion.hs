@@ -32,7 +32,6 @@ processCandidateManifest (State { .. }) _eId o = do
                  , "description" .= desc
                  ]
 
-
 candidateManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Text)]
 candidateManifestP o = do
   candidates <- o .: "List" :: Parser [Object]
@@ -58,11 +57,11 @@ processContestManifest (State {..}) eId o = do
   return $ toJSON (map toVal contests)
     where
       toVal (cId, extId, desc, nRanks, vFor)
-        = object [ "id"         .= cId
-                 , "externalId" .= extId
-                 , "description"       .= desc
-                 , "numRanks"   .= nRanks
-                 , "voteFor"    .= vFor
+        = object [ "id"          .= cId
+                 , "externalId"  .= extId
+                 , "description" .= desc
+                 , "numRanks"    .= nRanks
+                 , "voteFor"     .= vFor
                  ]
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]
