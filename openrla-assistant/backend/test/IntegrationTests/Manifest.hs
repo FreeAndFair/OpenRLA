@@ -74,3 +74,51 @@ spec = do
 
       let body = decodeBody electionResp
       liftIO $ body `shouldBe` Expected.contestsWithCandidates
+
+  around withApp $ context "Uploading synthetic test manifests" $ do
+    let relPath = ("dominion" </>)
+        ballotPath = relPath "TestBallotManifest.json"
+        candidatePath = relPath "TestCandidateManifest.json"
+        contestPath = relPath "TestContestManifest.json"
+
+    -- Note: we do this test separately from the above, and with
+    -- synthetic data,because we currently need to control the values of
+    -- the `ImageMask` keys within the manifest, and ensure that they
+    -- describe paths to actual files.
+    it "should allow uploading a ballot manifest" $ do
+      manifestPostBody <- liftIO manifestPostBodyIO
+
+      -- When we have an election
+      postJson "/election" electionPostBody
+
+      -- And we've uploaded a contest manifest
+      let contestPostBody = manifestPostBody "contest" contestPath
+      contestResp <- postJson "/manifest" contestPostBody
+      return contestResp `shouldRespondWith` 200
+
+      -- And also a candidate manifest
+      let candidatePostBody = manifestPostBody "candidate" candidatePath
+      candidateResp <- postJson "/manifest" candidatePostBody
+      return candidateResp `shouldRespondWith` 200
+
+      -- We can upload a ballot manifest
+      let ballotPostBody = manifestPostBody "ballot" ballotPath
+
+      ballotResp <- postJson "/manifest" ballotPostBody
+
+      return ballotResp `shouldRespondWith` 200
+
+      ballotResp `bodyShouldBe` [json|[
+        {
+          ballotId: 0,
+          srcPath: "./test/data/dominion/test-ballots/ballot-2"
+        },
+        {
+          ballotId: 1,
+          srcPath: "./test/data/dominion/test-ballots/ballot-3"
+        },
+        {
+          ballotId: 2,
+          srcPath: "./test/data/dominion/test-ballots/ballot-5"
+        }
+      ]|]
