@@ -91,16 +91,6 @@ spec = do
       -- When we have an election
       postJson "/election" electionPostBody
 
-      -- And we've uploaded a contest manifest
-      let contestPostBody = manifestPostBody "contest" contestPath
-      contestResp <- postJson "/manifest" contestPostBody
-      return contestResp `shouldRespondWith` 200
-
-      -- And also a candidate manifest
-      let candidatePostBody = manifestPostBody "candidate" candidatePath
-      candidateResp <- postJson "/manifest" candidatePostBody
-      return candidateResp `shouldRespondWith` 200
-
       -- We can upload a ballot manifest
       let ballotPostBody = manifestPostBody "ballot" ballotPath
 
