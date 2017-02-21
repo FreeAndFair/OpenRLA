@@ -28,12 +28,12 @@ processBallotManifest (State {..}) eId o = do
     return ()
   return [aesonQQ|[]|]
 
-ballotManifestP :: Object -> Parser [(Integer, Text)]
+ballotManifestP :: Object -> Parser [Text]
 ballotManifestP o = do
   sessions <- o .: "Sessions"
-  forM (zip [0 ..] sessions) $ \(ix, s) -> do
+  forM sessions $ \s -> do
     srcPath <- s .: "ImageMask"
-    return (ix, srcPath)
+    return srcPath
 
 processCandidateManifest :: State -> Integer -> Object -> IO Value
 processCandidateManifest (State { .. }) _eId o = do
