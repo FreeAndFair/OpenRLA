@@ -49,7 +49,18 @@ class ContestOutcome extends React.Component {
   }
 
   isFormValid() {
-    return true;
+    const displayOutcomes = this.computeDisplayOutcomes();
+
+    if (_.isEmpty(displayOutcomes)) return false;
+
+    const shares = _.map(displayOutcomes, o => Number(o.share));
+    const isProportion = x => 0.0 <= x && x <= 1.0;
+    const isValidShare = x => _.isFinite(x) && isProportion(x);
+    const allSharesValid = _.every(shares, isValidShare);
+    const tolerance = 0.0000001;
+    const shareSumValid = Math.abs(_.sum(shares) - 1.0) < tolerance;
+
+    return allSharesValid && shareSumValid;
   }
 
   resetOutcomes() {
