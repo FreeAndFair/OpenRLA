@@ -64,7 +64,6 @@ processContestManifest (State {..}) eId o = do
                  , "numRanks"   .= nRanks
                  , "voteFor"    .= vFor
                  ]
-  -- return $ object []
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]
 contestManifestP o = do
