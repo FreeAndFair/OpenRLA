@@ -25,6 +25,7 @@ class ContestOutcome extends React.Component {
     };
 
     [
+      'computeDisplayOutcomes',
       'isFormValid',
       'onShareChange',
       'resetOutcomes',
@@ -70,11 +71,15 @@ class ContestOutcome extends React.Component {
     this.props.submitOutcomes(data);
   }
 
+  computeDisplayOutcomes() {
+    return _.merge({}, this.props.outcomes, this.state.formOutcomes);
+  }
+
   render() {
     const { contest } = this.props;
     const { candidates } = contest;
 
-    const displayOutcomes = _.merge({}, this.props.outcomes, this.state.formOutcomes);
+    const displayOutcomes = this.computeDisplayOutcomes();
 
     const candidatesById = _.sortBy(candidates, 'id');
     const candidateOutcomes = _.map(candidatesById, c => {
