@@ -104,21 +104,26 @@ spec = do
       -- We can upload a ballot manifest
       let ballotPostBody = manifestPostBody "ballot" ballotPath
 
-      ballotResp <- postJson "/manifest" ballotPostBody
+      postJson "/manifest" ballotPostBody `shouldRespondWith` 200
 
+      -- And fetch the uploaded ballots
+      ballotResp <- get "/election/1/ballot"
       return ballotResp `shouldRespondWith` 200
 
       ballotResp `bodyShouldBe` [json|[
         {
-          ballotId: 0,
-          srcPath: "./test/data/dominion/test-ballots/ballot-2"
+          id: 1,
+          srcPath: "./test/data/dominion/test-ballots/ballot-2",
+          filePath: ""
         },
         {
-          ballotId: 1,
-          srcPath: "./test/data/dominion/test-ballots/ballot-3"
+          id: 2,
+          srcPath: "./test/data/dominion/test-ballots/ballot-3",
+          filePath: ""
         },
         {
-          ballotId: 2,
-          srcPath: "./test/data/dominion/test-ballots/ballot-5"
+          id: 3,
+          srcPath: "./test/data/dominion/test-ballots/ballot-5",
+          filePath: ""
         }
       ]|]
