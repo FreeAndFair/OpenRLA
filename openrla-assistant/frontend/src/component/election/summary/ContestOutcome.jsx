@@ -61,7 +61,7 @@ class ContestOutcome extends React.Component {
   saveOutcomes() {
     const shares = _.map(this.state.formOutcomes, o => ({
       id: o.candidateId,
-      share: Number.parseFloat(o.share),
+      share: Number(o.share),
     }));
     const data = {
       id: this.props.contest.id,
