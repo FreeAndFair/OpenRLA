@@ -5,9 +5,10 @@ import           Data.Aeson (Object, Value, (.:), (.=), object, toJSON)
 import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser, parseMaybe)
 import           Data.Maybe (fromJust)
-import           Data.Text (Text)
+import           Data.Text (Text, unpack)
 
 import qualified OpenRLA.Statement as St
+import qualified OpenRLA.Statement.Ballot as BalSt
 import           OpenRLA.Types (State(..))
 
 
@@ -24,9 +25,9 @@ processManifest state eId mType mObj = process state eId mObj
 processBallotManifest :: State -> Integer -> Object -> IO Value
 processBallotManifest (State {..}) eId o = do
   let ballotData = fromJust $ parseMaybe ballotManifestP o
-  ballots <- forM ballotData $ \(ix, srcPath) -> do
-    return ()
-  return [aesonQQ|[]|]
+      srcPaths = map unpack ballotData
+  ballots <- BalSt.createNoCopy conn eId srcPaths
+  return [aesonQQ|#{ballots}|]
 
 ballotManifestP :: Object -> Parser [Text]
 ballotManifestP o = do
