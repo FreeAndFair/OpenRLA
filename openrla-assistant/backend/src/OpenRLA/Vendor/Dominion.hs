@@ -2,6 +2,7 @@ module OpenRLA.Vendor.Dominion where
 
 import           Control.Monad (forM, forM_)
 import           Data.Aeson (Object, Value, (.:), (.=), object, toJSON)
+import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser, parseMaybe)
 import           Data.Maybe (fromJust)
 import           Data.Text (Text)
@@ -14,9 +15,25 @@ processManifest :: State -> Integer -> Text -> Object -> IO Value
 processManifest state eId mType mObj = process state eId mObj
   where
     process = case mType of
+      "ballot"    -> processBallotManifest
       "candidate" -> processCandidateManifest
       "contest"   -> processContestManifest
       _           -> error "Invalid manifest type"
+
+
+processBallotManifest :: State -> Integer -> Object -> IO Value
+processBallotManifest (State {..}) eId o = do
+  let ballotData = fromJust $ parseMaybe ballotManifestP o
+  ballots <- forM ballotData $ \(ix, srcPath) -> do
+    return ()
+  return [aesonQQ|[]|]
+
+ballotManifestP :: Object -> Parser [(Integer, Text)]
+ballotManifestP o = do
+  sessions <- o .: "Sessions"
+  forM (zip [0 ..] sessions) $ \(ix, s) -> do
+    srcPath <- s .: "ImageMask"
+    return (ix, srcPath)
 
 processCandidateManifest :: State -> Integer -> Object -> IO Value
 processCandidateManifest (State { .. }) _eId o = do
