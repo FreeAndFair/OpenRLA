@@ -5,7 +5,7 @@ import fetchAuditMarks from './fetchAuditMarks';
 import fetchAuditSample from './fetchAuditSample';
 import fetchBallots from './fetchBallots';
 import fetchContests from './fetchContests';
-
+import fetchOutcomes from './fetchOutcomes';
 
 export default () => dispatch => {
   fetch('/election/active')
@@ -15,7 +15,8 @@ export default () => dispatch => {
     }))
     .then(({ election: { id } }) => {
       fetchBallots(id)(dispatch);
-      fetchContests(id)(dispatch);
+      fetchContests(id)(dispatch)
+        .then(() => fetchOutcomes(id)(dispatch));
       fetchActiveAudit()(dispatch)
         .then(audit => {
           if (!audit) return;
