@@ -110,10 +110,10 @@ getContestsById State { conn } = do
 
   json result
 
-indexContestOutcomes :: Controller
-indexContestOutcomes State { conn } = do
+indexElectionOutcomes :: Controller
+indexElectionOutcomes State { conn } = do
   elId <- param "id"
-  rows <- liftIO $ ElSt.indexContestOutcomes conn elId
+  rows <- liftIO $ ElSt.indexElectionOutcomes conn elId
   json $ formatOutcomes rows
 
 formatOutcomes :: [ContestOutcome] -> Value
@@ -136,8 +136,8 @@ formatOutcomeGroup grp = [aesonQQ|{
         }|]
         shares = map fmtShare grp
 
-setContestOutcome :: Controller
-setContestOutcome State { conn } = do
+setElectionOutcomes :: Controller
+setElectionOutcomes State { conn } = do
   elId      <- param "id"
   parseThen (outcomeP elId) $ \outcomes -> do
     forM_ outcomes $ \o -> do

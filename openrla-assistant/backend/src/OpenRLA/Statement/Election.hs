@@ -89,8 +89,8 @@ randomBallot conn elId = do
     offset <- randomRIO (0, count - 1)
     BalSt.getByOffset conn offset
 
-indexContestOutcomes :: Connection -> Integer -> IO [ContestOutcome]
-indexContestOutcomes conn elId = Sql.query conn s (Only elId)
+indexElectionOutcomes :: Connection -> Integer -> IO [ContestOutcome]
+indexElectionOutcomes conn elId = Sql.query conn s (Only elId)
   where s = [here|
     select election_id, contest_id, candidate_id, share
       from election_contest_outcome
