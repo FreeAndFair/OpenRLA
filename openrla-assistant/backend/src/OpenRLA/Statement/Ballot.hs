@@ -23,6 +23,21 @@ create conn elId srcPaths relPath
         Sql.execute conn s'' (elId, balId)
         return $ Ballot { .. }
 
+createNoCopy :: Connection -> Integer -> [FilePath] -> IO [Ballot]
+createNoCopy conn elId srcPaths
+  = Sql.withTransaction conn $ do
+      let s = "insert into ballot_image (src_path) values (?)"
+      forM srcPaths $ \balSrcPath -> do
+        Sql.execute conn s (Only balSrcPath)
+        rowId <- Sql.lastInsertRowId conn
+        let balId       = fromIntegral rowId
+            balFilePath = ""
+        let s' = "update ballot_image set file_path = '' where id = ?"
+        Sql.execute conn s' (Only balId)
+        let s'' = "insert into election_ballot_image values (?, ?)"
+        Sql.execute conn s'' (elId, balId)
+        return $ Ballot { .. }
+
 getById :: Connection -> Integer -> IO (Maybe Ballot)
 getById conn balId = do
   let s ="select id, src_path, file_path from ballot_image where id = ?"
