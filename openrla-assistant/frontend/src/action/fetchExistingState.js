@@ -18,6 +18,8 @@ export default () => dispatch => {
       fetchContests(id)(dispatch);
       fetchActiveAudit()(dispatch)
         .then(audit => {
+          if (!audit) return;
+
           const { id } = audit;
           fetchAuditMarks(id)(dispatch);
           fetchAuditSample(id)(dispatch);
