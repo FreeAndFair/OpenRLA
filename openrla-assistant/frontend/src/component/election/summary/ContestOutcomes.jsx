@@ -11,6 +11,8 @@ import {
 } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 
+import ContestOutcome from './ContestOutcome';
+
 
 class ContestOutcomes extends React.Component {
   constructor(props) {
@@ -23,7 +25,9 @@ class ContestOutcomes extends React.Component {
     const { election } = this.props;
     const { contests } = election;
 
-    const contestOutcomes = [];
+    const contestOutcomes = _.map(contests, c => (
+      <ContestOutcome key={c.id} contest={c} electionId={election.id} />
+    ));
 
     return (
       <Card>
