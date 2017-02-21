@@ -1,0 +1,152 @@
+{
+  "Version": "1.0.0.0",
+  "ElectionId": "A string, not a numeric identifier",
+  "Sessions": [
+    {
+      "TabulatorId": 2,
+      "BatchId": 1,
+      "RecordId": 1,
+      "CountingGroupId": 2,
+      "ImageMask": "./test/data/dominion/test-ballots/ballot-2",
+      "Original": {
+        "PrecinctPortionId": 3,
+        "BallotTypeId": 1,
+        "IsCurrent": true,
+        "Contests": [
+          {
+            "Id": 1001,
+            "Marks": [
+              {
+                "CandidateId": 1,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 71,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          },
+          {
+            "Id": 1002,
+            "Marks": [
+              {
+                "CandidateId": 2,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 76,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          },
+          {
+            "Id": 1003,
+            "Marks": [
+              {
+                "CandidateId": 1,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 69,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "TabulatorId": 2,
+      "BatchId": 1,
+      "RecordId": 2,
+      "CountingGroupId": 2,
+      "ImageMask": "./test/data/dominion/test-ballots/ballot-3",
+      "Original": {
+        "PrecinctPortionId": 1,
+        "BallotTypeId": 1,
+        "IsCurrent": true,
+        "Contests": [
+          {
+            "Id": 1001,
+            "Marks": [
+              {
+                "CandidateId": 1,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 79,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          },
+          {
+            "Id": 1002,
+            "Marks": [
+              {
+                "CandidateId": 2,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 76,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          },
+          {
+            "Id": 1003,
+            "Marks": [
+              {
+                "CandidateId": 1,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 79,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "TabulatorId": 2,
+      "BatchId": 1,
+      "RecordId": 3,
+      "CountingGroupId": 2,
+      "ImageMask": "./test/data/dominion/test-ballots/ballot-5",
+      "Original": {
+        "PrecinctPortionId": 1,
+        "BallotTypeId": 1,
+        "IsCurrent": true,
+        "Contests": [
+          {
+            "Id": 1001,
+            "Marks": [
+              {
+                "CandidateId": 1,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 94,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          },
+          {
+            "Id": 1002,
+            "Marks": [
+              {
+                "CandidateId": 2,
+                "PartyId": 1,
+                "Rank": 1,
+                "MarkDensity": 96,
+                "IsAmbiguous": false,
+                "IsVote": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
