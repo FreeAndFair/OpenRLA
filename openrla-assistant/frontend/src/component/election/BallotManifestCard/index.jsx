@@ -39,8 +39,9 @@ const BallotManifestCard = ({
 };
 
 BallotManifestCard.propTypes = {
-  submitBallotManifest: PropTypes.func.isRequired,
-  viewBallotManifest: PropTypes.func.isRequired,
+  ballots: PropTypes.array.isRequired,
+  uploadDisabled: PropTypes.bool.isRequired,
+  viewDisabled: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => {
