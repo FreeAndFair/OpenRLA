@@ -31,7 +31,7 @@ class AuditMark extends React.Component {
           <TableRowColumn>{contestId}</TableRowColumn>
           <TableRowColumn>{candidateId}</TableRowColumn>
         </TableRow>
-      )
+      );
     };
 
     const { ballotId, marks } = ballotMark;
