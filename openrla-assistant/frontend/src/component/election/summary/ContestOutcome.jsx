@@ -119,6 +119,7 @@ class ContestOutcome extends React.Component {
             </ListItem>
           </List>
           <RaisedButton
+             disabled={!this.isFormValid()}
              label='Save'
              onClick={this.saveOutcomes} />
           <RaisedButton
