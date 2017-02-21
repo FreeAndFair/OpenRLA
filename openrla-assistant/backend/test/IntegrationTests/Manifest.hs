@@ -12,12 +12,6 @@ import           JsonTestSupport
 import           TestSupport
 
 
-candidatePath :: FilePath
-candidatePath = "dominion" </> "example" </> "CandidateManifest.json"
-
-contestPath :: FilePath
-contestPath = "dominion" </> "example" </>"ContestManifest.json"
-
 electionPostBody :: Value
 electionPostBody = [json|{
     title: "POTUS 2016",
@@ -43,7 +37,10 @@ manifestPostBodyIO = do
 
 spec :: Spec
 spec = do
-  around withApp $ context "Uploading manifests" $ do
+  around withApp $ context "Uploading example manifests" $ do
+    let candidatePath = "dominion" </> "example" </> "CandidateManifest.json"
+        contestPath = "dominion" </> "example" </>"ContestManifest.json"
+
     it "should process them when uploaded in the correct order" $ do
       manifestPostBody <- liftIO manifestPostBodyIO
 
