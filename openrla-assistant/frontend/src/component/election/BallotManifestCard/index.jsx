@@ -19,10 +19,8 @@ import FileUploadCard from '../FileUploadCard';
 
 const BallotManifestCard = ({
   ballots,
-  submitBallotManifest,
   uploadDisabled,
   viewDisabled,
-  viewBallotManifest,
 }) => {
   const uploadedDataEl = <BallotManifest ballots={ballots} />;
   const title = 'Ballot Manifest';
@@ -45,11 +43,6 @@ BallotManifestCard.propTypes = {
   viewBallotManifest: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  submitBallotManifest: () => {},
-  viewBallotManifest: () => {},
-});
-
 const mapStateToProps = state => {
   const { election } = state;
   const { ballots, id } = election;
@@ -64,4 +57,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BallotManifestCard);
+export default connect(mapStateToProps)(BallotManifestCard);
