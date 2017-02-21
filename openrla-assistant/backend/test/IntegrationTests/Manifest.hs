@@ -12,12 +12,6 @@ import           JsonTestSupport
 import           TestSupport
 
 
-candidatePath :: FilePath
-candidatePath = "dominion" </> "example" </> "CandidateManifest.json"
-
-contestPath :: FilePath
-contestPath = "dominion" </> "example" </>"ContestManifest.json"
-
 electionPostBody :: Value
 electionPostBody = [json|{
     title: "POTUS 2016",
@@ -43,7 +37,10 @@ manifestPostBodyIO = do
 
 spec :: Spec
 spec = do
-  around withApp $ context "Uploading manifests" $ do
+  around withApp $ context "Uploading example manifests" $ do
+    let candidatePath = "dominion" </> "example" </> "CandidateManifest.json"
+        contestPath = "dominion" </> "example" </>"ContestManifest.json"
+
     it "should process them when uploaded in the correct order" $ do
       manifestPostBody <- liftIO manifestPostBodyIO
 
@@ -77,3 +74,46 @@ spec = do
 
       let body = decodeBody electionResp
       liftIO $ body `shouldBe` Expected.contestsWithCandidates
+
+  around withApp $ context "Uploading synthetic test manifests" $ do
+    let relPath = ("dominion" </>)
+        ballotPath = relPath "TestBallotManifest.json"
+        candidatePath = relPath "TestCandidateManifest.json"
+        contestPath = relPath "TestContestManifest.json"
+
+    -- Note: we do this test separately from the above, and with
+    -- synthetic data,because we currently need to control the values of
+    -- the `ImageMask` keys within the manifest, and ensure that they
+    -- describe paths to actual files.
+    it "should allow uploading a ballot manifest" $ do
+      manifestPostBody <- liftIO manifestPostBodyIO
+
+      -- When we have an election
+      postJson "/election" electionPostBody
+
+      -- We can upload a ballot manifest
+      let ballotPostBody = manifestPostBody "ballot" ballotPath
+
+      postJson "/manifest" ballotPostBody `shouldRespondWith` 200
+
+      -- And fetch the uploaded ballots
+      ballotResp <- get "/election/1/ballot"
+      return ballotResp `shouldRespondWith` 200
+
+      ballotResp `bodyShouldBe` [json|[
+        {
+          id: 1,
+          srcPath: "./test/data/dominion/test-ballots/ballot-2",
+          filePath: ""
+        },
+        {
+          id: 2,
+          srcPath: "./test/data/dominion/test-ballots/ballot-3",
+          filePath: ""
+        },
+        {
+          id: 3,
+          srcPath: "./test/data/dominion/test-ballots/ballot-5",
+          filePath: ""
+        }
+      ]|]

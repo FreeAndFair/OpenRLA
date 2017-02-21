@@ -55,7 +55,7 @@ resetActive conn = Sql.execute_ conn "update election set active = null where ac
 
 ballotCountForId :: Connection -> Integer -> IO Integer
 ballotCountForId conn elId = do
-  let s = "select count() from election_ballot_image where election_id = ?"
+  let s = "select count() from election_ballot where election_id = ?"
   rows <- Sql.query conn s (Only elId)
   let Only count = oneRow rows
   return count
@@ -63,10 +63,10 @@ ballotCountForId conn elId = do
 getBallots :: Connection -> Integer -> IO [Ballot]
 getBallots conn elId = do
   let s = [here|
-    select b.id, b.file_path
-      from ballot_image b
-      join election_ballot_image eb
-        on b.id = eb.ballot_image
+    select b.id, b.src_path, b.file_path
+      from ballot b
+      join election_ballot eb
+        on b.id = eb.ballot
      where eb.election_id = ?
   |]
   Sql.query conn s (Only elId)
