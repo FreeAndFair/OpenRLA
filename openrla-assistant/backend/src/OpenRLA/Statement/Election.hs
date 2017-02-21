@@ -63,7 +63,7 @@ ballotCountForId conn elId = do
 getBallots :: Connection -> Integer -> IO [Ballot]
 getBallots conn elId = do
   let s = [here|
-    select b.id, b.file_path
+    select b.id, b.src_path, b.file_path
       from ballot_image b
       join election_ballot_image eb
         on b.id = eb.ballot_image

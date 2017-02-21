@@ -12,8 +12,8 @@ create :: Connection -> Integer -> [FilePath] -> (Integer -> FilePath) -> IO [Ba
 create conn elId srcPaths relPath
   = Sql.withTransaction conn $ do
       let s = "insert into ballot_image (src_path) values (?)"
-      forM srcPaths $ \src -> do
-        Sql.execute conn s (Only src)
+      forM srcPaths $ \balSrcPath -> do
+        Sql.execute conn s (Only balSrcPath)
         rowId <- Sql.lastInsertRowId conn
         let balId       = fromIntegral rowId
             balFilePath = relPath balId
@@ -25,10 +25,10 @@ create conn elId srcPaths relPath
 
 getById :: Connection -> Integer -> IO (Maybe Ballot)
 getById conn balId = do
-  let s ="select id, file_path from ballot_image where id = ?"
+  let s ="select id, src_path, file_path from ballot_image where id = ?"
   Sql.query conn s (Only balId) >>= justOneIO
 
 getByOffset :: Connection -> Integer -> IO (Maybe Ballot)
 getByOffset conn offset = do
-  let s ="select id, file_path from ballot_image order by id limit 1 offset ?"
+  let s ="select id, src_path, file_path from ballot_image order by id limit 1 offset ?"
   Sql.query conn s (Only offset) >>= justOneIO
