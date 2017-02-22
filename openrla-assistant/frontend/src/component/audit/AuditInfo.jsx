@@ -83,7 +83,9 @@ class AuditInfo extends React.Component {
   }
 }
 
-AuditInfo.PropTypes = {};
+AuditInfo.PropTypes = {
+  audit: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = state => {
   const { audit } = state;
