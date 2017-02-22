@@ -37,7 +37,7 @@ class AuditInfo extends React.Component {
   }
 
   render() {
-    const { audit } = this.props;
+    const { audit, contests } = this.props;
 
     let currentSampleId;
     if (audit.sample) {
@@ -85,11 +85,14 @@ class AuditInfo extends React.Component {
 
 AuditInfo.PropTypes = {
   audit: PropTypes.object.isRequired,
+  contests: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => {
-  const { audit } = state;
-  return { audit };
+  const { audit, election } = state;
+  const { contests } = election;
+
+  return { audit, contests };
 };
 
 const mapDispatchToProps = dispatch => {
