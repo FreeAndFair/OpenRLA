@@ -26,10 +26,14 @@ class AuditMark extends React.Component {
     const { ballotMark, election } = this.props;
 
     const makeRow = ({ contestId, candidateId }) => {
+      const contest = election.contests[contestId];
+      const candidate = contest.candidates[candidateId];
+
       return (
         <TableRow key={`${contestId}-${candidateId}`}>
           <TableRowColumn>{contestId}</TableRowColumn>
           <TableRowColumn>{candidateId}</TableRowColumn>
+          <TableRowColumn>{candidate.description}</TableRowColumn>
         </TableRow>
       );
     };
@@ -45,6 +49,7 @@ class AuditMark extends React.Component {
             <TableRow>
               <TableHeaderColumn>Contest ID</TableHeaderColumn>
               <TableHeaderColumn>Candidate ID</TableHeaderColumn>
+              <TableHeaderColumn>Candidate</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
