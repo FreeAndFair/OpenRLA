@@ -4,7 +4,7 @@ import pivotContests from '../selector/pivotContests';
 
 
 export default id => dispatch => {
-  fetch(`/election/${id}/contest`)
+  return fetch(`/election/${id}/contest`)
     .then(contests => dispatch({
       type: 'UPDATE_CONTESTS',
       contests: pivotContests(contests),

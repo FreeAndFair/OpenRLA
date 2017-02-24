@@ -146,17 +146,20 @@ data Ballot
   = Ballot
   { balId       :: Integer
   , balFilePath :: FilePath
+  , balSrcPath  :: FilePath
   } deriving (Show, Eq)
 
 instance FromRow Ballot where
   fromRow = do
     balId       <- field
+    balSrcPath  <- field
     balFilePath <- field
     return $ Ballot { .. }
 
 instance ToJSON Ballot where
   toJSON Ballot { .. } = A.object [ "id"       .= balId
                                   , "filePath" .= balFilePath
+                                  , "srcPath"  .= balSrcPath
                                   ]
 
 data Audit

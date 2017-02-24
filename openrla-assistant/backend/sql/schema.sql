@@ -65,7 +65,7 @@ create table if not exists manifest (
   file_path text  -- Allow null for two-step insert
 );
 
-create table if not exists ballot_image (
+create table if not exists ballot (
   id        integer  primary key,
   created   datetime not null
                      default current_timestamp,
@@ -73,11 +73,11 @@ create table if not exists ballot_image (
   file_path text  -- Allow null for two-step insert
 );
 
-create table if not exists election_ballot_image (
+create table if not exists election_ballot (
   election_id  integer not null
                        references election (id),
-  ballot_image integer not null
-                       references ballot_image (id)
+  ballot integer not null
+                       references ballot (id)
 );
 
 create table if not exists audit (
@@ -98,7 +98,7 @@ create table if not exists audit (
 
 create table if not exists audit_mark (
   audit_id     integer not null references audit (id),
-  ballot_id    integer not null references ballot_image (id),
+  ballot_id    integer not null references ballot (id),
   contest_id   integer not null references contest (id),
   candidate_id integer not null references candidate (id),
   primary key (audit_id, ballot_id, contest_id)
@@ -113,13 +113,13 @@ create table if not exists audit_current_sample (
   audit_id  integer primary key
                     references audit (id),
   ballot_id integer not null
-                    references ballot_image (id)
+                    references ballot (id)
 );
 
 create table if not exists audit_sample (
   id        integer not null primary key,
   audit_id  integer not null references audit (id),
-  ballot_id integer not null references ballot_image (id)
+  ballot_id integer not null references ballot (id)
 );
 
 PRAGMA foreign_keys = ON;

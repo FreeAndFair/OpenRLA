@@ -2,11 +2,13 @@ module OpenRLA.Vendor.Dominion where
 
 import           Control.Monad (forM, forM_)
 import           Data.Aeson (Object, Value, (.:), (.=), object, toJSON)
+import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser, parseMaybe)
 import           Data.Maybe (fromJust)
-import           Data.Text (Text)
+import           Data.Text (Text, unpack)
 
 import qualified OpenRLA.Statement as St
+import qualified OpenRLA.Statement.Ballot as BalSt
 import           OpenRLA.Types (State(..))
 
 
@@ -14,9 +16,25 @@ processManifest :: State -> Integer -> Text -> Object -> IO Value
 processManifest state eId mType mObj = process state eId mObj
   where
     process = case mType of
+      "ballot"    -> processBallotManifest
       "candidate" -> processCandidateManifest
       "contest"   -> processContestManifest
       _           -> error "Invalid manifest type"
+
+
+processBallotManifest :: State -> Integer -> Object -> IO Value
+processBallotManifest (State {..}) eId o = do
+  let ballotData = fromJust $ parseMaybe ballotManifestP o
+      srcPaths = map unpack ballotData
+  ballots <- BalSt.createNoCopy conn eId srcPaths
+  return [aesonQQ|#{ballots}|]
+
+ballotManifestP :: Object -> Parser [Text]
+ballotManifestP o = do
+  sessions <- o .: "Sessions"
+  forM sessions $ \s -> do
+    srcPath <- s .: "ImageMask"
+    return srcPath
 
 processCandidateManifest :: State -> Integer -> Object -> IO Value
 processCandidateManifest (State { .. }) _eId o = do
@@ -31,7 +49,6 @@ processCandidateManifest (State { .. }) _eId o = do
                  , "contestId"   .= contId
                  , "description" .= desc
                  ]
-
 
 candidateManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Text)]
 candidateManifestP o = do
@@ -58,13 +75,12 @@ processContestManifest (State {..}) eId o = do
   return $ toJSON (map toVal contests)
     where
       toVal (cId, extId, desc, nRanks, vFor)
-        = object [ "id"         .= cId
-                 , "externalId" .= extId
-                 , "description"       .= desc
-                 , "numRanks"   .= nRanks
-                 , "voteFor"    .= vFor
+        = object [ "id"          .= cId
+                 , "externalId"  .= extId
+                 , "description" .= desc
+                 , "numRanks"    .= nRanks
+                 , "voteFor"     .= vFor
                  ]
-  -- return $ object []
 
 contestManifestP :: Object -> Parser [(Integer, Text, Text, Integer, Integer)]
 contestManifestP o = do
