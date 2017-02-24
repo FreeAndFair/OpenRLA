@@ -51,9 +51,6 @@ class ContestStats extends React.Component {
       <Card>
         <List>
           {listItems}
-          <ListItem>
-
-          </ListItem>
         </List>
       </Card>
     );
