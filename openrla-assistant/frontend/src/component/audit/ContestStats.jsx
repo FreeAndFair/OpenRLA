@@ -52,6 +52,9 @@ class ContestStats extends React.Component {
         <TextField
            floatingLabelText='Sampled ballots'
            value={audit.marks.length} />
+        <TextField
+           floatingLabelText='Total ballots'
+           value={_.size(election.ballots)} />
         <List>
           {listItems}
         </List>
