@@ -44,6 +44,16 @@ class AuditInfo extends React.Component {
       currentSampleId = audit.sample.id;
     }
 
+    let auditBallot;
+    if (!_.isEmpty(contests)) {
+      auditBallot = (
+        <AuditBallot
+           ballotId={currentSampleId}
+           closeDialog={this.closeDialog}
+           dialogOpen={this.state.open} />
+      );
+    }
+
     return (
       <Card>
         <List>
@@ -74,10 +84,7 @@ class AuditInfo extends React.Component {
             <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
-        <AuditBallot
-           ballotId={currentSampleId}
-           closeDialog={this.closeDialog}
-           dialogOpen={this.state.open} />
+        {auditBallot}
       </Card>
     );
   }
