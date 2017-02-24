@@ -15,6 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import AuditBallot from './AuditBallot';
+import ContestStats from './ContestStats';
 
 
 class AuditInfo extends React.Component {
@@ -37,11 +38,28 @@ class AuditInfo extends React.Component {
   }
 
   render() {
-    const { audit } = this.props;
+    const { audit, contests, election } = this.props;
 
     let currentSampleId;
     if (audit.sample) {
       currentSampleId = audit.sample.id;
+    }
+
+    let auditBallot;
+    let contestStats;
+    if (!_.isEmpty(contests)) {
+      auditBallot = (
+        <AuditBallot
+           ballotId={currentSampleId}
+           closeDialog={this.closeDialog}
+           dialogOpen={this.state.open} />
+      );
+      contestStats = (
+        <ContestStats
+           audit={audit}
+           contests={contests}
+           election={election} />
+      );
     }
 
     return (
@@ -74,20 +92,24 @@ class AuditInfo extends React.Component {
             <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
-        <AuditBallot
-           ballotId={currentSampleId}
-           closeDialog={this.closeDialog}
-           dialogOpen={this.state.open} />
+        {contestStats}
+        {auditBallot}
       </Card>
     );
   }
 }
 
-AuditInfo.PropTypes = {};
+AuditInfo.PropTypes = {
+  audit: PropTypes.object.isRequired,
+  contests: PropTypes.object.isRequired,
+  election: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = state => {
-  const { audit } = state;
-  return { audit };
+  const { audit, election } = state;
+  const { contests } = election;
+
+  return { audit, contests, election };
 };
 
 const mapDispatchToProps = dispatch => {
