@@ -23,7 +23,7 @@ class AuditMark extends React.Component {
   }
 
   render() {
-    const { ballotMark } = this.props;
+    const { ballotMark, election } = this.props;
 
     const makeRow = ({ contestId, candidateId }) => {
       return (
@@ -58,10 +58,11 @@ class AuditMark extends React.Component {
 
 AuditMark.PropTypes = {
   ballotMark: PropTypes.object.isRequired,
+  election: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => {
-  return {};
+  return ({ election }) => ({ election });
 };
 
 const mapDispatchToProps = dispatch => {
