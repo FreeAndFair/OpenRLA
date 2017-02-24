@@ -15,6 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import AuditBallot from './AuditBallot';
+import ContestStats from './ContestStats';
 
 
 class AuditInfo extends React.Component {
@@ -45,6 +46,7 @@ class AuditInfo extends React.Component {
     }
 
     let auditBallot;
+    let contestStats;
     if (!_.isEmpty(contests)) {
       auditBallot = (
         <AuditBallot
@@ -52,6 +54,7 @@ class AuditInfo extends React.Component {
            closeDialog={this.closeDialog}
            dialogOpen={this.state.open} />
       );
+      contestStats = <ContestStats audit={audit} contests={contests} />;
     }
 
     return (
@@ -84,6 +87,7 @@ class AuditInfo extends React.Component {
             <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
+        {contestStats}
         {auditBallot}
       </Card>
     );
