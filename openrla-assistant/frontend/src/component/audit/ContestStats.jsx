@@ -29,7 +29,7 @@ class ContestStats extends React.Component {
   }
 
   render() {
-    const { audit, contests } = this.props;
+    const { audit, contests, election } = this.props;
 
     const listItems = _.map(audit.contests, ({ id, statistic }) => {
       return (
@@ -49,6 +49,9 @@ class ContestStats extends React.Component {
 
     return (
       <Card>
+        <TextField
+           floatingLabelText='Sampled ballots'
+           value={audit.marks.length} />
         <List>
           {listItems}
         </List>
