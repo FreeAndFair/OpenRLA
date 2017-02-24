@@ -60,6 +60,7 @@ class ContestStats extends React.Component {
 ContestStats.PropTypes = {
   audit: PropTypes.object.isRequired,
   contests: PropTypes.object.isRequired,
+  election: PropTypes.object.isRequired,
 };
 
 export default ContestStats;
