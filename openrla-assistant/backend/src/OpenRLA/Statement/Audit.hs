@@ -52,6 +52,16 @@ setActive conn auId
 resetActive :: Connection -> IO ()
 resetActive conn = Sql.execute_ conn "update audit set active = null where active = 1"
 
+createSample :: Connection -> Integer -> Integer -> IO Integer
+createSample conn auId balId = do
+  let s = [here|
+        insert into audit_sample (audit_id, ballot_id)
+        values (?, ?)
+      |]
+  Sql.execute conn s (auId, balId)
+  rowId <- Sql.lastInsertRowId conn
+  return $ fromIntegral rowId
+
 createMark :: Connection -> AuditMark -> IO ()
 createMark conn auditMark = Sql.execute conn s auditMark
   where s = [here|
