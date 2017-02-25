@@ -63,12 +63,14 @@ createSample conn auId balId = do
   return $ fromIntegral rowId
 
 createMark :: Connection -> AuditMark -> IO ()
-createMark conn auditMark = Sql.execute conn s auditMark
-  where s = [here|
-    insert or replace
-    into audit_mark (audit_id, ballot_id, contest_id, candidate_id)
-    values (?, ?, ?, ?)
-  |]
+createMark conn auditMark = do
+  let s = [here|
+        insert or replace
+        into audit_mark (audit_sample_id, contest_id, candidate_id)
+        values (?, ?, ?)
+      |]
+      AuditMark { .. } = auditMark
+  Sql.execute conn s (amSampleId, amContestId, amCandidateId)
 
 setCurrentSample :: Connection -> Integer -> Integer -> IO ()
 setCurrentSample conn auId balId = do
