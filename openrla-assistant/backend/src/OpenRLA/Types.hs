@@ -220,6 +220,14 @@ instance ToRow AuditSample where
       , SQLInteger $ fromInteger ausBallotId
       ]
 
+instance FromRow AuditSample where
+  fromRow = do
+    ausId       <- field
+    ausAuditId  <- field
+    ausBallotId <- field
+
+    return $ AuditSample { .. }
+
 data AuditMark
   = AuditMark
   { amAuditId     :: Integer
