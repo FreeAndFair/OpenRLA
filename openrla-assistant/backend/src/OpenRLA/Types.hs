@@ -205,6 +205,14 @@ instance FromJSON Audit where
       return $ Audit { .. }
     _        -> typeMismatch "Audit" v
 
+data AuditSample
+  = AuditSample
+  { ausId       :: Integer
+  , ausAuditId  :: Integer
+  , ausBallotId :: Integer
+  }
+  deriving (Show, Eq)
+
 data AuditMark
   = AuditMark
   { amAuditId     :: Integer
