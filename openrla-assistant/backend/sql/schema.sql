@@ -74,10 +74,9 @@ create table if not exists ballot (
 );
 
 create table if not exists election_ballot (
-  election_id  integer not null
-                       references election (id),
-  ballot integer not null
-                       references ballot (id)
+  election_id  integer not null references election (id),
+  ballot       integer not null references ballot (id)
+
 );
 
 create table if not exists audit (
