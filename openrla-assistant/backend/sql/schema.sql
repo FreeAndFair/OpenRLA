@@ -109,8 +109,8 @@ create table if not exists audit_contest (
 create table if not exists audit_current_sample (
   audit_id  integer primary key
                     references audit (id),
-  ballot_id integer not null
-                    references ballot (id)
+  sample_id integer not null
+                    references audit_sample (id)
 );
 
 create table if not exists audit_sample (
