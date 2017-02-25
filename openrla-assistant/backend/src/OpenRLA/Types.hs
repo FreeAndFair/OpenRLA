@@ -234,6 +234,7 @@ data AuditMark
   , amBallotId    :: Integer
   , amContestId   :: Integer
   , amCandidateId :: Integer
+  , amSampleId    :: Integer
   } deriving (Show, Eq)
 
 instance FromRow AuditMark where
@@ -242,6 +243,7 @@ instance FromRow AuditMark where
     amBallotId    <- field
     amContestId   <- field
     amCandidateId <- field
+    amSampleId    <- field
     return $ AuditMark { .. }
 
 instance ToRow AuditMark where
@@ -250,6 +252,7 @@ instance ToRow AuditMark where
       , SQLInteger $ fromInteger amBallotId
       , SQLInteger $ fromInteger amContestId
       , SQLInteger $ fromInteger amCandidateId
+      , SQLInteger $ fromInteger amSampleId
       ]
 
 instance ToJSON AuditMark where
@@ -257,6 +260,7 @@ instance ToJSON AuditMark where
                                      , "ballotId"    .= amBallotId
                                      , "contestId"   .= amContestId
                                      , "candidateId" .= amCandidateId
+                                     , "sampleId"    .= amSampleId
                                      ]
 
 instance FromJSON AuditMark where
@@ -266,6 +270,7 @@ instance FromJSON AuditMark where
       amBallotId    <- o .: "ballotId"
       amContestId   <- o .: "contestId"
       amCandidateId <- o .: "candidateId"
+      amSampleId    <- o .: "sampleId"
       return $ AuditMark { .. }
     _        -> typeMismatch "AuditMark" v
 
