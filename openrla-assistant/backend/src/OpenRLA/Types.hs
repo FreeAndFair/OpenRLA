@@ -213,6 +213,13 @@ data AuditSample
   }
   deriving (Show, Eq)
 
+instance ToRow AuditSample where
+  toRow AuditSample { .. }
+    = [ SQLInteger $ fromInteger ausId
+      , SQLInteger $ fromInteger ausAuditId
+      , SQLInteger $ fromInteger ausBallotId
+      ]
+
 data AuditMark
   = AuditMark
   { amAuditId     :: Integer
