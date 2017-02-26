@@ -156,7 +156,6 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
                                     }
         AuSt.setCurrentSample conn newSample
         return marks
-
       json marks
 
 createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
