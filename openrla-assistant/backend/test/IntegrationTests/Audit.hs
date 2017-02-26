@@ -10,6 +10,7 @@ import           Test.Tasty.Hspec
 import qualified IntegrationTests.Fixture as Fixture
 import           JsonTestSupport
 import           TestSupport
+import           OpenRLA.Types
 
 
 date :: String
@@ -227,28 +228,53 @@ spec = do
       statsShouldBe 1.327104 64.0
 
     it "should allow fetching existing marks" $ do
+      let respBalId r = balId $ decodeBody' r
+
       Fixture.withElection
       Fixture.withBallots
       Fixture.withOutcomes
 
       postJson "/audit" auditPostBodyA
 
-      postJson "/audit/1/marks" $ mkMarksBody 1 1 6
-      postJson "/audit/1/marks" $ mkMarksBody 2 1 6
-      postJson "/audit/1/marks" $ mkMarksBody 3 2 6
-      postJson "/audit/1/marks" $ mkMarksBody 4 1 6
-      postJson "/audit/1/marks" $ mkMarksBody 5 3 6
-      postJson "/audit/1/marks" $ mkMarksBody 6 1 6
+      sampleResp1 <- get "/audit/1/sample"
+      let balId1 = respBalId sampleResp1
+
+      postJson "/audit/1/marks" $ mkMarksBody balId1 1 6
+
+      sampleResp2 <- get "/audit/1/sample"
+      let balId2 = respBalId sampleResp2
+
+      postJson "/audit/1/marks" $ mkMarksBody balId2 1 6
+
+      sampleResp3 <- get "/audit/1/sample"
+      let balId3 = respBalId sampleResp3
+
+      postJson "/audit/1/marks" $ mkMarksBody balId3 2 6
+
+      sampleResp4 <- get "/audit/1/sample"
+      let balId4 = respBalId sampleResp4
+
+      postJson "/audit/1/marks" $ mkMarksBody balId4 1 6
+
+      sampleResp5 <- get "/audit/1/sample"
+      let balId5 = respBalId sampleResp5
+
+      postJson "/audit/1/marks" $ mkMarksBody balId5 3 6
+
+      sampleResp6 <- get "/audit/1/sample"
+      let balId6 = respBalId sampleResp6
+
+      postJson "/audit/1/marks" $ mkMarksBody balId6 1 6
 
       resp <- get "/audit/1/marks"
 
       return resp `shouldRespondWith` 200
 
       resp `bodyShouldBe` [json|[
-        #{mkMarksBody 1 1 6},
-        #{mkMarksBody 2 1 6},
-        #{mkMarksBody 3 2 6},
-        #{mkMarksBody 4 1 6},
-        #{mkMarksBody 5 3 6},
-        #{mkMarksBody 6 1 6}
+        #{mkMarksBody balId1 1 6},
+        #{mkMarksBody balId2 1 6},
+        #{mkMarksBody balId3 2 6},
+        #{mkMarksBody balId4 1 6},
+        #{mkMarksBody balId5 3 6},
+        #{mkMarksBody balId6 1 6}
       ]|]
