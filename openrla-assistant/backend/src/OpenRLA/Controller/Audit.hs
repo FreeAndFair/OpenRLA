@@ -111,9 +111,9 @@ indexMarks State { conn } = do
   auId <- param "id"
   marks <- liftIO $ do
     ungrouped <- AuSt.indexMarks conn auId
-    let cmp = compare `on` amBallotId
+    let cmp = compare `on` amSampleId
         sorted = sortBy cmp ungrouped
-        eq m m' = amBallotId m == amBallotId m'
+        eq m m' = amSampleId m == amSampleId m'
         grouped = groupBy eq sorted
     forM grouped $ \grp -> do
       let balId = amBallotId (head grp)
