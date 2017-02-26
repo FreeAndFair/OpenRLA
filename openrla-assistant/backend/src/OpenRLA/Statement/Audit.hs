@@ -72,12 +72,15 @@ createMark conn auditMark = do
       AuditMark { .. } = auditMark
   Sql.execute conn s (amSampleId, amContestId, amCandidateId)
 
-setCurrentSample :: Connection -> Integer -> Integer -> IO ()
-setCurrentSample conn auId balId = do
-  let s = "insert or replace into audit_current_sample values (?, ?)"
-  Sql.execute conn s (auId, balId)
-  let s' = "insert into audit_sample (audit_id, ballot_id) values (?, ?)"
-  Sql.execute conn s' (auId, balId)
+setCurrentSample :: Connection -> AuditSample -> IO ()
+setCurrentSample conn sample = do
+  let AuditSample { .. } = sample
+      s = [here|
+        insert or replace
+        into audit_current_sample (audit_id, sample_id)
+        values (?, ?)
+      |]
+  Sql.execute conn s (ausAuditId, ausId)
 
 currentSampleId :: Connection -> Integer -> IO (Maybe Integer)
 currentSampleId conn auId = do
