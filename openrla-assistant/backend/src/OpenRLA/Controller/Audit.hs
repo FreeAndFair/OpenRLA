@@ -149,7 +149,12 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
         marks <- forM markData mkMark
         newBallot <- ElSt.randomBallot conn auElectionId >>= return . fromJust
         let Ballot { balId } = newBallot
-        liftIO $ AuSt.setCurrentSample conn amAuditId balId
+        newSampleId <- AuSt.createSample conn auId balId
+        let newSample = AuditSample { ausId = newSampleId
+                                    , ausAuditId = auId
+                                    , ausBallotId = balId
+                                    }
+        AuSt.setCurrentSample conn newSample
         return marks
 
       json marks
