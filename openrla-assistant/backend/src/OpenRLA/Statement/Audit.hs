@@ -87,6 +87,20 @@ currentSampleId conn auId = do
     []              -> Nothing
     [Only sampleId] -> sampleId
 
+currentSample :: Connection -> Integer -> IO (Maybe AuditSample)
+currentSample conn auId = do
+  let s = [here|
+        select id, audit_id, ballot_id
+        from audit_sample
+        where id = ?
+      |]
+  maybeSampleId <- currentSampleId conn auId
+  case maybeSampleId of
+    Nothing -> return Nothing
+    Just sampleId -> do
+      rows <- Sql.query conn s (Only sampleId)
+      justOneIO rows
+
 addContest :: Connection -> Integer -> Integer -> IO ()
 addContest conn auId contestId = do
   let s = [here|
