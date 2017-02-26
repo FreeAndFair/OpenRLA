@@ -20,6 +20,7 @@ import qualified OpenRLA.Statement.Election as ElSt
 import           OpenRLA.Types (
     Audit(..)
   , AuditMark(..)
+  , AuditSample(..)
   , Ballot(..)
   , State(..)
   )
@@ -123,19 +124,27 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
   where
     createMarksCb (amBallotId, markData) = do
       amAuditId <- param "id"
-      audit <- liftIO $ AuSt.getById conn amAuditId >>= return . fromJust
-      let Audit { auElectionId } = audit
-          mkMarkJson (amContestId, amCandidateId) = do
-            let auditMark = AuditMark { .. }
-            liftIO $ AuSt.createMark conn auditMark
-            return [aesonQQ|{
-              contestId: #{amContestId},
-              candidateId: #{amCandidateId}
-            }|]
-      marks <- liftIO $ forM markData mkMarkJson
-      newBallot <- liftIO $ ElSt.randomBallot conn auElectionId >>= return . fromJust
-      let Ballot { balId } = newBallot
-      liftIO $ AuSt.setCurrentSample conn amAuditId balId
+
+      marks <- liftIO $ do
+        audit <- AuSt.getById conn amAuditId >>= return . fromJust
+        let Audit { auId, auElectionId } = audit
+        -- If we have an Audit, then we have some current sampleId by
+        -- construction.
+        Just currentSample <- AuSt.currentSample conn auId
+        let amSampleId = ausId currentSample
+            mkMark (amContestId, amCandidateId) = do
+              let auditMark = AuditMark { .. }
+              AuSt.createMark conn auditMark
+              return [aesonQQ|{
+                contestId: #{amContestId},
+                candidateId: #{amCandidateId}
+              }|]
+        marks <- forM markData mkMark
+        newBallot <- ElSt.randomBallot conn auElectionId >>= return . fromJust
+        let Ballot { balId } = newBallot
+        liftIO $ AuSt.setCurrentSample conn amAuditId balId
+        return marks
+
       json marks
 
 createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
