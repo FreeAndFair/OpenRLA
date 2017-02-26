@@ -156,6 +156,15 @@ instance FromRow Ballot where
     balFilePath <- field
     return $ Ballot { .. }
 
+instance FromJSON Ballot where
+  parseJSON v = case v of
+    Object o -> do
+      balId       <- o .: "id"
+      balFilePath <- o .: "filePath"
+      balSrcPath  <- o .: "srcPath"
+      return $ Ballot { .. }
+    _        -> typeMismatch "Ballot" v
+
 instance ToJSON Ballot where
   toJSON Ballot { .. } = A.object [ "id"       .= balId
                                   , "filePath" .= balFilePath
