@@ -137,10 +137,16 @@ getContestData conn auId = do
 indexContestMarks :: Connection -> Integer -> Integer -> IO [AuditMark]
 indexContestMarks conn auId contId = Sql.query conn s (auId, contId)
   where s = [here|
-    select audit_id, ballot_id, contest_id, candidate_id
-      from audit_mark
-     where audit_id = ?
-       and contest_id = ?
+    select aus.audit_id,
+           aus.ballot_id,
+           aum.contest_id,
+           aum.candidate_id,
+           aus.id
+      from audit_mark aum
+      join audit_sample aus
+        on aum.audit_sample_id = aus.id
+     where aus.audit_id = ?
+       and aum.contest_id = ?
   |]
 
 indexMarks :: Connection -> Integer -> IO [AuditMark]
