@@ -51,12 +51,19 @@ create :: Controller
 create State { conn } = parseThen createP createCb
   where
     createCb args = do
-      audit <- liftIO $ AuSt.create conn args
-      let Audit { .. } = audit
-      Just ballot <- liftIO $ ElSt.randomBallot conn auElectionId
-      let Ballot { balId } = ballot
-      liftIO $ AuSt.setCurrentSample conn auId balId
-      liftIO (mkJson conn audit) >>= json
+      result <- liftIO $ do
+        audit <- AuSt.create conn args
+        let Audit { .. } = audit
+        Just ballot <- liftIO $ ElSt.randomBallot conn auElectionId
+        let Ballot { balId } = ballot
+        sampleId <- AuSt.createSample conn auId balId
+        let sample = AuditSample { ausId = sampleId
+                                 , ausAuditId = auId
+                                 , ausBallotId = balId
+                                 }
+        AuSt.setCurrentSample conn sample
+        mkJson conn audit
+      json result
 
 createP :: Object -> Parser CreateData
 createP o = do
