@@ -171,7 +171,17 @@ createMarksP o = do
 currentSample :: Controller
 currentSample State { conn } = do
   auId <- param "id"
-  sample <- liftIO $ do
-    sampleId <- AuSt.currentSampleId conn auId
-    BalSt.getById conn (fromJust sampleId)
-  json sample
+  (sample, ballot) <- liftIO $ do
+    Just sample <- AuSt.currentSample conn auId
+    let AuditSample { ausBallotId } = sample
+    Just ballot <- BalSt.getById conn ausBallotId
+    return (sample, ballot)
+  let AuditSample { .. } = sample
+      Ballot { .. } = ballot
+  json [aesonQQ|{
+    filePath: #{balFilePath},
+    srcPath: #{balSrcPath},
+    sampleId: #{ausId},
+    ballotId: #{balId},
+    id: #{balId}
+  }|]
