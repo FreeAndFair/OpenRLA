@@ -227,6 +227,43 @@ spec = do
       postJson "/audit/1/marks" $ mkMarksBody 6 1 6
       statsShouldBe 1.327104 64.0
 
+    it "should allow sampling with replacement" $ do
+      let mkContestsJson :: Double -> Double -> Value
+          mkContestsJson stat1001 stat1003 = [json|[
+            { id: 1001, statistic: #{stat1001} },
+            { id: 1003, statistic: #{stat1003} }
+          ]|]
+          statsShouldBe stat1001 stat1003 = do
+            resp <- get "/audit/1"
+            let Array contests = decodeBody resp .! "contests"
+                [Number n1001, Number n1003] = map (.! "statistic") $ toList contests
+                d1001 = toRealFloat n1001
+                d1003 = toRealFloat n1003
+            liftIO $ do
+              let eps = 0.0000001
+              abs (d1001 - stat1001) < eps `shouldBe` True
+              abs (d1003 - stat1003) < eps `shouldBe` True
+
+      Fixture.withElection
+      Fixture.withOneBallot
+      Fixture.withOutcomes
+
+      postJson "/audit" auditPostBodyA
+      statsShouldBe 1.0 1.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 1 1 6
+      statsShouldBe 1.2 2.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 1 1 6
+      statsShouldBe 1.44 4.0
+
+      postJson "/audit/1/marks" $ mkMarksBody 1 2 6
+      statsShouldBe 1.152 8.0
+
+      indexResp <- get "audit/1/marks"
+      let indexBody = decodeBody indexResp
+      liftIO $ jsonLength indexBody `shouldBe` 3
+
     it "should allow fetching existing marks" $ do
       let respBalId r = balId $ decodeBody' r
 
