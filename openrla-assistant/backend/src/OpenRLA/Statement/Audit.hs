@@ -84,7 +84,13 @@ setCurrentSample conn sample = do
 
 currentSampleId :: Connection -> Integer -> IO (Maybe Integer)
 currentSampleId conn auId = do
-  let s = "select ballot_id from audit_current_sample where audit_id = ?"
+  let s = [here|
+        select aus.id
+        from audit_current_sample acs
+        join audit_sample aus
+          on acs.sample_id = aus.id
+        where acs.audit_id = ?
+      |]
   rows <- Sql.query conn s (Only auId)
   return $ case rows of
     []              -> Nothing
