@@ -15,7 +15,7 @@ create conn elId srcPaths relPath
       forM srcPaths $ \balSrcPath -> do
         Sql.execute conn s (Only balSrcPath)
         rowId <- Sql.lastInsertRowId conn
-        let balId       = fromIntegral rowId
+        let balId = fromIntegral rowId
             balFilePath = relPath balId
         let s' = "update ballot set file_path = ? where id = ?"
         Sql.execute conn s' (balFilePath, balId)
@@ -30,7 +30,7 @@ createNoCopy conn elId srcPaths
       forM srcPaths $ \balSrcPath -> do
         Sql.execute conn s (Only balSrcPath)
         rowId <- Sql.lastInsertRowId conn
-        let balId       = fromIntegral rowId
+        let balId = fromIntegral rowId
             balFilePath = ""
         let s' = "update ballot set file_path = '' where id = ?"
         Sql.execute conn s' (Only balId)

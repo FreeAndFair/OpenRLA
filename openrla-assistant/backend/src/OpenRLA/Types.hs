@@ -156,6 +156,15 @@ instance FromRow Ballot where
     balFilePath <- field
     return $ Ballot { .. }
 
+instance FromJSON Ballot where
+  parseJSON v = case v of
+    Object o -> do
+      balId       <- o .: "id"
+      balFilePath <- o .: "filePath"
+      balSrcPath  <- o .: "srcPath"
+      return $ Ballot { .. }
+    _        -> typeMismatch "Ballot" v
+
 instance ToJSON Ballot where
   toJSON Ballot { .. } = A.object [ "id"       .= balId
                                   , "filePath" .= balFilePath
@@ -205,12 +214,36 @@ instance FromJSON Audit where
       return $ Audit { .. }
     _        -> typeMismatch "Audit" v
 
+data AuditSample
+  = AuditSample
+  { ausId       :: Integer
+  , ausAuditId  :: Integer
+  , ausBallotId :: Integer
+  }
+  deriving (Show, Eq)
+
+instance ToRow AuditSample where
+  toRow AuditSample { .. }
+    = [ SQLInteger $ fromInteger ausId
+      , SQLInteger $ fromInteger ausAuditId
+      , SQLInteger $ fromInteger ausBallotId
+      ]
+
+instance FromRow AuditSample where
+  fromRow = do
+    ausId       <- field
+    ausAuditId  <- field
+    ausBallotId <- field
+
+    return $ AuditSample { .. }
+
 data AuditMark
   = AuditMark
   { amAuditId     :: Integer
   , amBallotId    :: Integer
   , amContestId   :: Integer
   , amCandidateId :: Integer
+  , amSampleId    :: Integer
   } deriving (Show, Eq)
 
 instance FromRow AuditMark where
@@ -219,6 +252,7 @@ instance FromRow AuditMark where
     amBallotId    <- field
     amContestId   <- field
     amCandidateId <- field
+    amSampleId    <- field
     return $ AuditMark { .. }
 
 instance ToRow AuditMark where
@@ -227,6 +261,7 @@ instance ToRow AuditMark where
       , SQLInteger $ fromInteger amBallotId
       , SQLInteger $ fromInteger amContestId
       , SQLInteger $ fromInteger amCandidateId
+      , SQLInteger $ fromInteger amSampleId
       ]
 
 instance ToJSON AuditMark where
@@ -234,6 +269,7 @@ instance ToJSON AuditMark where
                                      , "ballotId"    .= amBallotId
                                      , "contestId"   .= amContestId
                                      , "candidateId" .= amCandidateId
+                                     , "sampleId"    .= amSampleId
                                      ]
 
 instance FromJSON AuditMark where
@@ -243,6 +279,7 @@ instance FromJSON AuditMark where
       amBallotId    <- o .: "ballotId"
       amContestId   <- o .: "contestId"
       amCandidateId <- o .: "candidateId"
+      amSampleId    <- o .: "sampleId"
       return $ AuditMark { .. }
     _        -> typeMismatch "AuditMark" v
 

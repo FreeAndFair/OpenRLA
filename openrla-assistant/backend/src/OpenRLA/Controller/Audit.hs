@@ -20,6 +20,7 @@ import qualified OpenRLA.Statement.Election as ElSt
 import           OpenRLA.Types (
     Audit(..)
   , AuditMark(..)
+  , AuditSample(..)
   , Ballot(..)
   , State(..)
   )
@@ -50,12 +51,19 @@ create :: Controller
 create State { conn } = parseThen createP createCb
   where
     createCb args = do
-      audit <- liftIO $ AuSt.create conn args
-      let Audit { .. } = audit
-      Just ballot <- liftIO $ ElSt.randomBallot conn auElectionId
-      let Ballot { balId } = ballot
-      liftIO $ AuSt.setCurrentSample conn auId balId
-      liftIO (mkJson conn audit) >>= json
+      result <- liftIO $ do
+        audit <- AuSt.create conn args
+        let Audit { .. } = audit
+        Just ballot <- liftIO $ ElSt.randomBallot conn auElectionId
+        let Ballot { balId } = ballot
+        sampleId <- AuSt.createSample conn auId balId
+        let sample = AuditSample { ausId = sampleId
+                                 , ausAuditId = auId
+                                 , ausBallotId = balId
+                                 }
+        AuSt.setCurrentSample conn sample
+        mkJson conn audit
+      json result
 
 createP :: Object -> Parser CreateData
 createP o = do
@@ -103,9 +111,9 @@ indexMarks State { conn } = do
   auId <- param "id"
   marks <- liftIO $ do
     ungrouped <- AuSt.indexMarks conn auId
-    let cmp = compare `on` amBallotId
+    let cmp = compare `on` amSampleId
         sorted = sortBy cmp ungrouped
-        eq m m' = amBallotId m == amBallotId m'
+        eq m m' = amSampleId m == amSampleId m'
         grouped = groupBy eq sorted
     forM grouped $ \grp -> do
       let balId = amBallotId (head grp)
@@ -123,19 +131,31 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
   where
     createMarksCb (amBallotId, markData) = do
       amAuditId <- param "id"
-      audit <- liftIO $ AuSt.getById conn amAuditId >>= return . fromJust
-      let Audit { auElectionId } = audit
-          mkMarkJson (amContestId, amCandidateId) = do
-            let auditMark = AuditMark { .. }
-            liftIO $ AuSt.createMark conn auditMark
-            return [aesonQQ|{
-              contestId: #{amContestId},
-              candidateId: #{amCandidateId}
-            }|]
-      marks <- liftIO $ forM markData mkMarkJson
-      newBallot <- liftIO $ ElSt.randomBallot conn auElectionId >>= return . fromJust
-      let Ballot { balId } = newBallot
-      liftIO $ AuSt.setCurrentSample conn amAuditId balId
+
+      marks <- liftIO $ do
+        Just audit <- AuSt.getById conn amAuditId
+        let Audit { auId, auElectionId } = audit
+        -- If we have an Audit, then we have some current sampleId by
+        -- construction.
+        Just currentSample <- AuSt.currentSample conn auId
+        let amSampleId = ausId currentSample
+            mkMark (amContestId, amCandidateId) = do
+              let auditMark = AuditMark { .. }
+              AuSt.createMark conn auditMark
+              return [aesonQQ|{
+                contestId: #{amContestId},
+                candidateId: #{amCandidateId}
+              }|]
+        marks <- forM markData mkMark
+        newBallot <- ElSt.randomBallot conn auElectionId >>= return . fromJust
+        let Ballot { balId } = newBallot
+        newSampleId <- AuSt.createSample conn auId balId
+        let newSample = AuditSample { ausId = newSampleId
+                                    , ausAuditId = auId
+                                    , ausBallotId = balId
+                                    }
+        AuSt.setCurrentSample conn newSample
+        return marks
       json marks
 
 createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
@@ -151,7 +171,17 @@ createMarksP o = do
 currentSample :: Controller
 currentSample State { conn } = do
   auId <- param "id"
-  sample <- liftIO $ do
-    sampleId <- AuSt.currentSampleId conn auId
-    BalSt.getById conn (fromJust sampleId)
-  json sample
+  (sample, ballot) <- liftIO $ do
+    Just sample <- AuSt.currentSample conn auId
+    let AuditSample { ausBallotId } = sample
+    Just ballot <- BalSt.getById conn ausBallotId
+    return (sample, ballot)
+  let AuditSample { .. } = sample
+      Ballot { .. } = ballot
+  json [aesonQQ|{
+    filePath: #{balFilePath},
+    srcPath: #{balSrcPath},
+    sampleId: #{ausId},
+    ballotId: #{balId},
+    id: #{balId}
+  }|]

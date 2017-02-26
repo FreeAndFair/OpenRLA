@@ -17,9 +17,9 @@ class AuditMarkList extends React.Component {
 
   render() {
     const { marks } = this.props;
-
-    const makeMark = mark => (
-      <ListItem key={mark.ballotId}>
+    // TODO: `key` should really be `sampleId`, not just the array index
+    const makeMark = (mark, ix) => (
+      <ListItem key={ix}>
         <AuditMark ballotMark={mark} />
       </ListItem>
     );

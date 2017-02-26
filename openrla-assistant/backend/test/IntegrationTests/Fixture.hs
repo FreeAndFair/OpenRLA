@@ -67,6 +67,20 @@ withBallots = do
 
   return ()
 
+withOneBallot :: WaiSession ()
+withOneBallot = do
+  testFile <- liftIO testFileIO
+  let ballotPath i = testFile $ "test-ballots" </> "ballot-" ++ show i
+
+  let ballotSrcPaths = [ballotPath 1]
+      ballotPostBody = [json|{
+        electionId: 1,
+        filePaths: #{ballotSrcPaths}
+      }|]
+  postJson "/ballot" ballotPostBody
+
+  return ()
+
 withOutcomes :: WaiSession ()
 withOutcomes = do
   let outcomeJson1 = [json|{
