@@ -133,7 +133,7 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
       amAuditId <- param "id"
 
       marks <- liftIO $ do
-        audit <- AuSt.getById conn amAuditId >>= return . fromJust
+        Just audit <- AuSt.getById conn amAuditId
         let Audit { auId, auElectionId } = audit
         -- If we have an Audit, then we have some current sampleId by
         -- construction.
