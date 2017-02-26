@@ -152,7 +152,14 @@ indexContestMarks conn auId contId = Sql.query conn s (auId, contId)
 indexMarks :: Connection -> Integer -> IO [AuditMark]
 indexMarks conn auId = Sql.query conn s (Only auId)
   where s = [here|
-    select audit_id, ballot_id, contest_id, candidate_id
-      from audit_mark
-     where audit_id = ?
+      select aus.audit_id,
+             aus.ballot_id,
+             aum.contest_id,
+             aum.candidate_id,
+             aus.id
+        from audit_mark aum
+        join audit_sample aus
+          on aum.audit_sample_id = aus.id
+       where aus.audit_id = ?
+    order by aus.id asc
   |]
