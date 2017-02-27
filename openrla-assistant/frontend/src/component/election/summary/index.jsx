@@ -23,7 +23,10 @@ class ElectionSummary extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      date: null,
+      title: "",
+    };
 
     [
       'addElection',
