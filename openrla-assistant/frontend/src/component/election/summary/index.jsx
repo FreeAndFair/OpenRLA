@@ -25,6 +25,7 @@ class ElectionSummary extends React.Component {
 
     this.state = {
       date: null,
+      edited: false,
       title: "",
     };
 
@@ -47,6 +48,7 @@ class ElectionSummary extends React.Component {
     this.props.resetElection();
     this.setState({
       date: null,
+      edited: false,
       title: "",
     });
   }
@@ -57,23 +59,34 @@ class ElectionSummary extends React.Component {
     const data = { id, title, date, active };
 
     this.props.saveElection(data);
+    this.setState({
+      date: null,
+      edited: false,
+      title: "",
+    });
   }
 
-  onDateChange(_, dateOb) {
+  onDateChange(_e, dateOb) {
     const date = `${dateOb}`;
-    this.setState({ date });
+    const newState = _.merge({}, this.formData(), { date, edited: true });
+    this.setState(newState);
   }
 
   onTitleChange(e) {
     const title = e.target.value;
-    this.setState({ title });
+    const newState = _.merge({}, this.formData(), { edited: true, title });
+    this.setState(newState);
   }
 
   formData() {
     const { date, title } = this.props.election;
-    const form = { date, title };
-    Object.assign(form, this.state);
-    return form;
+    const state = { date, title };
+
+    if (this.state.edited) {
+      return _.merge({}, state, this.state);
+    } else {
+      return state;
+    }
   }
 
   render() {
