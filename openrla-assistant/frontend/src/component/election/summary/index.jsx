@@ -32,6 +32,7 @@ class ElectionSummary extends React.Component {
       'addElection',
       'onDateChange',
       'onTitleChange',
+      'resetElection',
       'saveElection',
     ].forEach(m => {
       this[m] = this[m].bind(this);
@@ -40,6 +41,14 @@ class ElectionSummary extends React.Component {
 
   addElection() {
     this.props.addElection(this.formData());
+  }
+
+  resetElection() {
+    this.props.resetElection();
+    this.setState({
+      date: null,
+      title: "",
+    });
   }
 
   saveElection() {
@@ -75,7 +84,7 @@ class ElectionSummary extends React.Component {
     let resetElectionButton;
     let saveOrAddButton;
     if (electionDefined) {
-      resetElectionButton = <RaisedButton label='Reset' onClick={this.props.resetElection} />;
+      resetElectionButton = <RaisedButton label='Reset' onClick={this.resetElection} />;
       saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection} />;
     } else {
       saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection} />;
