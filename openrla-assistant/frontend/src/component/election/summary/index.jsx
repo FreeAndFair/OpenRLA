@@ -23,6 +23,15 @@ class ElectionSummary extends React.Component {
     super(props);
 
     this.state = {};
+
+    [
+      'addElection',
+      'onDateChange',
+      'onTitleChange',
+      'saveElection',
+    ].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
   }
 
   addElection() {
@@ -61,9 +70,9 @@ class ElectionSummary extends React.Component {
 
     let saveOrAddButton;
     if (electionDefined) {
-      saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection.bind(this)} />;
+      saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection} />;
     } else {
-      saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection.bind(this)} />;
+      saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection} />;
     }
 
     const form = this.formData();
@@ -76,14 +85,14 @@ class ElectionSummary extends React.Component {
             <List>
               <ListItem secondaryText='Election title'>
                 <TextField
-                   onChange={this.onTitleChange.bind(this)}
+                   onChange={this.onTitleChange}
                    value={form.title}
                    id='formTitle'
                    ref='formTitle' />
               </ListItem>
               <ListItem secondaryText='Election date'>
                 <DatePicker
-                   onChange={this.onDateChange.bind(this)}
+                   onChange={this.onDateChange}
                    value={form.date && new Date(form.date)}
                    id='formDate'
                    ref='formDate' />
