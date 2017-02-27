@@ -31,7 +31,7 @@ class Outcomes extends React.Component {
 
     return (
       <Card>
-        <CardTitle title='Contest outcomes' />
+        <CardTitle title='Election outcomes' />
         <CardText>
           <List>
             {contestOutcomes}
