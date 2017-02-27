@@ -15,6 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import addElection from 'action/addElection';
+import resetElection from 'action/resetElection';
 import saveElection from 'action/saveElection';
 
 
@@ -68,8 +69,10 @@ class ElectionSummary extends React.Component {
 
     const electionDefined = !_.isNil(election.id);
 
+    let resetElectionButton;
     let saveOrAddButton;
     if (electionDefined) {
+      resetElectionButton = <RaisedButton label='Reset' onClick={this.props.resetElection} />;
       saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection} />;
     } else {
       saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection} />;
@@ -99,6 +102,7 @@ class ElectionSummary extends React.Component {
               </ListItem>
             </List>
           </CardText>
+          {resetElectionButton}
           {saveOrAddButton}
         </Card>
       </div>
@@ -109,11 +113,13 @@ class ElectionSummary extends React.Component {
 ElectionSummary.propTypes = {
   election: PropTypes.object.isRequired,
   addElection: PropTypes.func.isRequired,
+  resetElection: PropTypes.func.isRequired,
   saveElection: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   addElection: data => dispatch(addElection(data)),
+  resetElection: () => dispatch(resetElection()),
   saveElection: election => dispatch(saveElection(election)),
 });
 
