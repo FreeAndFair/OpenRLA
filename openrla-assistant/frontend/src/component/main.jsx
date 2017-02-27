@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Tab, Tabs } from 'material-ui/Tabs';
 
 import Audit from './audit';
-import Archive from './archive';
 import Home from './home';
 import Election from './election';
 
@@ -23,9 +22,6 @@ const Main = ({ page, archive, changeTab }) => {
       </Tab>
       <Tab label='Audit' value='audit'>
         <Audit />
-      </Tab>
-      <Tab label='Archive' value='archive'>
-        <Archive archive={archive} />
       </Tab>
     </Tabs>
   );
