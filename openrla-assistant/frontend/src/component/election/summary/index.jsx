@@ -59,11 +59,11 @@ class ElectionSummary extends React.Component {
 
     const electionDefined = !_.isNil(election.id);
 
-    let button;
+    let saveOrAddButton;
     if (electionDefined) {
-      button = <RaisedButton label='Save' onClick={this.saveElection.bind(this)} />;
+      saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection.bind(this)} />;
     } else {
-      button = <RaisedButton label='Add' onClick={this.addElection.bind(this)} />;
+      saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection.bind(this)} />;
     }
 
     const form = this.formData();
@@ -90,7 +90,7 @@ class ElectionSummary extends React.Component {
               </ListItem>
             </List>
           </CardText>
-          {button}
+          {saveOrAddButton}
         </Card>
       </div>
     );
