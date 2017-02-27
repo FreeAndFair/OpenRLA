@@ -14,8 +14,6 @@ import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import ContestOutcomes from './ContestOutcomes.jsx';
-
 import addElection from 'action/addElection';
 import saveElection from 'action/saveElection';
 
@@ -94,7 +92,6 @@ class ElectionSummary extends React.Component {
           </CardText>
           {button}
         </Card>
-        <ContestOutcomes />
       </div>
     );
   }
