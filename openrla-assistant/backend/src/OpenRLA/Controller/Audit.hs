@@ -158,7 +158,7 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
         return marks
       json marks
 
-createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
+createMarksP :: Object -> Parser (Integer, [(Integer, Maybe Integer)])
 createMarksP o = do
   ballotId <- o .: "ballotId"
   marksArr <- o .: "marks"
