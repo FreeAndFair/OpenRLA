@@ -98,7 +98,7 @@ create table if not exists audit (
 create table if not exists audit_mark (
   audit_sample_id integer not null references audit_sample (id),
   contest_id      integer not null references contest (id),
-  candidate_id    integer not null references candidate (id)
+  candidate_id    integer          references candidate (id)
 );
 
 create table if not exists audit_contest (
