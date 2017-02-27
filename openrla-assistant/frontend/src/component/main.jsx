@@ -7,6 +7,7 @@ import { Tab, Tabs } from 'material-ui/Tabs';
 import Audit from './audit';
 import Home from './home';
 import Election from './election';
+import Outcomes from './outcomes';
 
 import setPage from '../action/setPage';
 
@@ -19,6 +20,9 @@ const Main = ({ page, archive, changeTab }) => {
       </Tab>
       <Tab label='Election' value='election'>
         <Election />
+      </Tab>
+      <Tab label='Outcomes' value='outcomes'>
+        <Outcomes />
       </Tab>
       <Tab label='Audit' value='audit'>
         <Audit />
