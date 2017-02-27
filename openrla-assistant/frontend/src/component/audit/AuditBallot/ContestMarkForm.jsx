@@ -30,6 +30,7 @@ class ContestMarkForm extends React.Component {
   onRowSelection(selectedRows) {
     const i = selectedRows[0];
     const sorted = _.sortBy(this.props.contest.candidates, 'id');
+    sorted.push('invalid');
     const selected = sorted[i];
 
     this.setState({ selected });
@@ -39,6 +40,7 @@ class ContestMarkForm extends React.Component {
     const { selected } = this.state;
 
     if (!selected) return false;
+    if (selected === 'invalid') return selected === id;
 
     return selected.id === id;
   }
@@ -72,6 +74,14 @@ class ContestMarkForm extends React.Component {
 
     const sorted = _.sortBy(candidates, 'id');
     const rows = _.map(sorted, makeRow);
+    rows.push(
+      <TableRow key={'invalid'} selected={this.isSelected('invalid')}>
+        <TableRowColumn></TableRowColumn>
+        <TableRowColumn>Invalid</TableRowColumn>
+        <TableRowColumn></TableRowColumn>
+        <TableRowColumn></TableRowColumn>
+      </TableRow>
+    );
 
     return (
       <Card>

@@ -2,7 +2,7 @@ module OpenRLA.Controller.Audit where
 
 import           Control.Monad (forM)
 import           Control.Monad.IO.Class (liftIO)
-import           Data.Aeson (Object, (.:), Value(..))
+import           Data.Aeson (Object, (.:), (.:?), Value(..))
 import           Data.Aeson.QQ (aesonQQ)
 import           Data.Aeson.Types (Parser)
 import           Data.Function (on)
@@ -158,13 +158,13 @@ createMarks State { conn } = parseThen createMarksP createMarksCb
         return marks
       json marks
 
-createMarksP :: Object -> Parser (Integer, [(Integer, Integer)])
+createMarksP :: Object -> Parser (Integer, [(Integer, Maybe Integer)])
 createMarksP o = do
   ballotId <- o .: "ballotId"
   marksArr <- o .: "marks"
   marks <- forM marksArr $ \m -> do
-    contestId   <- m .: "contestId"
-    candidateId <- m .: "candidateId"
+    contestId   <- m .:  "contestId"
+    candidateId <- m .:? "candidateId"
     return (contestId, candidateId)
   return (ballotId, marks)
 

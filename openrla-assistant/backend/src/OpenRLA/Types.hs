@@ -242,7 +242,7 @@ data AuditMark
   { amAuditId     :: Integer
   , amBallotId    :: Integer
   , amContestId   :: Integer
-  , amCandidateId :: Integer
+  , amCandidateId :: Maybe Integer
   , amSampleId    :: Integer
   } deriving (Show, Eq)
 
@@ -260,7 +260,7 @@ instance ToRow AuditMark where
     = [ SQLInteger $ fromInteger amAuditId
       , SQLInteger $ fromInteger amBallotId
       , SQLInteger $ fromInteger amContestId
-      , SQLInteger $ fromInteger amCandidateId
+      , maybe SQLNull (SQLInteger . fromInteger) amCandidateId
       , SQLInteger $ fromInteger amSampleId
       ]
 

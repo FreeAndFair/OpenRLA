@@ -29,13 +29,23 @@ class AuditMark extends React.Component {
       const contest = election.contests[contestId];
       const candidate = contest.candidates[candidateId];
 
-      return (
-        <TableRow key={`${contestId}-${candidateId}`}>
-          <TableRowColumn>{contestId}</TableRowColumn>
-          <TableRowColumn>{candidateId}</TableRowColumn>
-          <TableRowColumn>{candidate.description}</TableRowColumn>
-        </TableRow>
-      );
+      if (!candidate) {
+        return (
+          <TableRow key={`${contestId}-invalid`}>
+            <TableRowColumn>{contestId}</TableRowColumn>
+            <TableRowColumn></TableRowColumn>
+            <TableRowColumn>Invalid</TableRowColumn>
+          </TableRow>
+        );
+      } else {
+        return (
+          <TableRow key={`${contestId}-${candidateId}`}>
+            <TableRowColumn>{contestId}</TableRowColumn>
+            <TableRowColumn>{candidateId}</TableRowColumn>
+            <TableRowColumn>{candidate.description}</TableRowColumn>
+          </TableRow>
+        );
+      }
     };
 
     const { ballotId, marks } = ballotMark;
