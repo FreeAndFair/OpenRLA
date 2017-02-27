@@ -15,6 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 import addElection from 'action/addElection';
+import resetElection from 'action/resetElection';
 import saveElection from 'action/saveElection';
 
 
@@ -22,11 +23,32 @@ class ElectionSummary extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      date: null,
+      title: "",
+    };
+
+    [
+      'addElection',
+      'onDateChange',
+      'onTitleChange',
+      'resetElection',
+      'saveElection',
+    ].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
   }
 
   addElection() {
     this.props.addElection(this.formData());
+  }
+
+  resetElection() {
+    this.props.resetElection();
+    this.setState({
+      date: null,
+      title: "",
+    });
   }
 
   saveElection() {
@@ -59,11 +81,13 @@ class ElectionSummary extends React.Component {
 
     const electionDefined = !_.isNil(election.id);
 
-    let button;
+    let resetElectionButton;
+    let saveOrAddButton;
     if (electionDefined) {
-      button = <RaisedButton label='Save' onClick={this.saveElection.bind(this)} />;
+      resetElectionButton = <RaisedButton label='Reset' onClick={this.resetElection} />;
+      saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection} />;
     } else {
-      button = <RaisedButton label='Add' onClick={this.addElection.bind(this)} />;
+      saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection} />;
     }
 
     const form = this.formData();
@@ -76,21 +100,22 @@ class ElectionSummary extends React.Component {
             <List>
               <ListItem secondaryText='Election title'>
                 <TextField
-                   onChange={this.onTitleChange.bind(this)}
+                   onChange={this.onTitleChange}
                    value={form.title}
                    id='formTitle'
                    ref='formTitle' />
               </ListItem>
               <ListItem secondaryText='Election date'>
                 <DatePicker
-                   onChange={this.onDateChange.bind(this)}
+                   onChange={this.onDateChange}
                    value={form.date && new Date(form.date)}
                    id='formDate'
                    ref='formDate' />
               </ListItem>
             </List>
           </CardText>
-          {button}
+          {resetElectionButton}
+          {saveOrAddButton}
         </Card>
       </div>
     );
@@ -100,11 +125,13 @@ class ElectionSummary extends React.Component {
 ElectionSummary.propTypes = {
   election: PropTypes.object.isRequired,
   addElection: PropTypes.func.isRequired,
+  resetElection: PropTypes.func.isRequired,
   saveElection: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   addElection: data => dispatch(addElection(data)),
+  resetElection: () => dispatch(resetElection()),
   saveElection: election => dispatch(saveElection(election)),
 });
 
