@@ -13,7 +13,8 @@ export default (state = defaultState, action) => {
     return update(state, { page });
   }
   case 'RESET_ELECTION': {
-    return update({}, defaultState);
+    const { page } = state;
+    return update({}, defaultState, { page });
   }
   case 'UPDATE_ELECTION': {
     const { election } = action;
