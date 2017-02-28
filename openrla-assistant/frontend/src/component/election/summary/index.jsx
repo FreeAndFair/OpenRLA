@@ -78,9 +78,9 @@ class ElectionSummary extends React.Component {
     const state = { date, title };
 
     if (this.state.edited) {
-      return _.merge({}, state, this.state);
+      return _.merge(emptyForm(), state, this.state);
     } else {
-      return state;
+      return _.merge(emptyForm(), state);
     }
   }
 
