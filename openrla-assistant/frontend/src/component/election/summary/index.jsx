@@ -19,15 +19,18 @@ import resetElection from 'action/resetElection';
 import saveElection from 'action/saveElection';
 
 
+const emptyForm = () => ({
+  date: null,
+  edited: false,
+  title: "",
+});
+
+
 class ElectionSummary extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      date: null,
-      edited: false,
-      title: "",
-    };
+    this.state = emptyForm();
 
     [
       'addElection',
@@ -45,12 +48,8 @@ class ElectionSummary extends React.Component {
   }
 
   resetElection() {
+    this.setState(emptyForm());
     this.props.resetElection();
-    this.setState({
-      date: null,
-      edited: false,
-      title: "",
-    });
   }
 
   saveElection() {
@@ -59,11 +58,7 @@ class ElectionSummary extends React.Component {
     const data = { id, title, date, active };
 
     this.props.saveElection(data);
-    this.setState({
-      date: null,
-      edited: false,
-      title: "",
-    });
+    this.setState(emptyForm());
   }
 
   onDateChange(_e, dateOb) {
