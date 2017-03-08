@@ -14,21 +14,42 @@ import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import ContestOutcomes from './ContestOutcomes.jsx';
-
 import addElection from 'action/addElection';
+import resetElection from 'action/resetElection';
 import saveElection from 'action/saveElection';
+
+
+const emptyForm = () => ({
+  date: null,
+  edited: false,
+  title: "",
+});
 
 
 class ElectionSummary extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = emptyForm();
+
+    [
+      'addElection',
+      'onDateChange',
+      'onTitleChange',
+      'resetElection',
+      'saveElection',
+    ].forEach(m => {
+      this[m] = this[m].bind(this);
+    });
   }
 
   addElection() {
     this.props.addElection(this.formData());
+  }
+
+  resetElection() {
+    this.setState(emptyForm());
+    this.props.resetElection();
   }
 
   saveElection() {
@@ -37,23 +58,30 @@ class ElectionSummary extends React.Component {
     const data = { id, title, date, active };
 
     this.props.saveElection(data);
+    this.setState(emptyForm());
   }
 
-  onDateChange(_, dateOb) {
+  onDateChange(_e, dateOb) {
     const date = `${dateOb}`;
-    this.setState({ date });
+    const newState = _.merge({}, this.formData(), { date, edited: true });
+    this.setState(newState);
   }
 
   onTitleChange(e) {
     const title = e.target.value;
-    this.setState({ title });
+    const newState = _.merge({}, this.formData(), { edited: true, title });
+    this.setState(newState);
   }
 
   formData() {
     const { date, title } = this.props.election;
-    const form = { date, title };
-    Object.assign(form, this.state);
-    return form;
+    const state = { date, title };
+
+    if (this.state.edited) {
+      return _.merge(emptyForm(), state, this.state);
+    } else {
+      return _.merge(emptyForm(), state);
+    }
   }
 
   render() {
@@ -61,11 +89,13 @@ class ElectionSummary extends React.Component {
 
     const electionDefined = !_.isNil(election.id);
 
-    let button;
+    let resetElectionButton;
+    let saveOrAddButton;
     if (electionDefined) {
-      button = <RaisedButton label='Save' onClick={this.saveElection.bind(this)} />;
+      resetElectionButton = <RaisedButton label='Reset' onClick={this.resetElection} />;
+      saveOrAddButton = <RaisedButton label='Save' onClick={this.saveElection} />;
     } else {
-      button = <RaisedButton label='Add' onClick={this.addElection.bind(this)} />;
+      saveOrAddButton = <RaisedButton label='Add' onClick={this.addElection} />;
     }
 
     const form = this.formData();
@@ -78,23 +108,23 @@ class ElectionSummary extends React.Component {
             <List>
               <ListItem secondaryText='Election title'>
                 <TextField
-                   onChange={this.onTitleChange.bind(this)}
+                   onChange={this.onTitleChange}
                    value={form.title}
                    id='formTitle'
                    ref='formTitle' />
               </ListItem>
               <ListItem secondaryText='Election date'>
                 <DatePicker
-                   onChange={this.onDateChange.bind(this)}
+                   onChange={this.onDateChange}
                    value={form.date && new Date(form.date)}
                    id='formDate'
                    ref='formDate' />
               </ListItem>
             </List>
           </CardText>
-          {button}
+          {resetElectionButton}
+          {saveOrAddButton}
         </Card>
-        <ContestOutcomes />
       </div>
     );
   }
@@ -103,11 +133,13 @@ class ElectionSummary extends React.Component {
 ElectionSummary.propTypes = {
   election: PropTypes.object.isRequired,
   addElection: PropTypes.func.isRequired,
+  resetElection: PropTypes.func.isRequired,
   saveElection: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   addElection: data => dispatch(addElection(data)),
+  resetElection: () => dispatch(resetElection()),
   saveElection: election => dispatch(saveElection(election)),
 });
 

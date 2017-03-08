@@ -20,6 +20,9 @@ Object o .! k = o ! k
 decodeBody :: SResponse -> Value
 decodeBody SResponse { simpleBody } = fromJust $ A.decode simpleBody
 
+decodeBody' :: A.FromJSON a => SResponse -> a
+decodeBody' SResponse { simpleBody } = fromJust $ A.decode simpleBody
+
 bodyShouldBe :: SResponse -> Value -> WaiSession ()
 bodyShouldBe resp val = liftIO $ decodeBody resp `shouldBe` val
 

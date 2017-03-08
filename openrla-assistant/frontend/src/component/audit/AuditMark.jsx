@@ -23,15 +23,29 @@ class AuditMark extends React.Component {
   }
 
   render() {
-    const { ballotMark } = this.props;
+    const { ballotMark, election } = this.props;
 
     const makeRow = ({ contestId, candidateId }) => {
-      return (
-        <TableRow key={`${contestId}-${candidateId}`}>
-          <TableRowColumn>{contestId}</TableRowColumn>
-          <TableRowColumn>{candidateId}</TableRowColumn>
-        </TableRow>
-      );
+      const contest = election.contests[contestId];
+      const candidate = contest.candidates[candidateId];
+
+      if (!candidate) {
+        return (
+          <TableRow key={`${contestId}-invalid`}>
+            <TableRowColumn>{contestId}</TableRowColumn>
+            <TableRowColumn></TableRowColumn>
+            <TableRowColumn>Invalid</TableRowColumn>
+          </TableRow>
+        );
+      } else {
+        return (
+          <TableRow key={`${contestId}-${candidateId}`}>
+            <TableRowColumn>{contestId}</TableRowColumn>
+            <TableRowColumn>{candidateId}</TableRowColumn>
+            <TableRowColumn>{candidate.description}</TableRowColumn>
+          </TableRow>
+        );
+      }
     };
 
     const { ballotId, marks } = ballotMark;
@@ -45,6 +59,7 @@ class AuditMark extends React.Component {
             <TableRow>
               <TableHeaderColumn>Contest ID</TableHeaderColumn>
               <TableHeaderColumn>Candidate ID</TableHeaderColumn>
+              <TableHeaderColumn>Candidate</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -58,10 +73,11 @@ class AuditMark extends React.Component {
 
 AuditMark.PropTypes = {
   ballotMark: PropTypes.object.isRequired,
+  election: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => {
-  return {};
+  return ({ election }) => ({ election });
 };
 
 const mapDispatchToProps = dispatch => {

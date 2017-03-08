@@ -7,6 +7,7 @@ import qualified Database.SQLite.Simple as Sql
 import qualified System.Directory as D
 import           System.Environment (getExecutablePath)
 import           System.FilePath ((</>), takeDirectory)
+import           System.Random (mkStdGen, setStdGen)
 
 import qualified OpenRLA.Controller.Audit as Audit
 import qualified OpenRLA.Controller.Ballot as Ballot
@@ -74,6 +75,9 @@ runApp = do
 
   conn <- Sql.open dbPath
   Db.init conn
+
+  -- Temporary, to support deterministic demonstration
+  setStdGen (mkStdGen 1234)
 
   let state = State { .. }
   S.scotty 8080 (mkApp True state)

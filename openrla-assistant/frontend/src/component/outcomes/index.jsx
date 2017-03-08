@@ -14,7 +14,22 @@ import { List, ListItem } from 'material-ui/List';
 import ContestOutcome from './ContestOutcome';
 
 
-class ContestOutcomes extends React.Component {
+const NoContestsMessage = (
+  <Card>
+    <CardTitle title='Election outcomes' />
+    <CardText>
+      <p>
+        No contests have been defined for the current election.
+      </p>
+      <p>
+        Import contest and candidate manifests to get started!
+      </p>
+    </CardText>
+  </Card>
+);
+
+
+class Outcomes extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,9 +44,13 @@ class ContestOutcomes extends React.Component {
       <ContestOutcome key={c.id} contest={c} electionId={election.id} />
     ));
 
+    if (_.isEmpty(contestOutcomes)) {
+      return NoContestsMessage;
+    }
+
     return (
       <Card>
-        <CardTitle title='Contest outcomes' />
+        <CardTitle title='Election outcomes' />
         <CardText>
           <List>
             {contestOutcomes}
@@ -42,7 +61,7 @@ class ContestOutcomes extends React.Component {
   }
 }
 
-ContestOutcomes.propTypes = {
+Outcomes.propTypes = {
   election: PropTypes.object.isRequired,
 };
 
@@ -50,4 +69,4 @@ const mapStateToProps = ({ election }) => ({ election });
 
 const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContestOutcomes);
+export default connect(mapStateToProps, mapDispatchToProps)(Outcomes);

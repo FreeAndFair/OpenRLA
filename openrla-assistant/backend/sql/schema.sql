@@ -74,10 +74,9 @@ create table if not exists ballot (
 );
 
 create table if not exists election_ballot (
-  election_id  integer not null
-                       references election (id),
-  ballot integer not null
-                       references ballot (id)
+  election_id  integer not null references election (id),
+  ballot       integer not null references ballot (id)
+
 );
 
 create table if not exists audit (
@@ -97,23 +96,21 @@ create table if not exists audit (
 );
 
 create table if not exists audit_mark (
-  audit_id     integer not null references audit (id),
-  ballot_id    integer not null references ballot (id),
-  contest_id   integer not null references contest (id),
-  candidate_id integer not null references candidate (id),
-  primary key (audit_id, ballot_id, contest_id)
+  audit_sample_id integer not null references audit_sample (id),
+  contest_id      integer not null references contest (id),
+  candidate_id    integer          references candidate (id)
 );
 
 create table if not exists audit_contest (
-  audit_id       integer not null references audit (id),
-  contest_id     integer not null references contest (id)
+  audit_id   integer not null references audit (id),
+  contest_id integer not null references contest (id)
 );
 
 create table if not exists audit_current_sample (
   audit_id  integer primary key
                     references audit (id),
-  ballot_id integer not null
-                    references ballot (id)
+  sample_id integer not null
+                    references audit_sample (id)
 );
 
 create table if not exists audit_sample (

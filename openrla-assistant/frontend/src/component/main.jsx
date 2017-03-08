@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Tab, Tabs } from 'material-ui/Tabs';
 
 import Audit from './audit';
-import Archive from './archive';
 import Home from './home';
 import Election from './election';
+import Outcomes from './outcomes';
 
 import setPage from '../action/setPage';
 
@@ -21,11 +21,11 @@ const Main = ({ page, archive, changeTab }) => {
       <Tab label='Election' value='election'>
         <Election />
       </Tab>
+      <Tab label='Outcomes' value='outcomes'>
+        <Outcomes />
+      </Tab>
       <Tab label='Audit' value='audit'>
         <Audit />
-      </Tab>
-      <Tab label='Archive' value='archive'>
-        <Archive archive={archive} />
       </Tab>
     </Tabs>
   );

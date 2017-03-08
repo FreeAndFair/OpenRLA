@@ -12,6 +12,10 @@ export default (state = defaultState, action) => {
     const { page } = action;
     return update(state, { page });
   }
+  case 'RESET_ELECTION': {
+    const { page } = state;
+    return update({}, defaultState, { page });
+  }
   case 'UPDATE_ELECTION': {
     const { election } = action;
     return update(state, { election });
