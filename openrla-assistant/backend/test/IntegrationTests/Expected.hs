@@ -320,7 +320,7 @@ syntheticContestsWithCandidates = [json|[
         "id": 3,
         "externalId": "1002-3",
         "contestId": 1002,
-        "type": "Regular"
+        "type": "QualifiedWriteIn"
       },
       {
         "description": "2-B",
