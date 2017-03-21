@@ -116,8 +116,8 @@ spec = do
       liftIO $ body `shouldBe` Expected.syntheticContestsWithCandidates
 
     -- Note: we do this test separately from the above, and with
-    -- synthetic data,because we currently need to control the values of
-    -- the `ImageMask` keys within the manifest, and ensure that they
+    -- synthetic data, because we currently need to control the values
+    -- of the `ImageMask` keys within the manifest, and ensure that they
     -- describe paths to actual files.
     it "should allow uploading a ballot manifest" $ do
       manifestPostBody <- liftIO manifestPostBodyIO
