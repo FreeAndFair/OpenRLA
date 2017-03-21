@@ -282,3 +282,76 @@ contestsWithCandidates = [json|[
     ]
   }
 ]|]
+
+syntheticContestsWithCandidates :: Value
+syntheticContestsWithCandidates = [json|[
+  {
+    "description": "Contest 1: 2 candidates",
+    "id": 1001,
+    "externalId": "E-1001",
+    "voteFor": 1,
+    "numRanks": 0,
+    "candidates": [
+      {
+        "description": "1-A",
+        "id": 1,
+        "externalId": "1001-1",
+        "contestId": 1001,
+        "type": "Regular"
+      },
+      {
+        "description": "1-B",
+        "id": 2,
+        "externalId": "1001-2",
+        "contestId": 1001,
+        "type": "Regular"
+      }
+    ]
+  },
+  {
+    "description": "Contest 2: 3 candidates, has write-in",
+    "id": 1002,
+    "externalId": "E-1002",
+    "voteFor": 1,
+    "numRanks": 0,
+    "candidates": [
+      {
+        "description": "2-A",
+        "id": 3,
+        "externalId": "1002-3",
+        "contestId": 1002,
+        "type": "Regular"
+      },
+      {
+        "description": "2-B",
+        "id": 4,
+        "externalId": "1002-4",
+        "contestId": 1002,
+        "type": "Regular"
+      },
+      {
+        "description": "2-C",
+        "id": 5,
+        "externalId": "1002-5",
+        "contestId": 1002,
+        "type": "WriteIn"
+      }
+    ]
+  },
+  {
+    "description": "Contest 3: only 1 candidate",
+    "id": 1003,
+    "externalId": "E-1003",
+    "voteFor": 1,
+    "numRanks": 0,
+    "candidates": [
+      {
+        "description": "3-Only",
+        "id": 6,
+        "externalId": "1003-6",
+        "contestId": 1003,
+        "type": "Regular"
+      }
+    ]
+  }
+]|]
