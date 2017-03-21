@@ -81,9 +81,43 @@ spec = do
         candidatePath = relPath "TestCandidateManifest.json"
         contestPath = relPath "TestContestManifest.json"
 
+    it "should process them when uploaded in the correct order" $ do
+      manifestPostBody <- liftIO manifestPostBodyIO
+
+      -- When we have an election
+      postJson "/election" electionPostBody
+
+      -- We can upload a contest manifest
+      let contestPostBody = manifestPostBody "contest" contestPath
+
+      contestResp <- postJson "/manifest" contestPostBody
+
+      liftIO $ do
+        let body = decodeBody contestResp
+            bodyData = body .! "data"
+        jsonLength bodyData `shouldBe` 3
+
+      -- We can upload a candidate manifest
+      let candidatePostBody = manifestPostBody "candidate" candidatePath
+
+      candidateResp <- postJson "/manifest" candidatePostBody
+
+      return candidateResp `shouldRespondWith` 200
+
+      liftIO $ do
+        let body = decodeBody candidateResp
+            bodyData = body .! "data"
+        jsonLength bodyData `shouldBe` 6
+
+      -- And its fully-defined contests will be associated with the election
+      electionResp <- get "/election/1/contest"
+
+      let body = decodeBody electionResp
+      liftIO $ body `shouldBe` Expected.syntheticContestsWithCandidates
+
     -- Note: we do this test separately from the above, and with
-    -- synthetic data,because we currently need to control the values of
-    -- the `ImageMask` keys within the manifest, and ensure that they
+    -- synthetic data, because we currently need to control the values
+    -- of the `ImageMask` keys within the manifest, and ensure that they
     -- describe paths to actual files.
     it "should allow uploading a ballot manifest" $ do
       manifestPostBody <- liftIO manifestPostBodyIO

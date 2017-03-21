@@ -128,19 +128,22 @@ instance ToJSON Candidate where
 
 data CandidateType
   = Regular
+  | QualifiedWriteIn
   | WriteIn
   deriving (Show, Eq)
 
 instance FromField CandidateType where
   fromField f = case fieldData f of
-    SQLText "Regular" -> Ok Regular
-    SQLText "WriteIn" -> Ok WriteIn
+    SQLText "Regular"          -> Ok Regular
+    SQLText "QualifiedWriteIn" -> Ok QualifiedWriteIn
+    SQLText "WriteIn"          -> Ok WriteIn
     SQLText t -> error $ "Bad conversion, can't parse text '" ++ unpack t ++ "'"
     _ -> error "Bad conversion, can't parse type"
 
 instance ToJSON CandidateType where
-  toJSON Regular = A.String "Regular"
-  toJSON WriteIn = A.String "WriteIn"
+  toJSON Regular          = A.String "Regular"
+  toJSON QualifiedWriteIn = A.String "QualifiedWriteIn"
+  toJSON WriteIn          = A.String "WriteIn"
 
 data Ballot
   = Ballot
