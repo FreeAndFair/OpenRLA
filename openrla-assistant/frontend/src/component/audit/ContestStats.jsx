@@ -59,7 +59,7 @@ class ContestStats extends React.Component {
            floatingLabelText='Total ballots'
            value={totalBallotCount} />
         <TextField
-           floatingLabelText='1/α'
+           floatingLabelText='Risk Level'
            value={1 / audit.riskLimit} />
         <List>
           {listItems}
