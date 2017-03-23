@@ -48,7 +48,11 @@ build_all() {
 }
 
 run_all() {
-  run_backend & run_frontend && fg
+  run_backend &
+  run_frontend &
+
+  trap 'kill $(jobs -p); exit' SIGINT SIGTERM
+  wait
 }
 
 main() {
