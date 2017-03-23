@@ -9,6 +9,7 @@ import {
   CardTitle,
   CardText
 } from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -96,14 +97,17 @@ class ContestOutcome extends React.Component {
     const candidateOutcomes = _.map(candidatesById, c => {
       const displayOutcome = displayOutcomes[c.id];
       return (
-        <ListItem key={c.id} >
+        <ListItem key={c.id}>
           <TextField
+             style={{ fontSize: '14px', width: '100px' }}
              floatingLabelText='Candidate Id'
              value={c.id} />
           <TextField
+             style={{ fontSize: '14px', width: '400px' }}
              floatingLabelText='Description'
              value={c.description} />
           <TextField
+             style={{ fontSize: '14px', width: '150px' }}
              onChange={this.onShareChange(c)}
              floatingLabelText='Candidate Share'
              value={displayOutcome.share} />
@@ -112,32 +116,35 @@ class ContestOutcome extends React.Component {
     });
 
     return (
-      <Card>
-        <CardText>
-          <List>
-            <ListItem>
+      <Card style={{ margin: '5px' }}>
+        <CardText style={{ padding: '0' }}>
+          <div>
+            <div style={{ display: 'flex' }}>
               <TextField
-                 style={{ width: '100px' }}
+                 style={{ margin: '20px', width: '100px' }}
                  floatingLabelText='Contest ID'
                  value={contest.id} />
               <TextField
-                 style={{ width: '600px' }}
+                 style={{ margin: '20px', width: '500px' }}
                  floatingLabelText='Description'
                  value={contest.description} />
-            </ListItem>
-            <ListItem>
-              <List>
-                {candidateOutcomes}
-              </List>
-            </ListItem>
-          </List>
-          <RaisedButton
-             disabled={!this.isFormValid()}
-             label='Save'
-             onClick={this.saveOutcomes} />
-          <RaisedButton
-             label='Reset'
-             onClick={this.resetOutcomes} />
+            </div>
+            <Divider style={{ width: '80%' }} />
+            <List>
+              {candidateOutcomes}
+            </List>
+          </div>
+          <div style={{ display: 'flex', width: '200px' }}>
+            <RaisedButton
+               style={{ margin: '10px' }}
+               disabled={!this.isFormValid()}
+               label='Save'
+               onClick={this.saveOutcomes} />
+            <RaisedButton
+               style={{ margin: '10px' }}
+               label='Reset'
+               onClick={this.resetOutcomes} />
+          </div>
         </CardText>
       </Card>
     );
