@@ -62,31 +62,41 @@ class AuditInfo extends React.Component {
       );
     }
 
+    const infoItemStyle = { width: '150px' };
+    const layoutStyle = {
+      display: 'flex',
+      justifyContent: 'space-around',
+    };
+
     return (
       <Card>
-        <List>
-          <ListItem>
+        <List style={layoutStyle}>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Election ID'
                value={audit.electionId} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Audit ID'
                value={audit.id} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <DatePicker
                floatingLabelText='Date'
                value={new Date(audit.date)} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Risk limit'
                value={audit.riskLimit} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Current sample ID'
                value={currentSampleId} />
             <RaisedButton label='Audit' onClick={this.openDialog} />
