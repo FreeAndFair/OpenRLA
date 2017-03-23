@@ -69,7 +69,7 @@ class AuditInfo extends React.Component {
     };
 
     return (
-      <Card>
+      <div>
         <List style={layoutStyle}>
           <ListItem style={infoItemStyle}>
             <TextField
@@ -104,7 +104,7 @@ class AuditInfo extends React.Component {
         </List>
         {contestStats}
         {auditBallot}
-      </Card>
+      </div>
     );
   }
 }
