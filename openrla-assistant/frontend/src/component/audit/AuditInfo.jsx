@@ -111,8 +111,6 @@ class AuditInfo extends React.Component {
           </ListItem>
         </List>
         {contestStats}
-        <Divider />
-        <Subheader>Audited Ballots</Subheader>
         {auditBallot}
       </div>
     );

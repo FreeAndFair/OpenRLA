@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { Card } from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
 
 import AuditMark from './AuditMark';
 
@@ -26,9 +28,13 @@ class AuditMarkList extends React.Component {
     const auditMarks = _.map(marks, makeMark);
 
     return (
-      <List>
-        {auditMarks}
-      </List>
+      <div>
+        <Divider />
+        <Subheader>Audited Ballots</Subheader>
+        <List>
+          {auditMarks}
+        </List>
+      </div>
     );
   }
 }
