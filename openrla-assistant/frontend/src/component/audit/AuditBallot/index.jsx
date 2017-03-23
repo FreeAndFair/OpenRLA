@@ -77,20 +77,20 @@ class AuditBallot extends React.Component {
     });
 
     return (
-        <Dialog
-          title="Audit ballot"
-           actions={actions}
-           modal={false}
-           open={dialogOpen}
-           onRequestClose={closeDialog}
-           autoScrollBodyContent={true} >
-          <TextField
-             floatingLabelText='Ballot ID'
-             value={ballotId} />
-          <List>
-            {contestForms}
-          </List>
-        </Dialog>
+      <Dialog
+         title="Audit ballot"
+         actions={actions}
+         modal={false}
+         open={dialogOpen}
+         onRequestClose={closeDialog}
+         autoScrollBodyContent={true} >
+        <TextField
+           floatingLabelText='Ballot ID'
+           value={ballotId} />
+        <List>
+          {contestForms}
+        </List>
+      </Dialog>
     );
   }
 }
