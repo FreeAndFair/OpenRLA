@@ -23,6 +23,8 @@ import {
 import TextField from 'material-ui/TextField';
 
 
+const idColStyle = { width: '50px' };
+const extIdColStyle = { width: '100px' };
 const defaultRiskLimit = 0.05;
 
 
@@ -74,8 +76,8 @@ class DefineAudit extends React.Component {
 
       return (
         <TableRow selected={selected} >
-          <TableRowColumn>{id}</TableRowColumn>
-          <TableRowColumn>{externalId}</TableRowColumn>
+          <TableRowColumn style={idColStyle}>{id}</TableRowColumn>
+          <TableRowColumn style={extIdColStyle}>{externalId}</TableRowColumn>
           <TableRowColumn>{description}</TableRowColumn>
         </TableRow>
       );
@@ -113,8 +115,8 @@ class DefineAudit extends React.Component {
              multiSelectable={true} >
             <TableHeader>
               <TableRow>
-                <TableHeaderColumn>ID</TableHeaderColumn>
-                <TableHeaderColumn>External ID</TableHeaderColumn>
+                <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={extIdColStyle}>External ID</TableHeaderColumn>
                 <TableHeaderColumn>Description</TableHeaderColumn>
               </TableRow>
             </TableHeader>
