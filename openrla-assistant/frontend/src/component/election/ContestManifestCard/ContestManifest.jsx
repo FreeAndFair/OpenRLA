@@ -15,11 +15,15 @@ import {
 } from 'material-ui/Table';
 
 
+const idColStyle = { width: '50px' };
+const extIdColStyle = { width: '100px' };
+
+
 const ContestManifest = ({ contests }) => {
   const makeRow = ({ id, externalId, description }) => (
-    <TableRow>
-      <TableRowColumn>{id}</TableRowColumn>
-      <TableRowColumn>{externalId}</TableRowColumn>
+    <TableRow className='contest-manifest__row'>
+      <TableRowColumn style={idColStyle}>{id}</TableRowColumn>
+      <TableRowColumn style={extIdColStyle}>{externalId}</TableRowColumn>
       <TableRowColumn>{description}</TableRowColumn>
     </TableRow>
   );
@@ -31,8 +35,8 @@ const ContestManifest = ({ contests }) => {
       <Table selectable={false}>
         <TableHeader displaySelectAll={false}>
           <TableRow>
-            <TableHeaderColumn>ID</TableHeaderColumn>
-            <TableHeaderColumn>External ID</TableHeaderColumn>
+            <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
+            <TableHeaderColumn style={extIdColStyle}>External ID</TableHeaderColumn>
             <TableHeaderColumn>Description</TableHeaderColumn>
           </TableRow>
         </TableHeader>
