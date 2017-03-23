@@ -53,6 +53,7 @@ class ContestStats extends React.Component {
     const sampledBallotCount = audit.marks ? audit.marks.length : 0;
     const totalBallotCount = _.size(election.ballots);
 
+    const statItemStyle = { width: '150px' };
     const statListStyle = {
       display: 'flex',
       justifyContent: 'space-around',
@@ -62,12 +63,15 @@ class ContestStats extends React.Component {
       <div>
         <div style={statListStyle}>
           <TextField
+             style={statItemStyle}
              floatingLabelText='Sampled ballots'
              value={sampledBallotCount} />
           <TextField
+             style={statItemStyle}
              floatingLabelText='Total ballots'
              value={totalBallotCount} />
           <TextField
+             style={statItemStyle}
              floatingLabelText='Risk Level'
              value={1 / audit.riskLimit} />
         </div>
