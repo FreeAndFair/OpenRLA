@@ -15,10 +15,13 @@ import {
 } from 'material-ui/Table';
 
 
+const idColStyle = { width: '50px' };
+
+
 const BallotManifest = ({ ballots }) => {
   const makeRow = ({ id, filePath, srcPath }) => (
     <TableRow>
-      <TableRowColumn>{id}</TableRowColumn>
+      <TableRowColumn style={idColStyle}>{id}</TableRowColumn>
       <TableRowColumn>{srcPath}</TableRowColumn>
     </TableRow>
   );
@@ -28,9 +31,9 @@ const BallotManifest = ({ ballots }) => {
   return (
     <div>
       <Table selectable={false}>
-        <TableHeader displaySelectAll={false}>
+        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
           <TableRow>
-            <TableHeaderColumn>ID</TableHeaderColumn>
+            <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
             <TableHeaderColumn>Path</TableHeaderColumn>
           </TableRow>
         </TableHeader>

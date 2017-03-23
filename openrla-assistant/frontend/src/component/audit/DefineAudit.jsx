@@ -23,6 +23,8 @@ import {
 import TextField from 'material-ui/TextField';
 
 
+const idColStyle = { width: '50px' };
+const extIdColStyle = { width: '100px' };
 const defaultRiskLimit = 0.05;
 
 
@@ -74,8 +76,8 @@ class DefineAudit extends React.Component {
 
       return (
         <TableRow selected={selected} >
-          <TableRowColumn>{id}</TableRowColumn>
-          <TableRowColumn>{externalId}</TableRowColumn>
+          <TableRowColumn style={idColStyle}>{id}</TableRowColumn>
+          <TableRowColumn style={extIdColStyle}>{externalId}</TableRowColumn>
           <TableRowColumn>{description}</TableRowColumn>
         </TableRow>
       );
@@ -84,48 +86,46 @@ class DefineAudit extends React.Component {
     const rows = _.map(contests, makeRow);
 
     return (
-      <Card>
-        <List>
-          <ListItem secondaryText='Date'>
-            <DatePicker
-               value={this.state.date}
-               onChange={this.onDateChange}
-               id='auditDate'
-               ref='auditDate' />
-          </ListItem>
-          <ListItem secondaryText='Risk Limit'>
-            <Slider
-               onChange={this.onSliderChange}
-               value={this.state.riskLimit}
-               style={{width: 100}}
-               min={0.001}
-               max={0.500}
-               step={0.001}
-               id='riskLimitSlider'
-               ref='riskLimitSlider' />
-            <TextField
-               value={this.state.riskLimit}
-               id='riskLimitText'
-               ref='riskLimitText' />
-          </ListItem>
-          <ListItem secondaryText='Contests to Audit'>
-            <Table
-               onRowSelection={this.onRowSelection}
-               multiSelectable={true} >
-              <TableHeader>
-                <TableRow>
-                  <TableHeaderColumn>ID</TableHeaderColumn>
-                  <TableHeaderColumn>External ID</TableHeaderColumn>
-                  <TableHeaderColumn>Description</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody
-                 showRowHover={true}
-                 children={rows} />
-            </Table>
-          </ListItem>
-        </List>
-      </Card>
+      <List>
+        <ListItem secondaryText='Date'>
+          <DatePicker
+             value={this.state.date}
+             onChange={this.onDateChange}
+             id='auditDate'
+             ref='auditDate' />
+        </ListItem>
+        <ListItem secondaryText='Risk Limit'>
+          <Slider
+             onChange={this.onSliderChange}
+             value={this.state.riskLimit}
+             style={{width: 100}}
+             min={0.001}
+             max={0.500}
+             step={0.001}
+             id='riskLimitSlider'
+             ref='riskLimitSlider' />
+          <TextField
+             value={this.state.riskLimit}
+             id='riskLimitText'
+             ref='riskLimitText' />
+        </ListItem>
+        <ListItem secondaryText='Contests to Audit'>
+          <Table
+             onRowSelection={this.onRowSelection}
+             multiSelectable={true} >
+            <TableHeader>
+              <TableRow>
+                <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={extIdColStyle}>External ID</TableHeaderColumn>
+                <TableHeaderColumn>Description</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody
+               showRowHover={true}
+               children={rows} />
+          </Table>
+        </ListItem>
+      </List>
     );
   }
 }

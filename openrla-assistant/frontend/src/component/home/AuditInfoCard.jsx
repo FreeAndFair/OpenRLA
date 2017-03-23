@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   Card,
   CardActions,
+  CardHeader,
   CardTitle,
   CardText
 } from 'material-ui/Card';
@@ -14,7 +15,14 @@ import setPage from '../../action/setPage';
 import isAuditActive from '../../selector/isAuditActive';
 
 
-const AuditInfoCard = ({ audit, active, navigateAudit }) => {
+const cardActionsStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  paddingTop: '50px',
+};
+
+
+const AuditInfoCard = ({ audit, active, navigateAudit, style }) => {
   let status;
 
   if (active) {
@@ -24,15 +32,17 @@ const AuditInfoCard = ({ audit, active, navigateAudit }) => {
   }
 
   return (
-    <Card>
-      <CardTitle
-         title="Audit"
-         subtitle="Start or continue" />
+    <Card style={style}>
+      <CardHeader>
+        <CardTitle
+           title="Audit"
+           subtitle="Start or continue" />
+      </CardHeader>
       <CardText>
         Start or continue an audit for the current election,
         including customization of risk-limit.
       </CardText>
-      <CardActions>
+      <CardActions style={cardActionsStyle}>
         <RaisedButton label="Audit" onClick={navigateAudit} />
       </CardActions>
     </Card>

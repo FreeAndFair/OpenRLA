@@ -15,6 +15,12 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
+const dialogStyle = {
+  maxWidth: 'none',
+  width: '95%',
+};
+
+
 class FileUploadCard extends React.Component {
   constructor(props) {
     super(props);
@@ -68,6 +74,7 @@ class FileUploadCard extends React.Component {
              onTouchTap={this.openDialog} >
           </RaisedButton>
           <Dialog
+             contentStyle={dialogStyle}
              title="Contest Files"
              actions={actions}
              modal={false}

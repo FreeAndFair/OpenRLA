@@ -11,7 +11,9 @@ import {
 } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
+import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
+import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 
 import AuditBallot from './AuditBallot';
@@ -41,8 +43,18 @@ class AuditInfo extends React.Component {
     const { audit, contests, election } = this.props;
 
     let currentSampleId;
+    let currentSampleControl;
     if (audit.sample) {
       currentSampleId = audit.sample.id;
+      currentSampleControl = (
+        <div>
+          <TextField
+             style={{ width: '150px' }}
+             floatingLabelText='Current sample ID'
+             value={currentSampleId} />
+          <RaisedButton label='Audit' onClick={this.openDialog} />
+        </div>
+      );
     }
 
     let auditBallot;
@@ -56,45 +68,51 @@ class AuditInfo extends React.Component {
       );
       contestStats = (
         <ContestStats
+           currentSampleControl={currentSampleControl}
            audit={audit}
            contests={contests}
            election={election} />
       );
     }
 
+    const infoItemStyle = { width: '150px' };
+    const layoutStyle = {
+      display: 'flex',
+      justifyContent: 'space-around',
+    };
+
     return (
-      <Card>
-        <List>
-          <ListItem>
+      <div>
+        <Divider />
+        <Subheader>Audit Info</Subheader>
+        <List style={layoutStyle}>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Election ID'
                value={audit.electionId} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Audit ID'
                value={audit.id} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <DatePicker
                floatingLabelText='Date'
                value={new Date(audit.date)} />
           </ListItem>
-          <ListItem>
+          <ListItem style={infoItemStyle}>
             <TextField
+               style={infoItemStyle}
                floatingLabelText='Risk limit'
                value={audit.riskLimit} />
-          </ListItem>
-          <ListItem>
-            <TextField
-               floatingLabelText='Current sample ID'
-               value={currentSampleId} />
-            <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
         {contestStats}
         {auditBallot}
-      </Card>
+      </div>
     );
   }
 }

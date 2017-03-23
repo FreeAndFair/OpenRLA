@@ -18,6 +18,12 @@ import submitNewAudit from 'action/submitNewAudit';
 import isElectionDefined from 'selector/isElectionDefined';
 
 
+const dialogStyle = {
+  maxWidth: 'none',
+  width: '95%',
+};
+
+
 class NoAudit extends React.Component {
   constructor(props) {
     super(props);
@@ -86,6 +92,7 @@ class NoAudit extends React.Component {
              onClick={console.log} />
         </CardActions>
         <Dialog
+           contentStyle={dialogStyle}
            title='Define new audit'
            actions={actions}
            modal={false}

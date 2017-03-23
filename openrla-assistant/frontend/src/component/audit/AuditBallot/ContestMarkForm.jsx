@@ -64,10 +64,10 @@ class ContestMarkForm extends React.Component {
     }) => {
       return (
         <TableRow key={id} selected={this.isSelected(id)}>
-          <TableRowColumn>{id}</TableRowColumn>
-          <TableRowColumn>{description}</TableRowColumn>
-          <TableRowColumn>{externalId}</TableRowColumn>
-          <TableRowColumn>{type}</TableRowColumn>
+          <TableRowColumn style={{ width: '50px' }}>{id}</TableRowColumn>
+          <TableRowColumn style={{ width: '50px' }}>{externalId}</TableRowColumn>
+          <TableRowColumn style={{ width: '150px' }}>{type}</TableRowColumn>
+          <TableRowColumn style={{ width: '350px' }}>{description}</TableRowColumn>
         </TableRow>
       );
     };
@@ -76,31 +76,34 @@ class ContestMarkForm extends React.Component {
     const rows = _.map(sorted, makeRow);
     rows.push(
       <TableRow key={'invalid'} selected={this.isSelected('invalid')}>
-        <TableRowColumn></TableRowColumn>
-        <TableRowColumn>Invalid</TableRowColumn>
-        <TableRowColumn></TableRowColumn>
-        <TableRowColumn></TableRowColumn>
+        <TableRowColumn style={{ width: '50px' }}></TableRowColumn>
+        <TableRowColumn style={{ width: '50px' }}></TableRowColumn>
+        <TableRowColumn style={{ width: '150px' }}></TableRowColumn>
+        <TableRowColumn style={{ width: '350px' }}>Invalid</TableRowColumn>
       </TableRow>
     );
 
     return (
       <Card>
         <TextField
+           style={{ width: '100px' }}
            floatingLabelText='Contest ID'
            value={contest.id} />
         <TextField
+           style={{ width: '600px' }}
            floatingLabelText='Description'
            value={contest.description} />
         <TextField
+           style={{ width: '100px' }}
            floatingLabelText='External ID'
            value={contest.externalId} />
         <Table onRowSelection={this.onRowSelection}>
           <TableHeader displaySelectAll={false}>
             <TableRow>
-              <TableHeaderColumn>Candidate ID</TableHeaderColumn>
-              <TableHeaderColumn>Description</TableHeaderColumn>
-              <TableHeaderColumn>External ID</TableHeaderColumn>
-              <TableHeaderColumn>Type</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '50px' }}>Candidate ID</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '50px' }}>External ID</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '150px' }}>Type</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '350px' }}>Description</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
