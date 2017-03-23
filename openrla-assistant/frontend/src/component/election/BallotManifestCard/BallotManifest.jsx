@@ -19,7 +19,6 @@ const BallotManifest = ({ ballots }) => {
   const makeRow = ({ id, filePath, srcPath }) => (
     <TableRow>
       <TableRowColumn>{id}</TableRowColumn>
-      <TableRowColumn>{filePath}</TableRowColumn>
       <TableRowColumn>{srcPath}</TableRowColumn>
     </TableRow>
   );
@@ -33,7 +32,6 @@ const BallotManifest = ({ ballots }) => {
           <TableRow>
             <TableHeaderColumn>ID</TableHeaderColumn>
             <TableHeaderColumn>Path</TableHeaderColumn>
-            <TableHeaderColumn>Original Path</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false} children={rows} />
