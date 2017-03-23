@@ -41,8 +41,18 @@ class AuditInfo extends React.Component {
     const { audit, contests, election } = this.props;
 
     let currentSampleId;
+    let currentSampleControl;
     if (audit.sample) {
       currentSampleId = audit.sample.id;
+      currentSampleControl = (
+        <div>
+          <TextField
+             style={{ width: '150px' }}
+             floatingLabelText='Current sample ID'
+             value={currentSampleId} />
+          <RaisedButton label='Audit' onClick={this.openDialog} />
+        </div>
+      );
     }
 
     let auditBallot;
@@ -56,6 +66,7 @@ class AuditInfo extends React.Component {
       );
       contestStats = (
         <ContestStats
+           currentSampleControl={currentSampleControl}
            audit={audit}
            contests={contests}
            election={election} />
@@ -93,13 +104,6 @@ class AuditInfo extends React.Component {
                style={infoItemStyle}
                floatingLabelText='Risk limit'
                value={audit.riskLimit} />
-          </ListItem>
-          <ListItem style={infoItemStyle}>
-            <TextField
-               style={infoItemStyle}
-               floatingLabelText='Current sample ID'
-               value={currentSampleId} />
-            <RaisedButton label='Audit' onClick={this.openDialog} />
           </ListItem>
         </List>
         {contestStats}

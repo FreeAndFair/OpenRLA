@@ -74,6 +74,7 @@ class ContestStats extends React.Component {
              style={statItemStyle}
              floatingLabelText='Risk Level'
              value={1 / audit.riskLimit} />
+          {this.props.currentSampleControl}
         </div>
         <List>
           {listItems}
