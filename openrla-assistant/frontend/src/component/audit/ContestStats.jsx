@@ -83,7 +83,7 @@ class ContestStats extends React.Component {
         <div>
           <Divider />
           <Subheader>Contests</Subheader>
-          <List style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <List>
             {listItems}
           </List>
         </div>
