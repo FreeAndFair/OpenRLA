@@ -25,12 +25,15 @@ const cardActionsStyle = {
 
 
 const ElectionInfoCard = ({ election, electionDefined, navigateElection, style }) => {
+  let buttonLabel;
   let status;
 
   if (!electionDefined) {
     status = 'Election definition is incomplete.';
+    buttonLabel = 'Edit Election';
   } else {
     status = 'Election is defined.';
+    buttonLabel = 'View Election';
   }
 
   return (
@@ -44,7 +47,7 @@ const ElectionInfoCard = ({ election, electionDefined, navigateElection, style }
         <p>{status}</p>
       </CardText>
       <CardActions style={cardActionsStyle}>
-        <RaisedButton label="Edit Election" onClick={navigateElection} />
+        <RaisedButton label={buttonLabel} onClick={navigateElection} />
       </CardActions>
     </Card>
   );
