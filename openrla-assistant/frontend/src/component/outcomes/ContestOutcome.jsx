@@ -117,9 +117,11 @@ class ContestOutcome extends React.Component {
           <List>
             <ListItem>
               <TextField
+                 style={{ width: '100px' }}
                  floatingLabelText='Contest ID'
                  value={contest.id} />
               <TextField
+                 style={{ width: '600px' }}
                  floatingLabelText='Description'
                  value={contest.description} />
             </ListItem>
