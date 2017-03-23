@@ -26,11 +26,9 @@ class AuditMarkList extends React.Component {
     const auditMarks = _.map(marks, makeMark);
 
     return (
-      <Card>
-        <List>
-          {auditMarks}
-        </List>
-      </Card>
+      <List>
+        {auditMarks}
+      </List>
     );
   }
 }
