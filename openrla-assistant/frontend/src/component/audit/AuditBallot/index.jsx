@@ -21,6 +21,12 @@ import ContestMarkForm from './ContestMarkForm';
 import submitAuditMarks from 'action/submitAuditMarks';
 
 
+const dialogStyle = {
+  maxWidth: 'none',
+  width: '95%',
+};
+
+
 class AuditBallot extends React.Component {
   constructor(props) {
     super(props);
@@ -77,20 +83,21 @@ class AuditBallot extends React.Component {
     });
 
     return (
-        <Dialog
-          title="Audit ballot"
-           actions={actions}
-           modal={false}
-           open={dialogOpen}
-           onRequestClose={closeDialog}
-           autoScrollBodyContent={true} >
-          <TextField
-             floatingLabelText='Ballot ID'
-             value={ballotId} />
-          <List>
-            {contestForms}
-          </List>
-        </Dialog>
+      <Dialog
+         contentStyle={dialogStyle}
+         title="Audit ballot"
+         actions={actions}
+         modal={false}
+         open={dialogOpen}
+         onRequestClose={closeDialog}
+         autoScrollBodyContent={true} >
+        <TextField
+           floatingLabelText='Ballot ID'
+           value={ballotId} />
+        <List>
+          {contestForms}
+        </List>
+      </Dialog>
     );
   }
 }

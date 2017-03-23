@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   Card,
   CardActions,
+  CardHeader,
   CardTitle,
   CardText
 } from 'material-ui/Card';
@@ -16,25 +17,37 @@ import setPage from '../../action/setPage';
 import isElectionDefined from '../../selector/isElectionDefined';
 
 
-const ElectionInfoCard = ({ election, electionDefined, navigateElection }) => {
+const cardActionsStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  paddingTop: '50px',
+};
+
+
+const ElectionInfoCard = ({ election, electionDefined, navigateElection, style }) => {
+  let buttonLabel;
   let status;
 
   if (!electionDefined) {
-    status = 'Election definition is incomplete.';
+    buttonLabel = 'Edit Election';
+    status = 'Election definition is incomplete. Upload manifests for contests, candidates, and cast vote records.';
   } else {
-    status = 'Election is defined.';
+    buttonLabel = 'View Election';
+    status = 'Election is fully defined. View the data for the uploaded manifests.';
   }
 
   return (
-    <Card>
-      <CardTitle
-         title="Election"
-         subtitle="Define or edit the current election" />
+    <Card style={style}>
+      <CardHeader>
+        <CardTitle
+           title="Election"
+           subtitle="Define or edit the current election" />
+      </CardHeader>
       <CardText>
         <p>{status}</p>
       </CardText>
-      <CardActions>
-        <RaisedButton label="Edit Election" onClick={navigateElection} />
+      <CardActions style={cardActionsStyle}>
+        <RaisedButton label={buttonLabel} onClick={navigateElection} />
       </CardActions>
     </Card>
   );

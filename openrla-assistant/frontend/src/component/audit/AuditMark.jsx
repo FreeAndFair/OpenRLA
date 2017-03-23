@@ -32,16 +32,16 @@ class AuditMark extends React.Component {
       if (!candidate) {
         return (
           <TableRow key={`${contestId}-invalid`}>
-            <TableRowColumn>{contestId}</TableRowColumn>
-            <TableRowColumn></TableRowColumn>
+            <TableRowColumn style={{ width: '100px' }}>{contestId}</TableRowColumn>
+            <TableRowColumn style={{ width: '100px' }}></TableRowColumn>
             <TableRowColumn>Invalid</TableRowColumn>
           </TableRow>
         );
       } else {
         return (
           <TableRow key={`${contestId}-${candidateId}`}>
-            <TableRowColumn>{contestId}</TableRowColumn>
-            <TableRowColumn>{candidateId}</TableRowColumn>
+            <TableRowColumn style={{ width: '100px' }}>{contestId}</TableRowColumn>
+            <TableRowColumn style={{ width: '100px' }}>{candidateId}</TableRowColumn>
             <TableRowColumn>{candidate.description}</TableRowColumn>
           </TableRow>
         );
@@ -55,10 +55,10 @@ class AuditMark extends React.Component {
       <Card>
         <TextField floatingLabelText='Ballot ID' value={ballotId} />
         <Table selectable={false}>
-          <TableHeader displaySelectAll={false}>
+          <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
             <TableRow>
-              <TableHeaderColumn>Contest ID</TableHeaderColumn>
-              <TableHeaderColumn>Candidate ID</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '100px' }}>Contest ID</TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '100px' }}>Candidate ID</TableHeaderColumn>
               <TableHeaderColumn>Candidate</TableHeaderColumn>
             </TableRow>
           </TableHeader>

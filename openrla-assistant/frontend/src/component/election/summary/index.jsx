@@ -105,25 +105,29 @@ class ElectionSummary extends React.Component {
         <Card>
           <CardTitle title='Election summary' />
           <CardText>
-            <List>
-              <ListItem secondaryText='Election title'>
-                <TextField
-                   onChange={this.onTitleChange}
-                   value={form.title}
-                   id='formTitle'
-                   ref='formTitle' />
-              </ListItem>
-              <ListItem secondaryText='Election date'>
-                <DatePicker
-                   onChange={this.onDateChange}
-                   value={form.date && new Date(form.date)}
-                   id='formDate'
-                   ref='formDate' />
-              </ListItem>
-            </List>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+              <TextField
+                 floatingLabelText='Election title'
+                 onChange={this.onTitleChange}
+                 value={form.title}
+                 id='formTitle'
+                 ref='formTitle' />
+              <DatePicker
+                 floatingLabelText='Election date'
+                 onChange={this.onDateChange}
+                 value={form.date && new Date(form.date)}
+                 id='formDate'
+                 ref='formDate' />
+            </div>
           </CardText>
-          {resetElectionButton}
-          {saveOrAddButton}
+          <div style={{ display: 'flex' }}>
+            <div style={{ margin: '5px' }}>
+              {resetElectionButton}
+            </div>
+            <div style={{ margin: '5px' }}>
+              {saveOrAddButton}
+            </div>
+          </div>
         </Card>
       </div>
     );
