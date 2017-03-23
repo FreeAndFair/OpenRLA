@@ -12,6 +12,7 @@ import {
 import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
+import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 
 import AuditBallot from './AuditBallot';
@@ -81,6 +82,7 @@ class AuditInfo extends React.Component {
 
     return (
       <div>
+        <Subheader>Audit Info</Subheader>
         <List style={layoutStyle}>
           <ListItem style={infoItemStyle}>
             <TextField
@@ -107,6 +109,7 @@ class AuditInfo extends React.Component {
           </ListItem>
         </List>
         {contestStats}
+        <Subheader>Audited Ballots</Subheader>
         {auditBallot}
       </div>
     );

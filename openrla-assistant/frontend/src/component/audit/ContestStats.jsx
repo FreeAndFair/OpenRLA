@@ -12,6 +12,7 @@ import {
 import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
+import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 
 
@@ -61,6 +62,7 @@ class ContestStats extends React.Component {
 
     return (
       <div>
+        <Subheader>Audit Progress</Subheader>
         <div style={statListStyle}>
           <TextField
              style={statItemStyle}
@@ -76,9 +78,12 @@ class ContestStats extends React.Component {
              value={1 / audit.riskLimit} />
           {this.props.currentSampleControl}
         </div>
-        <List style={{ display: 'flex', justifyContent: 'space-around' }}>
-          {listItems}
-        </List>
+        <div>
+          <Subheader>Contests</Subheader>
+          <List style={{ display: 'flex', justifyContent: 'space-around' }}>
+            {listItems}
+          </List>
+        </div>
       </div>
     );
   }
