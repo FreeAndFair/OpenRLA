@@ -15,14 +15,19 @@ import {
 } from 'material-ui/Table';
 
 
+const idColStyle = { width: '50px' };
+const extIdColStyle = { width: '50px' };
+const typeColStyle = { width: '100px' };
+
+
 const CandidateManifest = ({ candidates }) => {
   const makeRow = ({ id, externalId, description, contestId, type }) => (
     <TableRow>
-      <TableRowColumn>{id}</TableRowColumn>
-      <TableRowColumn>{externalId}</TableRowColumn>
+      <TableRowColumn style={idColStyle}>{id}</TableRowColumn>
+      <TableRowColumn style={extIdColStyle}>{externalId}</TableRowColumn>
       <TableRowColumn>{description}</TableRowColumn>
-      <TableRowColumn>{contestId}</TableRowColumn>
-      <TableRowColumn>{type}</TableRowColumn>
+      <TableRowColumn style={idColStyle}>{contestId}</TableRowColumn>
+      <TableRowColumn style={typeColStyle}>{type}</TableRowColumn>
     </TableRow>
   );
 
@@ -33,11 +38,11 @@ const CandidateManifest = ({ candidates }) => {
       <Table selectable={false}>
         <TableHeader displaySelectAll={false}>
           <TableRow>
-            <TableHeaderColumn>ID</TableHeaderColumn>
-            <TableHeaderColumn>External ID</TableHeaderColumn>
+            <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
+            <TableHeaderColumn style={extIdColStyle}>External ID</TableHeaderColumn>
             <TableHeaderColumn>Description</TableHeaderColumn>
-            <TableHeaderColumn>ContestId</TableHeaderColumn>
-            <TableHeaderColumn>Type</TableHeaderColumn>
+            <TableHeaderColumn style={idColStyle}>ContestId</TableHeaderColumn>
+            <TableHeaderColumn style={typeColStyle}>Type</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false} children={rows} />
