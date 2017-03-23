@@ -51,7 +51,7 @@ class ContestStats extends React.Component {
     const totalBallotCount = _.size(election.ballots);
 
     return (
-      <Card>
+      <div>
         <TextField
            floatingLabelText='Sampled ballots'
            value={sampledBallotCount} />
@@ -64,7 +64,7 @@ class ContestStats extends React.Component {
         <List>
           {listItems}
         </List>
-      </Card>
+      </div>
     );
   }
 }
