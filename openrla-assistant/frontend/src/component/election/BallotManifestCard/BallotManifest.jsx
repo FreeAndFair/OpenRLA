@@ -31,7 +31,7 @@ const BallotManifest = ({ ballots }) => {
   return (
     <div>
       <Table selectable={false}>
-        <TableHeader displaySelectAll={false}>
+        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
           <TableRow>
             <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
             <TableHeaderColumn>Path</TableHeaderColumn>
