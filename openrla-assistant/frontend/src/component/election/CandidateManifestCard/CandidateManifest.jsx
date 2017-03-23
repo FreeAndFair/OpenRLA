@@ -36,7 +36,7 @@ const CandidateManifest = ({ candidates }) => {
   return (
     <div>
       <Table selectable={false}>
-        <TableHeader displaySelectAll={false}>
+        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
           <TableRow>
             <TableHeaderColumn style={idColStyle}>ID</TableHeaderColumn>
             <TableHeaderColumn style={extIdColStyle}>External ID</TableHeaderColumn>
