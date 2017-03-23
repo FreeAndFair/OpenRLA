@@ -76,7 +76,7 @@ class ContestStats extends React.Component {
              value={1 / audit.riskLimit} />
           {this.props.currentSampleControl}
         </div>
-        <List>
+        <List style={{ display: 'flex', justifyContent: 'space-around' }}>
           {listItems}
         </List>
       </div>
