@@ -41,7 +41,7 @@ class ContestStats extends React.Component {
              floatingLabelText='Description'
              value={contests[id].description} />
           <TextField
-             floatingLabelText='Test Statistic'
+             floatingLabelText='Risk Level Achieved'
              value={statistic} />
         </ListItem>
       );
