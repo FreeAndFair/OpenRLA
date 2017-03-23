@@ -35,12 +35,15 @@ class ContestStats extends React.Component {
       return (
         <ListItem key={id}>
           <TextField
+             style={{ width: '100px' }}
              floatingLabelText='Contest ID'
              value={id} />
           <TextField
+             style={{ width: '600px' }}
              floatingLabelText='Description'
              value={contests[id].description} />
           <TextField
+             style={{ width: '200px' }}
              floatingLabelText='Risk Level Achieved'
              value={statistic} />
         </ListItem>
