@@ -29,11 +29,11 @@ const ElectionInfoCard = ({ election, electionDefined, navigateElection, style }
   let status;
 
   if (!electionDefined) {
-    status = 'Election definition is incomplete.';
     buttonLabel = 'Edit Election';
+    status = 'Election definition is incomplete. Upload manifests for contests, candidates, and cast vote records.';
   } else {
-    status = 'Election is defined.';
     buttonLabel = 'View Election';
+    status = 'Election is fully defined. View the data for the uploaded manifests.';
   }
 
   return (
