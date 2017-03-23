@@ -56,9 +56,26 @@ run_all() {
 }
 
 main() {
-  setup_all
-  build_all
-  run_all
+  set +u
+  case "$1" in
+    "setup")
+      setup_all
+      ;;
+    "build")
+      build_all
+      ;;
+    "run")
+      run_all
+      ;;
+    "all")
+      setup_all
+      build_all
+      run_all
+      ;;
+    *)
+      echo "Usage: ./demo.sh <setup|build|run|all>"
+  esac
+  set -u
 }
 
-main
+main $@
