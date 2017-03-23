@@ -11,6 +11,7 @@ import {
 } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import DatePicker from 'material-ui/DatePicker';
+import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
@@ -62,6 +63,7 @@ class ContestStats extends React.Component {
 
     return (
       <div>
+        <Divider />
         <Subheader>Audit Progress</Subheader>
         <div style={statListStyle}>
           <TextField
@@ -79,6 +81,7 @@ class ContestStats extends React.Component {
           {this.props.currentSampleControl}
         </div>
         <div>
+          <Divider />
           <Subheader>Contests</Subheader>
           <List style={{ display: 'flex', justifyContent: 'space-around' }}>
             {listItems}
