@@ -19,6 +19,8 @@ import TextField from 'material-ui/TextField';
 import AuditBallot from './AuditBallot';
 import ContestStats from './ContestStats';
 
+import { formatPercent } from '../../util';
+
 
 class AuditInfo extends React.Component {
   constructor(props) {
@@ -81,7 +83,7 @@ class AuditInfo extends React.Component {
       justifyContent: 'space-around',
     };
 
-    const riskLimitPercent = `${(audit.riskLimit * 100).toFixed(1)}%`;
+    const riskLimitPercent = formatPercent(audit.riskLimit, 1);
 
     return (
       <div>

@@ -22,6 +22,8 @@ import {
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 
+import { formatPercent } from '../../util';
+
 
 const idColStyle = { width: '50px' };
 const extIdColStyle = { width: '100px' };
@@ -85,7 +87,8 @@ class DefineAudit extends React.Component {
 
     const rows = _.map(contests, makeRow);
 
-    const riskLimitPercent = `${(this.state.riskLimit * 100).toFixed(1)}%`;
+    // const riskLimitPercent = `${(this.state.riskLimit * 100).toFixed(1)}%`;
+    const riskLimitPercent = formatPercent(this.state.riskLimit, 1);
 
     return (
       <List>

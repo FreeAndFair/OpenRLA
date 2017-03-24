@@ -30,3 +30,6 @@ export const save = (path, data) =>
   })
   .then(checkStatus)
   .then(r => r.json());
+
+export const formatPercent
+  = (val, digits) => `${(val * 100).toFixed(digits)} %`;
