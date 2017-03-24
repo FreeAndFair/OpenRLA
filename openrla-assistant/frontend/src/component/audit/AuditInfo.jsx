@@ -90,37 +90,27 @@ class AuditInfo extends React.Component {
       <div>
         <Divider />
         <Subheader>Audit Info</Subheader>
-        <List style={layoutStyle}>
-          <ListItem style={infoItemStyle}>
-            <TextField
-               style={infoItemStyle}
-               floatingLabelText='Election ID'
-               value={audit.electionId} />
-          </ListItem>
-          <ListItem style={infoItemStyle}>
-            <TextField
-               style={infoItemStyle}
-               floatingLabelText='Audit ID'
-               value={audit.id} />
-          </ListItem>
-          <ListItem style={infoItemStyle}>
-            <DatePicker
-               floatingLabelText='Date'
-               value={new Date(audit.date)} />
-          </ListItem>
-          <ListItem style={infoItemStyle}>
-            <TextField
-               style={infoItemStyle}
-               floatingLabelText='Risk limit'
-               value={riskLimitPercent} />
-          </ListItem>
-          <ListItem style={infoItemStyle}>
-            <TextField
-               style={infoItemStyle}
-               floatingLabelText='Total ballots'
-               value={totalBallotCount} />
-          </ListItem>
-        </List>
+        <div style={layoutStyle}>
+          <TextField
+             style={infoItemStyle}
+             floatingLabelText='Election ID'
+             value={audit.electionId} />
+          <TextField
+             style={infoItemStyle}
+             floatingLabelText='Audit ID'
+             value={audit.id} />
+          <DatePicker
+             floatingLabelText='Date'
+             value={new Date(audit.date)} />
+          <TextField
+             style={infoItemStyle}
+             floatingLabelText='Risk limit'
+             value={riskLimitPercent} />
+          <TextField
+             style={infoItemStyle}
+             floatingLabelText='Total ballots'
+             value={totalBallotCount} />
+        </div>
         {contestStats}
         {auditBallot}
       </div>
