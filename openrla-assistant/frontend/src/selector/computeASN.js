@@ -18,6 +18,9 @@ export default (audit, election) => {
     const losers = _.omit(candidates, winner.id);
     const bestLoser = _.maxBy(_.toArray(losers), c => c.share);
     const winnerShare = winner.share;
+    // In fact, this underestimates the number of ballots that must be
+    // sampled, if there are multiple losing candidates with small
+    // margins. See the BRAVO paper (LindemanStarkYates).
     const loserShare = bestLoser.share;
     const fracMargin = winnerShare - loserShare;
     return fracMargin;
