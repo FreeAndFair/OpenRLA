@@ -85,6 +85,8 @@ class DefineAudit extends React.Component {
 
     const rows = _.map(contests, makeRow);
 
+    const riskLimitPercent = `${(this.state.riskLimit * 100).toFixed(1)}%`;
+
     return (
       <List>
         <ListItem secondaryText='Date'>
@@ -105,7 +107,7 @@ class DefineAudit extends React.Component {
              id='riskLimitSlider'
              ref='riskLimitSlider' />
           <TextField
-             value={this.state.riskLimit}
+             value={riskLimitPercent}
              id='riskLimitText'
              ref='riskLimitText' />
         </ListItem>

@@ -81,6 +81,8 @@ class AuditInfo extends React.Component {
       justifyContent: 'space-around',
     };
 
+    const riskLimitPercent = `${(audit.riskLimit * 100).toFixed(1)}%`;
+
     return (
       <div>
         <Divider />
@@ -107,7 +109,7 @@ class AuditInfo extends React.Component {
             <TextField
                style={infoItemStyle}
                floatingLabelText='Risk limit'
-               value={audit.riskLimit} />
+               value={riskLimitPercent} />
           </ListItem>
         </List>
         {contestStats}
