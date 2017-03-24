@@ -63,6 +63,7 @@ class ContestStats extends React.Component {
       justifyContent: 'space-around',
     };
     const asn = computeASN(audit, election);
+    const riskLevel = (1 / audit.riskLimit).toFixed(1);
     return (
       <div>
         <Divider />
@@ -79,7 +80,7 @@ class ContestStats extends React.Component {
           <TextField
              style={statItemStyle}
              floatingLabelText='Risk Level'
-             value={1 / audit.riskLimit} />
+             value={riskLevel} />
           <TextField
              style={statItemStyle}
              floatingLabelText='Sample size'
