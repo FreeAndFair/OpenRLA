@@ -16,6 +16,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 
+import computeASN from 'selector/computeASN';
+
 
 class ContestStats extends React.Component {
   constructor(props) {
@@ -60,7 +62,7 @@ class ContestStats extends React.Component {
       display: 'flex',
       justifyContent: 'space-around',
     };
-
+    const asn = computeASN(audit, election);
     return (
       <div>
         <Divider />
@@ -78,6 +80,10 @@ class ContestStats extends React.Component {
              style={statItemStyle}
              floatingLabelText='Risk Level'
              value={1 / audit.riskLimit} />
+          <TextField
+             style={statItemStyle}
+             floatingLabelText='Sample size'
+             value={asn} />
           {this.props.currentSampleControl}
         </div>
         <div>
