@@ -84,6 +84,7 @@ class AuditInfo extends React.Component {
     };
 
     const riskLimitPercent = formatPercent(audit.riskLimit, 1);
+    const totalBallotCount = _.size(election.ballots);
 
     return (
       <div>
@@ -112,6 +113,12 @@ class AuditInfo extends React.Component {
                style={infoItemStyle}
                floatingLabelText='Risk limit'
                value={riskLimitPercent} />
+          </ListItem>
+          <ListItem style={infoItemStyle}>
+            <TextField
+               style={infoItemStyle}
+               floatingLabelText='Total ballots'
+               value={totalBallotCount} />
           </ListItem>
         </List>
         {contestStats}
