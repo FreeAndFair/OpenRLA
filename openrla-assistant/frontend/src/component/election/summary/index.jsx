@@ -100,6 +100,17 @@ class ElectionSummary extends React.Component {
 
     const form = this.formData();
 
+    let ballotSummary;
+
+    const ballotCount = _.size(election.ballots);
+    if (ballotCount) {
+      ballotSummary = (
+        <TextField
+           floatingLabelText='Ballot count'
+           value={ballotCount} />
+      );
+    }
+
     return (
       <div>
         <Card>
@@ -118,6 +129,7 @@ class ElectionSummary extends React.Component {
                  value={form.date && new Date(form.date)}
                  id='formDate'
                  ref='formDate' />
+              {ballotSummary}
             </div>
           </CardText>
           <div style={{ display: 'flex' }}>
