@@ -57,7 +57,7 @@ class ContestStats extends React.Component {
     const sampledBallotCount = audit.marks ? audit.marks.length : 0;
     const totalBallotCount = _.size(election.ballots);
 
-    const statItemStyle = { width: '150px' };
+    const statItemStyle = { width: '120px' };
     const statListStyle = {
       display: 'flex',
       justifyContent: 'space-around',
