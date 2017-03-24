@@ -84,6 +84,10 @@ class ContestStats extends React.Component {
              style={statItemStyle}
              floatingLabelText='Sample size'
              value={asn} />
+          <TextField
+             style={statItemStyle}
+             floatingLabelText='Ballots Needed'
+             value={asn - sampledBallotCount} />
           {this.props.currentSampleControl}
         </div>
         <div>
