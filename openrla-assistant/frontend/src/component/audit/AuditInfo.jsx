@@ -19,6 +19,8 @@ import TextField from 'material-ui/TextField';
 import AuditBallot from './AuditBallot';
 import ContestStats from './ContestStats';
 
+import { formatPercent } from '../../util';
+
 
 class AuditInfo extends React.Component {
   constructor(props) {
@@ -81,6 +83,8 @@ class AuditInfo extends React.Component {
       justifyContent: 'space-around',
     };
 
+    const riskLimitPercent = formatPercent(audit.riskLimit, 1);
+
     return (
       <div>
         <Divider />
@@ -107,7 +111,7 @@ class AuditInfo extends React.Component {
             <TextField
                style={infoItemStyle}
                floatingLabelText='Risk limit'
-               value={audit.riskLimit} />
+               value={riskLimitPercent} />
           </ListItem>
         </List>
         {contestStats}
