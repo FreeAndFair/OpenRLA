@@ -59,7 +59,7 @@ astat() {
 export -f astat
 
 mark() {
-       echo "Hit Enter to enter next ballot"; read   # pause before each entry - just hit Enter in terminal
+       echo "Hit Enter to enter next ballot: $1"; read   # pause before each entry - just hit Enter in terminal
        curl -s 'http://localhost:8080/audit/1/marks' --compressed --data-binary "$@"
        astat
 }
